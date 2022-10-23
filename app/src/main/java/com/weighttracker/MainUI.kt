@@ -2,9 +2,7 @@ package com.weighttracker
 
 import androidx.compose.foundation.background
 import androidx.compose.foundation.clickable
-import androidx.compose.foundation.layout.Column
-import androidx.compose.foundation.layout.fillMaxSize
-import androidx.compose.foundation.layout.padding
+import androidx.compose.foundation.layout.*
 import androidx.compose.material3.Text
 import androidx.compose.runtime.*
 import androidx.compose.ui.Modifier
@@ -25,12 +23,32 @@ fun UI() {
             .fillMaxSize()
     ) {
         Greeting()
+        Spacer(modifier = Modifier.height(5.dp))
+        Quote()
     }
 }
 
 @Composable
+fun Quote() {
+    val quotes = listOf(
+        "Strive to get better every day.",
+        "The most valuable investment is in yourself.",
+        "Better. Faster. Stronger."
+    ).shuffled()
+    val currentQuote by remember {
+        mutableStateOf(quotes.first())
+    }
+    Text(
+        text = currentQuote,
+        color = Color.White,
+        fontStyle = FontStyle.Italic
+    )
+}
+
+@Composable
 fun Greeting() {
-    val names = listOf("Iliyan", "Nicole", "Rose", "Garen", "Caitlin").shuffled()
+    val names = listOf("Iliyan", "Nicole", "Rose", "Garen", "Caitlin")
+        .shuffled()
     var currentName by remember {
         mutableStateOf(names.first())
     }
@@ -41,7 +59,6 @@ fun Greeting() {
         color = Color.White,
         fontSize = 20.sp,
         fontWeight = FontWeight.Bold,
-        fontStyle = FontStyle.Italic,
         fontFamily = FontFamily.Serif,
         text = "Hello, ${currentName}!"
     )
