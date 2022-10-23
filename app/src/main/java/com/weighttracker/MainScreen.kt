@@ -13,36 +13,23 @@ import androidx.compose.ui.text.font.FontWeight
 import androidx.compose.ui.tooling.preview.Preview
 import androidx.compose.ui.unit.dp
 import androidx.compose.ui.unit.sp
+import java.time.LocalDateTime
+import java.time.format.DateTimeFormatter
 
 @Composable
-fun UI() {
+fun MainScreen() {
     Column(
         modifier = Modifier
             .fillMaxSize()
-            .background(color = Color.Blue)
+            .background(color = Color.White)
             .padding(horizontal = 20.dp, vertical = 20.dp)
     ) {
         Greeting()
-        Spacer(modifier = Modifier.height(5.dp))
+        Spacer(modifier = Modifier.height(4.dp))
         Quote()
+        Spacer(modifier = Modifier.height(4.dp))
+        Date()
     }
-}
-
-@Composable
-fun Quote() {
-    val quotes = listOf(
-        "Strive to get better every day.",
-        "The most valuable investment is in yourself.",
-        "Better. Faster. Stronger."
-    ).shuffled()
-    val currentQuote by remember {
-        mutableStateOf(quotes.first())
-    }
-    Text(
-        text = currentQuote,
-        color = Color.White,
-        fontStyle = FontStyle.Italic
-    )
 }
 
 @Composable
@@ -56,18 +43,51 @@ fun Greeting() {
         modifier = Modifier.clickable {
             currentName = names.shuffled().first()
         },
-        color = Color.White,
-        fontSize = 20.sp,
+        color = cyan,
+        fontSize = 24.sp,
         fontWeight = FontWeight.Bold,
         fontFamily = FontFamily.Serif,
         text = "Hello, ${currentName}!"
     )
 }
 
+@Composable
+fun Quote() {
+    val currentQuote = remember {
+        listOf(
+            "Strive to get better every day.",
+            "The most valuable investment is that in yourself.",
+            "Better. Faster. Stronger."
+        ).shuffled().first()
+    }
+    Text(
+        text = currentQuote,
+        color = Color.DarkGray,
+        fontWeight = FontWeight.Bold,
+        fontStyle = FontStyle.Italic,
+        fontSize = 16.sp,
+    )
+}
+
+@Composable
+fun Date() {
+    val currentDate = LocalDateTime.now()
+    Text(
+        text = currentDate.format("dd MMM yyyy"),
+        color = Color.DarkGray,
+        fontSize = 12.sp,
+    )
+}
+
+private fun LocalDateTime.format(pattern: String): String {
+    val formatter = DateTimeFormatter.ofPattern(pattern)
+    return formatter.format(this)
+}
+
 @Preview(showBackground = true)
 @Composable
 fun Preview() {
-    WeightUI {
-        UI()
+    AppTheme {
+        MainScreen()
     }
 }
