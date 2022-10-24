@@ -9,7 +9,7 @@ class MainActivity : ComponentActivity() {
         super.onCreate(savedInstanceState)
         setContent {
             AppTheme {
-                MainScreen()
+                BmiScreen()
             }
         }
     }
