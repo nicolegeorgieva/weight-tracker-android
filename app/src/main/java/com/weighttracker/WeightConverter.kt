@@ -19,7 +19,7 @@ fun ConverterScreen() {
             .padding(horizontal = 36.dp, vertical = 36.dp)
     ) {
         HeightConverter()
-        Spacer(modifier = Modifier.height(8.dp))
+        Spacer(modifier = Modifier.height(24.dp))
         WeightConverter()
     }
 }
