@@ -11,39 +11,69 @@ import androidx.compose.ui.unit.dp
 import com.weighttracker.component.NumberInputField
 
 @Composable
-fun WeightConverter() {
+fun ConverterScreen() {
     Column(
         modifier = Modifier
             .fillMaxSize()
             .background(color = Color.White)
             .padding(horizontal = 36.dp, vertical = 36.dp)
     ) {
-        Text(text = "Weight in kg")
-        var weightConverterInput by remember { mutableStateOf(0.0) }
-        NumberInputField(
-            onNumberEnter = {
-                if (it != null) {
-                    weightConverterInput = it
-                }
-            }
-        )
-
-        Spacer(modifier = Modifier.height(16.dp))
-
-        Text(
-            text = "Your weight in pounds is: ${weightConverter(weight = weightConverterInput)} lb",
-            color = if (weightConverterInput >= 100) {
-                Color.Red
-            } else {
-                Color.Black
-            },
-            fontWeight = if (weightConverterInput >= 50) {
-                FontWeight.Bold
-            } else {
-                FontWeight.Normal
-            }
-        )
+        HeightConverter()
+        Spacer(modifier = Modifier.height(8.dp))
+        WeightConverter()
     }
+}
+
+@Composable
+fun HeightConverter() {
+    Text(text = "Height in m")
+    var heightConverterInput by remember { mutableStateOf(1.0) }
+    NumberInputField(
+        onNumberEnter = {
+            if (it != null) {
+                heightConverterInput = it
+            }
+        }
+    )
+
+    Spacer(modifier = Modifier.height(16.dp))
+
+    Text(
+        text = "Your height in feet is ${heightConverter(height = heightConverterInput)} ft",
+    )
+}
+
+private fun heightConverter(height: Double): Double {
+    return height * 3.28
+}
+
+@Composable
+fun WeightConverter() {
+    Text(text = "Weight in kg")
+    var weightConverterInput by remember { mutableStateOf(0.0) }
+    NumberInputField(
+        onNumberEnter = {
+            if (it != null) {
+                weightConverterInput = it
+            }
+        }
+    )
+
+    Spacer(modifier = Modifier.height(16.dp))
+
+    Text(
+        text = "Your weight in pounds is: ${weightConverter(weight = weightConverterInput)} lb",
+        color = if (weightConverterInput >= 100) {
+            Color.Red
+        } else {
+            Color.Black
+        },
+        fontWeight = if (weightConverterInput >= 50) {
+            FontWeight.Bold
+        } else {
+            FontWeight.Normal
+        }
+    )
 }
 
 private fun weightConverter(weight: Double): Double {
