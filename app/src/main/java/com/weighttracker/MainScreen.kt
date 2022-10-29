@@ -29,6 +29,8 @@ fun MainScreen() {
         Quote()
         Spacer(modifier = Modifier.height(4.dp))
         Date()
+        Spacer(modifier = Modifier.height(48.dp))
+        NavigateToWeightConverter()
     }
 }
 
@@ -82,6 +84,16 @@ fun Date() {
 private fun LocalDateTime.format(pattern: String): String {
     val formatter = DateTimeFormatter.ofPattern(pattern)
     return formatter.format(this)
+}
+
+@Composable
+fun NavigateToWeightConverter() {
+    Text(text = "Convert units",
+        modifier = Modifier.clickable {
+            currentScreen.value = Screens.Converter
+        }
+    )
+
 }
 
 @Preview(showBackground = true)

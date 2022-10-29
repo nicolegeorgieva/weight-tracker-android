@@ -9,7 +9,10 @@ class MainActivity : ComponentActivity() {
         super.onCreate(savedInstanceState)
         setContent {
             AppTheme {
-                ConverterScreen()
+                when (currentScreen.value) {
+                    Screens.Main -> MainScreen()
+                    Screens.Converter -> ConverterScreen()
+                }
             }
         }
     }
