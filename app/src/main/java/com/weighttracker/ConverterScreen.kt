@@ -29,7 +29,7 @@ fun ConverterScreen() {
 }
 
 @Composable
-fun BackButton() {
+private fun BackButton() {
     Text(text = "Back",
         modifier = Modifier.clickable {
             currentScreen.value = Screens.Main

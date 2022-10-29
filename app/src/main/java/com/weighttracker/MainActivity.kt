@@ -12,6 +12,7 @@ class MainActivity : ComponentActivity() {
                 when (currentScreen.value) {
                     Screens.Main -> MainScreen()
                     Screens.Converter -> ConverterScreen()
+                    Screens.Hello -> HelloScreen()
                 }
             }
         }
