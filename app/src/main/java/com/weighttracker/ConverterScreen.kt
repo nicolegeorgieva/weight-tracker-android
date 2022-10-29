@@ -1,8 +1,6 @@
 package com.weighttracker
 
-import androidx.activity.compose.BackHandler
 import androidx.compose.foundation.background
-import androidx.compose.foundation.clickable
 import androidx.compose.foundation.layout.*
 import androidx.compose.material3.Text
 import androidx.compose.runtime.*
@@ -10,6 +8,7 @@ import androidx.compose.ui.Modifier
 import androidx.compose.ui.graphics.Color
 import androidx.compose.ui.text.font.FontWeight
 import androidx.compose.ui.unit.dp
+import com.weighttracker.component.BackButton
 import com.weighttracker.component.NumberInputField
 
 @Composable
@@ -20,23 +19,11 @@ fun ConverterScreen() {
             .background(color = Color.White)
             .padding(horizontal = 36.dp, vertical = 36.dp)
     ) {
-        BackButton()
+        BackButton(screens = Screens.Main)
         Spacer(modifier = Modifier.height(24.dp))
         HeightConverter()
         Spacer(modifier = Modifier.height(24.dp))
         WeightConverter()
-    }
-}
-
-@Composable
-private fun BackButton() {
-    Text(text = "Back",
-        modifier = Modifier.clickable {
-            navigateTo(Screens.Main)
-        }
-    )
-    BackHandler {
-        navigateTo(Screens.Main)
     }
 }
 
