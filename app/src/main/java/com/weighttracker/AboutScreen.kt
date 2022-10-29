@@ -11,33 +11,23 @@ import androidx.compose.ui.Modifier
 import androidx.compose.ui.unit.dp
 
 @Composable
-fun HelloScreen() {
+fun AboutScreen() {
     Column() {
         BackButton()
-        Spacer(modifier = Modifier.height(48.dp))
-        Text(text = "Hello!")
-        Spacer(modifier = Modifier.height(48.dp))
-        NavigateToAboutScreen()
+        Spacer(modifier = Modifier.height(28.dp))
+        Text(text = "About")
     }
 }
 
 @Composable
 private fun BackButton() {
-    Text(text = "Back",
+    Text(
+        text = "Back",
         modifier = Modifier.clickable {
-            navigateTo(Screens.Main)
+            navigateTo(Screens.Hello)
         }
     )
     BackHandler {
-        navigateTo(Screens.Main)
+        navigateTo(Screens.Hello)
     }
-}
-
-@Composable
-private fun NavigateToAboutScreen() {
-    Text(text = "About",
-        modifier = Modifier.clickable {
-            navigateTo(Screens.About)
-        }
-    )
 }

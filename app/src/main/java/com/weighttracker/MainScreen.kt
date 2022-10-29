@@ -93,7 +93,7 @@ fun NavigateToWeightConverter() {
     Text(
         text = "Convert units",
         modifier = Modifier.clickable {
-            currentScreen.value = Screens.Converter
+            navigateTo(Screens.Converter)
         }
     )
 
@@ -104,7 +104,7 @@ fun NavigateToHelloScreen() {
     Text(
         text = "Hello Screen",
         modifier = Modifier.clickable {
-            currentScreen.value = Screens.Hello
+            navigateTo(Screens.Hello)
         }
     )
 }

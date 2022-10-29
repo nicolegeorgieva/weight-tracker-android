@@ -32,11 +32,11 @@ fun ConverterScreen() {
 private fun BackButton() {
     Text(text = "Back",
         modifier = Modifier.clickable {
-            currentScreen.value = Screens.Main
+            navigateTo(Screens.Main)
         }
     )
     BackHandler {
-        currentScreen.value = Screens.Main
+        navigateTo(Screens.Main)
     }
 }
 

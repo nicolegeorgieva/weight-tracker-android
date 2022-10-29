@@ -13,6 +13,7 @@ class MainActivity : ComponentActivity() {
                     Screens.Main -> MainScreen()
                     Screens.Converter -> ConverterScreen()
                     Screens.Hello -> HelloScreen()
+                    Screens.About -> AboutScreen()
                 }
             }
         }
