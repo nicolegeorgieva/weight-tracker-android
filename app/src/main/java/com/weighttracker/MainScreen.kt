@@ -33,6 +33,8 @@ fun MainScreen() {
         NavigateToWeightConverter()
         Spacer(modifier = Modifier.height(48.dp))
         NavigateToHelloScreen()
+        Spacer(modifier = Modifier.height(48.dp))
+        NavigateToBMIScreen()
     }
 }
 
@@ -105,6 +107,16 @@ fun NavigateToHelloScreen() {
         text = "Hello Screen",
         modifier = Modifier.clickable {
             navigateTo(Screens.Hello)
+        }
+    )
+}
+
+@Composable
+fun NavigateToBMIScreen() {
+    Text(
+        text = "Check your BMI",
+        modifier = Modifier.clickable {
+            navigateTo(Screens.BMI)
         }
     )
 }

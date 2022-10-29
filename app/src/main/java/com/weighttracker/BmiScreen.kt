@@ -7,6 +7,7 @@ import androidx.compose.runtime.*
 import androidx.compose.ui.Modifier
 import androidx.compose.ui.graphics.Color
 import androidx.compose.ui.unit.dp
+import com.weighttracker.component.BackButton
 import com.weighttracker.component.NumberInputField
 
 @Composable
@@ -17,6 +18,10 @@ fun BmiScreen() {
             .background(color = Color.White)
             .padding(horizontal = 36.dp, vertical = 36.dp)
     ) {
+        BackButton(screens = Screens.Main)
+
+        Spacer(modifier = Modifier.height(32.dp))
+
         Text(text = "Height")
         var heightInput by remember { mutableStateOf(1.0) }
         NumberInputField(

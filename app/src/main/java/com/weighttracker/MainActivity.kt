@@ -14,6 +14,7 @@ class MainActivity : ComponentActivity() {
                     Screens.Converter -> ConverterScreen()
                     Screens.Hello -> HelloScreen()
                     Screens.About -> AboutScreen()
+                    Screens.BMI -> BmiScreen()
                 }
             }
         }
