@@ -7,4 +7,5 @@ import javax.inject.Singleton
 @Singleton
 class DataStoreKeys @Inject constructor() {
     val weight by lazy { doublePreferencesKey(name = "weight") }
+    val height by lazy { doublePreferencesKey(name = "height") }
 }
