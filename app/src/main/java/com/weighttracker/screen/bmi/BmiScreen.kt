@@ -13,6 +13,7 @@ import androidx.compose.ui.unit.dp
 import androidx.lifecycle.viewmodel.compose.viewModel
 import com.weighttracker.AppTheme
 import com.weighttracker.component.NumberInputField
+import java.text.DecimalFormat
 
 @Composable
 fun BmiScreen() {
@@ -37,7 +38,10 @@ private fun UI(
             onEvent(BmiEvent.HeightChange(newHeightRec = it))
         })
         Spacer(modifier = Modifier.height(16.dp))
-        Text(text = "Your BMI is ${state.bmi}")
+
+        val bmiFormatted = if (state.bmi != null)
+            DecimalFormat("###,###.#").format(state.bmi) else ""
+        Text(text = "Your BMI is $bmiFormatted")
     }
 }
 

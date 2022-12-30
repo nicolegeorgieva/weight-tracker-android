@@ -2,6 +2,7 @@ package com.weighttracker.component
 
 import androidx.compose.runtime.Composable
 import androidx.compose.ui.text.input.KeyboardType
+import java.text.DecimalFormat
 
 @Composable
 fun NumberInputField(
@@ -10,7 +11,8 @@ fun NumberInputField(
     onValueChange: (Double) -> Unit,
 ) {
     InputField(
-        value = number?.toString() ?: "",
+        value = if (number != null)
+            DecimalFormat("###,###.##").format(number) else "",
         placeholder = placeholder,
         keyboardType = KeyboardType.Number,
         onValueChange = {
