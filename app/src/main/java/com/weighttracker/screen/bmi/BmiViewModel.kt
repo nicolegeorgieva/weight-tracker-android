@@ -18,7 +18,7 @@ class BmiViewModel @Inject constructor(
     private val writeHeightAct: WriteHeightAct
 ) : SimpleFlowViewModel<BmiState, BmiEvent>() {
     override val initialUi = BmiState(
-        weight = 0.0, height = 0.0
+        weight = 0.0, height = 0.0, bmi = 0.0
     )
 
     override val uiFlow: Flow<BmiState> = combine(
@@ -27,7 +27,10 @@ class BmiViewModel @Inject constructor(
     ) { weight, height ->
         BmiState(
             weight = weight,
-            height = height
+            height = height,
+            bmi = if (weight != null && height != null) {
+                weight / (height * height)
+            } else 0.0
         )
     }
 

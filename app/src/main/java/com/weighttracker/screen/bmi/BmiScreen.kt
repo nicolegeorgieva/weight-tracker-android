@@ -3,6 +3,7 @@ package com.weighttracker.screen.bmi
 import androidx.compose.foundation.layout.Column
 import androidx.compose.foundation.layout.Spacer
 import androidx.compose.foundation.layout.height
+import androidx.compose.material3.Text
 import androidx.compose.runtime.Composable
 import androidx.compose.runtime.collectAsState
 import androidx.compose.runtime.getValue
@@ -28,20 +29,15 @@ private fun UI(
 ) {
     Column {
         Spacer(modifier = Modifier.height(16.dp))
-        NumberInputField(
-            number = state.weight,
-            placeholder = "Weight",
-            onValueChange = {
-                onEvent(BmiEvent.WeightChange(newWeightRec = it))
-            }
-        )
+        NumberInputField(number = state.weight, placeholder = "Weight", onValueChange = {
+            onEvent(BmiEvent.WeightChange(newWeightRec = it))
+        })
         Spacer(modifier = Modifier.height(16.dp))
-        NumberInputField(
-            number = state.height,
-            placeholder = "Height",
-            onValueChange = {
-                onEvent(BmiEvent.HeightChange(newHeightRec = it))
-            })
+        NumberInputField(number = state.height, placeholder = "Height", onValueChange = {
+            onEvent(BmiEvent.HeightChange(newHeightRec = it))
+        })
+        Spacer(modifier = Modifier.height(16.dp))
+        Text(text = "Your BMI is ${state.bmi}")
     }
 }
 
@@ -51,13 +47,11 @@ private fun UI(
 @Composable
 private fun Preview() {
     AppTheme {
-        UI(
-            state = BmiState(
-                weight = 0.0,
-                height = 0.0
-            ),
-            onEvent = {}
-        )
+        UI(state = BmiState(
+            weight = 0.0,
+            height = 0.0,
+            bmi = 0.0
+        ), onEvent = {})
     }
 }
 // endregion
