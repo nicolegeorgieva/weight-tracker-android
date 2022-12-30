@@ -1,26 +1,22 @@
 package com.weighttracker.component
 
-import androidx.compose.foundation.text.KeyboardOptions
-import androidx.compose.material3.TextField
-import androidx.compose.runtime.*
+import androidx.compose.runtime.Composable
 import androidx.compose.ui.text.input.KeyboardType
 
 @Composable
 fun NumberInputField(
-    onNumberEnter: (Double?) -> Unit
+    number: Double?,
+    placeholder: String,
+    onValueChange: (Double) -> Unit,
 ) {
-    var currentText by remember {
-        mutableStateOf("")
-    }
-    TextField(
-        value = currentText,
+    InputField(
+        value = number?.toString() ?: "",
+        placeholder = placeholder,
+        keyboardType = KeyboardType.Number,
         onValueChange = {
-            currentText = it
-            onNumberEnter(it.toDoubleOrNull())
-        },
-        keyboardOptions = KeyboardOptions.Default.copy(
-            keyboardType = KeyboardType.Number
-        )
+            if (it.toDoubleOrNull() != null) {
+                onValueChange(it.toDouble())
+            }
+        }
     )
 }
-

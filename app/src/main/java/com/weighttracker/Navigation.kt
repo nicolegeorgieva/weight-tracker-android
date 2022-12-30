@@ -2,10 +2,10 @@ package com.weighttracker
 
 import androidx.compose.runtime.mutableStateOf
 
-val currentScreen = mutableStateOf(Screens.Main)
+val currentScreen = mutableStateOf(Screens.BMI)
 
 enum class Screens {
-    Main, Converter, Hello, About, BMI
+    BMI
 }
 
 fun navigateTo(screens: Screens) {
