@@ -35,8 +35,16 @@ private fun UI(
     state: BmiState,
     onEvent: (BmiEvent) -> Unit,
 ) {
-    Column(modifier = Modifier.padding(horizontal = 16.dp, vertical = 82.dp)) {
+    Column(
+        horizontalAlignment = Alignment.End,
+        verticalArrangement = Arrangement.Top
+    ) {
         MoreMenuButton()
+    }
+
+    Spacer(modifier = Modifier.height(16.dp))
+
+    Column(modifier = Modifier.padding(horizontal = 16.dp, vertical = 82.dp)) {
         Text(
             text = "Log your weight and height",
             fontSize = 20.sp,
@@ -70,6 +78,7 @@ private fun UI(
         Text(text = "Your BMI is $bmiFormatted.")
     }
 }
+
 
 @Composable
 fun MoreMenuButton() {
