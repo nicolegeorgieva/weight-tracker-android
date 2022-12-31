@@ -4,6 +4,7 @@ import android.os.Bundle
 import androidx.activity.ComponentActivity
 import androidx.activity.compose.setContent
 import com.weighttracker.screen.bmi.BmiScreen
+import com.weighttracker.screen.settings.SettingsScreen
 import dagger.hilt.android.AndroidEntryPoint
 
 @AndroidEntryPoint
@@ -14,6 +15,7 @@ class MainActivity : ComponentActivity() {
             AppTheme {
                 when (currentScreen.value) {
                     Screens.BMI -> BmiScreen()
+                    Screens.Settings -> SettingsScreen()
                 }
             }
         }
