@@ -36,13 +36,14 @@ private fun UI(
     onEvent: (BmiEvent) -> Unit,
 ) {
     Column(
+        modifier = Modifier.fillMaxWidth(),
         horizontalAlignment = Alignment.End,
         verticalArrangement = Arrangement.Top
     ) {
         MoreMenuButton()
     }
 
-    Spacer(modifier = Modifier.height(16.dp))
+    Spacer(modifier = Modifier.height(12.dp))
 
     Column(modifier = Modifier.padding(horizontal = 16.dp, vertical = 82.dp)) {
         Text(
