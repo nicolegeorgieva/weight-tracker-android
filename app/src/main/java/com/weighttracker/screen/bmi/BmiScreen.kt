@@ -40,16 +40,14 @@ private fun UI(
     onEvent: (BmiEvent) -> Unit,
 ) {
     Column(
-        modifier = Modifier.fillMaxWidth(),
-        horizontalAlignment = Alignment.End,
-        verticalArrangement = Arrangement.Top
+        modifier = Modifier.padding(horizontal = 16.dp)
     ) {
-        MoreMenuButton()
-    }
+        MoreMenuButton(
+            modifier = Modifier.align(Alignment.End)
+        )
 
-    Spacer(modifier = Modifier.height(12.dp))
+        Spacer(modifier = Modifier.height(0.dp))
 
-    Column(modifier = Modifier.padding(horizontal = 16.dp, vertical = 82.dp)) {
         Text(
             text = "Log your weight and height",
             fontSize = 20.sp,
@@ -86,7 +84,7 @@ private fun UI(
 
         val bmiFormatted =
             if (state.bmi != null) DecimalFormat("###,###.#").format(state.bmi) else ""
-        Text(text = "Your BMI is $bmiFormatted.")
+        Text(text = "Your BMI is $bmiFormatted.", fontWeight = FontWeight.Bold, fontSize = 16.sp)
 
         Spacer(modifier = Modifier.height(16.dp))
 
@@ -208,10 +206,16 @@ private fun bmiInfo(bmi: Double): BmiInfo {
 }
 
 @Composable
-fun MoreMenuButton() {
-    IconButton(modifier = Modifier, onClick = {
-        navigateTo(screens = Screens.Settings)
-    }, enabled = true) {
+fun MoreMenuButton(
+    modifier: Modifier = Modifier,
+) {
+    IconButton(
+        modifier = modifier,
+        onClick = {
+            navigateTo(screens = Screens.Settings)
+        },
+        enabled = true
+    ) {
         Icon(imageVector = Icons.Default.Menu, contentDescription = "more")
     }
 }
