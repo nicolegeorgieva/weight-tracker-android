@@ -11,7 +11,9 @@ import androidx.compose.runtime.collectAsState
 import androidx.compose.runtime.getValue
 import androidx.compose.ui.Alignment
 import androidx.compose.ui.Modifier
+import androidx.compose.ui.graphics.Color
 import androidx.compose.ui.text.font.FontWeight
+import androidx.compose.ui.text.style.TextDecoration
 import androidx.compose.ui.tooling.preview.Preview
 import androidx.compose.ui.unit.dp
 import androidx.compose.ui.unit.sp
@@ -83,9 +85,36 @@ private fun UI(
         val bmiFormatted =
             if (state.bmi != null) DecimalFormat("###,###.#").format(state.bmi) else ""
         Text(text = "Your BMI is $bmiFormatted.")
+
+        Spacer(modifier = Modifier.height(16.dp))
+
+        if (state.bmi != null) {
+            val pair = bmiTextColorPair(state.bmi)
+
+            Text(
+                text = pair.first,
+                color = pair.second,
+                fontSize = 20.sp,
+                textDecoration = TextDecoration.Underline,
+                fontWeight = FontWeight.Bold
+            )
+        }
     }
 }
 
+private fun bmiTextColorPair(bmi: Double): Pair<String, Color> {
+    return if (bmi < 18.5) {
+        "Underweight" to Color(0xFFA7C7E7)
+    } else if (bmi in 18.5..24.9) {
+        "Normal" to Color(0xFF4CBB17)
+    } else if (bmi in 25.0..29.9) {
+        "Overweight" to Color(0xFFE2D02B)
+    } else if (bmi in 30.0..34.9) {
+        "Obese" to Color(0xFFFFA500)
+    } else {
+        "Extremely obese" to Color.Red
+    }
+}
 
 @Composable
 fun MoreMenuButton() {
