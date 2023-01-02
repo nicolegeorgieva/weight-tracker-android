@@ -122,9 +122,9 @@ private fun bmiInfo(bmi: Double): BmiInfo {
             type = "Underweight",
             color = Color(0xFFA7C7E7),
             message = "You may be malnourished and develop compromised immune function," +
-                    "respiratory disease, digestive diseases, cancer or osteoporosis." +
-                    "You should probably visit a nutritionist to prepare a better diet plan," +
-                    " with caloric surplus"
+                    " respiratory disease, digestive diseases, cancer or osteoporosis." +
+                    " You should probably visit a nutritionist to prepare a better diet plan," +
+                    " with caloric surplus."
         )
     } else if (bmi in 18.5..24.9) {
         BmiInfo(
