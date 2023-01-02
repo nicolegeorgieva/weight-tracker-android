@@ -1,6 +1,6 @@
 package com.weighttracker.screen.settings
 
 sealed interface SettingsEvent {
-    data class WeightChange(val newWeightRec: Double) : SettingsEvent
-    data class HeightChange(val newHeightRec: Double) : SettingsEvent
+    data class KgSelect(val kg: Boolean) : SettingsEvent
+    data class MSelect(val m: Boolean) : SettingsEvent
 }

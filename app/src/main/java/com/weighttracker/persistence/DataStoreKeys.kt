@@ -1,5 +1,6 @@
 package com.weighttracker.persistence
 
+import androidx.datastore.preferences.core.booleanPreferencesKey
 import androidx.datastore.preferences.core.doublePreferencesKey
 import javax.inject.Inject
 import javax.inject.Singleton
@@ -8,4 +9,6 @@ import javax.inject.Singleton
 class DataStoreKeys @Inject constructor() {
     val weight by lazy { doublePreferencesKey(name = "weight") }
     val height by lazy { doublePreferencesKey(name = "height") }
+    val kgSelected by lazy { booleanPreferencesKey(name = "kg") }
+    val mSelected by lazy { booleanPreferencesKey(name = "m") }
 }
