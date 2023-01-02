@@ -58,7 +58,10 @@ private fun UI(
                 onEvent(BmiEvent.WeightChange(newWeightRec = it))
             })
             Spacer(modifier = Modifier.width(8.dp))
-            Text(fontWeight = FontWeight.Bold, text = "kg")
+            Text(
+                fontWeight = FontWeight.Bold,
+                text = if (state.kg) "kg" else "lb"
+            )
         }
 
         Spacer(modifier = Modifier.height(16.dp))
@@ -68,7 +71,10 @@ private fun UI(
                 onEvent(BmiEvent.HeightChange(newHeightRec = it))
             })
             Spacer(modifier = Modifier.width(8.dp))
-            Text(fontWeight = FontWeight.Bold, text = "m")
+            Text(
+                fontWeight = FontWeight.Bold,
+                text = if (state.m) "m" else "foot"
+            )
         }
 
         Spacer(modifier = Modifier.height(16.dp))
@@ -97,7 +103,8 @@ private fun Preview() {
     AppTheme {
         UI(
             state = BmiState(
-                weight = 0.0, height = 0.0, bmi = 0.0
+                weight = 0.0, height = 0.0, bmi = 0.0,
+                kg = true, m = true
             ), onEvent = {})
     }
 }
