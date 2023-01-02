@@ -1,5 +1,6 @@
 package com.weighttracker.screen.bmi
 
+import androidx.compose.foundation.clickable
 import androidx.compose.foundation.layout.*
 import androidx.compose.material.icons.Icons
 import androidx.compose.material.icons.filled.Menu
@@ -20,6 +21,7 @@ import androidx.compose.ui.unit.sp
 import androidx.lifecycle.viewmodel.compose.viewModel
 import com.weighttracker.AppTheme
 import com.weighttracker.Screens
+import com.weighttracker.browser
 import com.weighttracker.component.NumberInputField
 import com.weighttracker.navigateTo
 import java.text.DecimalFormat
@@ -91,7 +93,11 @@ private fun UI(
         if (state.bmi != null) {
             val info = bmiInfo(state.bmi)
 
+            val browser = browser()
             Text(
+                modifier = Modifier.clickable {
+                    browser.openUri(info.link)
+                },
                 text = info.type,
                 color = info.color,
                 fontSize = 20.sp,
@@ -112,6 +118,7 @@ private fun UI(
 
 data class BmiInfo(
     val type: String,
+    val link: String,
     val color: Color,
     val message: String
 )
@@ -120,6 +127,7 @@ private fun bmiInfo(bmi: Double): BmiInfo {
     return if (bmi < 18.5) {
         BmiInfo(
             type = "Underweight",
+            link = "https://www.healthdirect.gov.au/what-to-do-if-you-are-underweight",
             color = Color(0xFFA7C7E7),
             message = "You may be malnourished and develop compromised immune function," +
                     " respiratory disease, digestive diseases, cancer or osteoporosis." +
@@ -129,12 +137,14 @@ private fun bmiInfo(bmi: Double): BmiInfo {
     } else if (bmi in 18.5..24.9) {
         BmiInfo(
             type = "Normal",
+            link = "https://www.hioscar.com/blog/how-to-maintain-a-healthy-body-mass-index-bmi",
             color = Color(0xFF4CBB17),
             message = "Your BMI falls within the healthy weight range. Keep it up!"
         )
     } else if (bmi in 25.0..29.9) {
         BmiInfo(
             type = "Overweight",
+            link = "https://www.hioscar.com/blog/how-to-maintain-a-healthy-body-mass-index-bmi",
             color = Color(0xFFE2D02B),
             message = "Being overweight might be a sign that your food supply are plentiful and" +
                     " your lifestyle is sedentary. You should probably consider developing a healthier," +
@@ -143,6 +153,7 @@ private fun bmiInfo(bmi: Double): BmiInfo {
     } else if (bmi in 30.0..34.9) {
         BmiInfo(
             type = "Obesity Class 1",
+            link = "https://medlineplus.gov/ency/patientinstructions/000348.htm",
             color = Color(0xFFFFA500),
             message = "People with obesity have a higher chance of developing these health problems:\n" +
                     "\n" +
@@ -160,6 +171,7 @@ private fun bmiInfo(bmi: Double): BmiInfo {
     } else if (bmi in 35.0..39.9) {
         BmiInfo(
             type = "Obesity Class 2",
+            link = "https://medlineplus.gov/ency/patientinstructions/000348.htm",
             color = Color.Red,
             message = "People with obesity have a higher chance of developing these health problems:\n" +
                     "\n" +
@@ -177,6 +189,7 @@ private fun bmiInfo(bmi: Double): BmiInfo {
     } else {
         BmiInfo(
             type = "Obesity Class 3 (Severe)",
+            link = "https://medlineplus.gov/ency/patientinstructions/000348.htm",
             color = Color(0xFFC41E3A),
             message = "People with obesity have a higher chance of developing these health problems:\n" +
                     "\n" +
