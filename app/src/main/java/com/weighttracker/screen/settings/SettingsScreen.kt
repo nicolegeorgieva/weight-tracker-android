@@ -15,6 +15,7 @@ import androidx.compose.ui.unit.sp
 import androidx.lifecycle.viewmodel.compose.viewModel
 import com.weighttracker.Screens
 import com.weighttracker.component.BackButton
+import com.weighttracker.navigateTo
 
 @Composable
 fun SettingsScreen() {
@@ -120,6 +121,20 @@ private fun UI(
             ) {
                 Text(text = "feet")
             }
+        }
+
+        Spacer(modifier = Modifier.height(16.dp))
+
+        Button(
+            modifier = Modifier
+                .fillMaxWidth(),
+            enabled = true,
+            shape = RoundedCornerShape(32.dp),
+            onClick = {
+                navigateTo(Screens.Converter)
+            }
+        ) {
+            Text(text = "Convert units")
         }
     }
 }
