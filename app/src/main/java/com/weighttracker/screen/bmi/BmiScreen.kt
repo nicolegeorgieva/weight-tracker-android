@@ -89,30 +89,108 @@ private fun UI(
         Spacer(modifier = Modifier.height(16.dp))
 
         if (state.bmi != null) {
-            val pair = bmiTextColorPair(state.bmi)
+            val info = bmiInfo(state.bmi)
 
             Text(
-                text = pair.first,
-                color = pair.second,
+                text = info.type,
+                color = info.color,
                 fontSize = 20.sp,
                 textDecoration = TextDecoration.Underline,
                 fontWeight = FontWeight.Bold
+            )
+
+            Spacer(modifier = Modifier.height(16.dp))
+
+            Text(
+                text = info.message,
+                color = Color.Black,
+                fontSize = 16.sp
             )
         }
     }
 }
 
-private fun bmiTextColorPair(bmi: Double): Pair<String, Color> {
+data class BmiInfo(
+    val type: String,
+    val color: Color,
+    val message: String
+)
+
+private fun bmiInfo(bmi: Double): BmiInfo {
     return if (bmi < 18.5) {
-        "Underweight" to Color(0xFFA7C7E7)
+        BmiInfo(
+            type = "Underweight",
+            color = Color(0xFFA7C7E7),
+            message = "You may be malnourished and develop compromised immune function," +
+                    "respiratory disease, digestive diseases, cancer or osteoporosis." +
+                    "You should probably visit a nutritionist to prepare a better diet plan," +
+                    " with caloric surplus"
+        )
     } else if (bmi in 18.5..24.9) {
-        "Normal" to Color(0xFF4CBB17)
+        BmiInfo(
+            type = "Normal",
+            color = Color(0xFF4CBB17),
+            message = "Your BMI falls within the healthy weight range. Keep it up!"
+        )
     } else if (bmi in 25.0..29.9) {
-        "Overweight" to Color(0xFFE2D02B)
+        BmiInfo(
+            type = "Overweight",
+            color = Color(0xFFE2D02B),
+            message = "Being overweight might be a sign that your food supply are plentiful and" +
+                    " your lifestyle is sedentary. You should probably consider developing a healthier," +
+                    " more balanced diet and move more everyday."
+        )
     } else if (bmi in 30.0..34.9) {
-        "Obese" to Color(0xFFFFA500)
+        BmiInfo(
+            type = "Obesity Class 1",
+            color = Color(0xFFFFA500),
+            message = "People with obesity have a higher chance of developing these health problems:\n" +
+                    "\n" +
+                    "• High blood glucose (sugar) or diabetes;\n" +
+                    "• High blood pressure (hypertension);\n" +
+                    "• High blood cholesterol and triglycerides (dyslipidemia, or high blood fats);\n" +
+                    "• Heart attacks due to coronary heart disease, heart failure, and stroke;\n" +
+                    "• Bone and joint problems. More weight puts pressure on the bones and joints." +
+                    "This can lead to osteoarthritis, a disease that causes joint pain and stiffness;\n" +
+                    "• Sleep apnea or breathing pauses during sleep. This can cause daytime fatigue or" +
+                    " sleepiness, poor attention, and problems at work;\n" +
+                    "• Gallstones and liver problems;\n" +
+                    "• Some cancers."
+        )
+    } else if (bmi in 35.0..39.9) {
+        BmiInfo(
+            type = "Obesity Class 2",
+            color = Color.Red,
+            message = "People with obesity have a higher chance of developing these health problems:\n" +
+                    "\n" +
+                    "• High blood glucose (sugar) or diabetes;\n" +
+                    "• High blood pressure (hypertension);\n" +
+                    "• High blood cholesterol and triglycerides (dyslipidemia, or high blood fats);\n" +
+                    "• Heart attacks due to coronary heart disease, heart failure, and stroke;\n" +
+                    "• Bone and joint problems. More weight puts pressure on the bones and joints." +
+                    "This can lead to osteoarthritis, a disease that causes joint pain and stiffness;\n" +
+                    "• Sleep apnea or breathing pauses during sleep. This can cause daytime fatigue or" +
+                    " sleepiness, poor attention, and problems at work;\n" +
+                    "• Gallstones and liver problems;\n" +
+                    "• Some cancers."
+        )
     } else {
-        "Extremely obese" to Color.Red
+        BmiInfo(
+            type = "Obesity Class 3 (Severe)",
+            color = Color(0xFFC41E3A),
+            message = "People with obesity have a higher chance of developing these health problems:\n" +
+                    "\n" +
+                    "• High blood glucose (sugar) or diabetes;\n" +
+                    "• High blood pressure (hypertension);\n" +
+                    "• High blood cholesterol and triglycerides (dyslipidemia, or high blood fats);\n" +
+                    "• Heart attacks due to coronary heart disease, heart failure, and stroke;\n" +
+                    "• Bone and joint problems. More weight puts pressure on the bones and joints." +
+                    "This can lead to osteoarthritis, a disease that causes joint pain and stiffness;\n" +
+                    "• Sleep apnea or breathing pauses during sleep. This can cause daytime fatigue or" +
+                    " sleepiness, poor attention, and problems at work;\n" +
+                    "• Gallstones and liver problems;\n" +
+                    "• Some cancers."
+        )
     }
 }
 
