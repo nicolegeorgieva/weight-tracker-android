@@ -53,6 +53,12 @@ class ConverterViewModel @Inject constructor(
                 mFlow.value = event.m
                 feetFlow.value = event.m * 3.28084
             }
+            ConverterEvent.Reset -> {
+                lbFlow.value = 0.0
+                kgFlow.value = 0.0
+                feetFlow.value = 0.0
+                mFlow.value = 0.0
+            }
         }
     }
 }

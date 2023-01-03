@@ -1,6 +1,8 @@
 package com.weighttracker.screen.converter
 
 import androidx.compose.foundation.layout.*
+import androidx.compose.foundation.shape.RoundedCornerShape
+import androidx.compose.material3.Button
 import androidx.compose.material3.Text
 import androidx.compose.runtime.Composable
 import androidx.compose.runtime.collectAsState
@@ -84,6 +86,14 @@ private fun UI(
             Spacer(modifier = Modifier.width(8.dp))
 
             Text(text = "m", fontWeight = FontWeight.Bold)
+        }
+
+        Spacer(modifier = Modifier.height(64.dp))
+
+        Button(shape = RoundedCornerShape(12.dp), onClick = {
+            onEvent(ConverterEvent.Reset)
+        }) {
+            Text(text = "Reset")
         }
     }
 }
