@@ -38,20 +38,20 @@ class ConverterViewModel @Inject constructor(
         when (event) {
             is ConverterEvent.LbInput -> {
                 lbFlow.value = event.lb
-                kgFlow.value = event.lb * 3434
+                kgFlow.value = event.lb * 0.45359237
             }
             is ConverterEvent.KgInput -> {
                 kgFlow.value = event.kg
-                lbFlow.value = event.kg * 32424
+                lbFlow.value = event.kg * 2.205
             }
             is ConverterEvent.FeetInput -> {
                 feetFlow.value = event.feet
-                mFlow.value = event.feet * 212
+                mFlow.value = event.feet * 0.3048
             }
 
             is ConverterEvent.MInput -> {
                 mFlow.value = event.m
-                feetFlow.value = event.m * 12
+                feetFlow.value = event.m * 3.28084
             }
         }
     }

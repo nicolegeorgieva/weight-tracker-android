@@ -2,6 +2,7 @@ package com.weighttracker.component
 
 import androidx.compose.runtime.Composable
 import androidx.compose.ui.ExperimentalComposeUiApi
+import androidx.compose.ui.Modifier
 import androidx.compose.ui.platform.LocalSoftwareKeyboardController
 import androidx.compose.ui.text.input.ImeAction
 import androidx.compose.ui.text.input.KeyboardType
@@ -12,10 +13,12 @@ import java.text.DecimalFormat
 fun NumberInputField(
     number: Double?,
     placeholder: String,
+    modifier: Modifier = Modifier,
     onValueChange: (Double) -> Unit,
 ) {
     val keyboardController = LocalSoftwareKeyboardController.current
     InputField(
+        modifier = modifier,
         value = if (number != null)
             DecimalFormat("###,###.##").format(number) else "",
         placeholder = placeholder,
