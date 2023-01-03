@@ -31,6 +31,9 @@ class QuoteViewModel @Inject constructor(
             is QuoteEvent.QuoteInput -> {
                 writeQuoteAct(event.quote)
             }
+            QuoteEvent.Clear -> {
+                writeQuoteAct("")
+            }
         }
     }
 }

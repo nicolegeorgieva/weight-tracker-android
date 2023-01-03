@@ -6,10 +6,21 @@ import androidx.compose.foundation.text.KeyboardOptions
 import androidx.compose.material3.OutlinedTextField
 import androidx.compose.material3.Text
 import androidx.compose.runtime.*
+import androidx.compose.ui.ExperimentalComposeUiApi
 import androidx.compose.ui.Modifier
+import androidx.compose.ui.platform.LocalSoftwareKeyboardController
 import androidx.compose.ui.text.TextRange
 import androidx.compose.ui.text.input.*
 import kotlinx.coroutines.delay
+
+@OptIn(ExperimentalComposeUiApi::class)
+@Composable
+fun closeKeyboardImeAction(): KeyboardActionScope.(ImeAction) -> Unit {
+    val keyboardController = LocalSoftwareKeyboardController.current
+    return {
+        keyboardController?.hide()
+    }
+}
 
 @Composable
 fun InputField(
@@ -25,9 +36,7 @@ fun InputField(
     keyboardCapitalization: KeyboardCapitalization = KeyboardCapitalization.None,
     visualTransformation: VisualTransformation = VisualTransformation.None,
     imeAction: ImeAction = ImeAction.Done,
-    onImeAction: KeyboardActionScope.(ImeAction) -> Unit = {
-        defaultKeyboardAction(it)
-    },
+    onImeAction: KeyboardActionScope.(ImeAction) -> Unit = closeKeyboardImeAction(),
     onValueChange: (String) -> Unit,
 ) {
     var textField by remember {
@@ -36,7 +45,7 @@ fun InputField(
         mutableStateOf(TextFieldValue(value, selection))
     }
     LaunchedEffect(value) {
-        if (value != textField.text && value.isNotBlank()) {
+        if (value != textField.text) {
             delay(50) // fix race condition
             textField = TextFieldValue(
                 value, TextRange(value.length)
