@@ -5,5 +5,6 @@ data class BmiState(
     val height: Double?,
     val bmi: Double?,
     val kg: Boolean,
-    val m: Boolean
+    val m: Boolean,
+    val quote: String?
 )

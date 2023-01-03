@@ -13,6 +13,7 @@ import androidx.compose.runtime.getValue
 import androidx.compose.ui.Alignment
 import androidx.compose.ui.Modifier
 import androidx.compose.ui.graphics.Color
+import androidx.compose.ui.text.font.FontStyle
 import androidx.compose.ui.text.font.FontWeight
 import androidx.compose.ui.text.style.TextDecoration
 import androidx.compose.ui.tooling.preview.Preview
@@ -42,14 +43,23 @@ private fun UI(
     Column(
         modifier = Modifier.padding(horizontal = 16.dp)
     ) {
-        Row() {
-            Text(text = "")
+        Row(
+            verticalAlignment = Alignment.CenterVertically
+        ) {
+            if (state.quote != null && state.quote.isNotBlank()) {
+                Text(
+                    modifier = Modifier.weight(1f),
+                    text = "${state.quote}",
+                    color = Color.Magenta,
+                    fontStyle = FontStyle.Italic
+                )
 
-            Spacer(modifier = Modifier.width(32.dp))
+                Spacer(modifier = Modifier.width(32.dp))
+            } else {
+                Spacer(modifier = Modifier.weight(1f))
+            }
 
-            MoreMenuButton(
-                modifier = Modifier.align(Alignment.CenterVertically)
-            )
+            MoreMenuButton()
         }
 
         Spacer(modifier = Modifier.height(0.dp))
@@ -234,9 +244,15 @@ private fun Preview() {
     AppTheme {
         UI(
             state = BmiState(
-                weight = 0.0, height = 0.0, bmi = 0.0,
-                kg = true, m = true
-            ), onEvent = {})
+                weight = 0.0,
+                height = 0.0,
+                bmi = 0.0,
+                kg = true,
+                m = true,
+                quote = ""
+            ),
+            onEvent = {}
+        )
     }
 }
 // endregion
