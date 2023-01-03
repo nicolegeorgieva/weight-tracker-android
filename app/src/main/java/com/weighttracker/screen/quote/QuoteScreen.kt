@@ -1,6 +1,8 @@
 package com.weighttracker.screen.quote
 
 import androidx.compose.foundation.layout.*
+import androidx.compose.foundation.lazy.LazyColumn
+import androidx.compose.foundation.lazy.items
 import androidx.compose.material3.Button
 import androidx.compose.material3.ButtonDefaults
 import androidx.compose.material3.Text
@@ -39,13 +41,14 @@ private fun UI(
 
         Row() {
             InputField(
+                modifier = Modifier.weight(1f),
                 value = state.quote ?: "",
                 placeholder = "Type custom quote here...",
                 onValueChange = {
-                    onEvent(QuoteEvent.QuoteInput(quote = it))
+                    onEvent(QuoteEvent.QuoteChange(quote = it))
                 })
 
-            Spacer(modifier = Modifier.weight(1f))
+            Spacer(modifier = Modifier.width(8.dp))
 
             Button(
                 colors = ButtonDefaults.buttonColors(
@@ -66,12 +69,19 @@ private fun UI(
 
         Spacer(modifier = Modifier.height(8.dp))
 
-        Button(colors = ButtonDefaults.buttonColors(
-            containerColor = Color(0xFF2E8B24),
-            contentColor = Color.White
-        ),
-            onClick = { /*TODO*/ }) {
-            Text(text = "Journey of thousand miles starts with one step.")
+        LazyColumn {
+            items(items = state.quoteList) { quoteItem ->
+                Button(colors = ButtonDefaults.buttonColors(
+                    containerColor = Color(0xFF2E8B24),
+                    contentColor = Color.White
+                ),
+                    onClick = {
+                        onEvent(QuoteEvent.QuoteChange(quoteItem))
+                    }
+                ) {
+                    Text(text = quoteItem)
+                }
+            }
         }
     }
 }

@@ -14,7 +14,8 @@ class QuoteViewModel @Inject constructor(
     private val writeQuoteAct: WriteQuoteAct
 ) : SimpleFlowViewModel<QuoteState, QuoteEvent>() {
     override val initialUi = QuoteState(
-        quote = ""
+        quote = "",
+        quoteList = emptyList()
     )
 
     override val uiFlow: Flow<QuoteState> = combine(
@@ -23,12 +24,17 @@ class QuoteViewModel @Inject constructor(
     ) { quote, _ ->
         QuoteState(
             quote = quote,
+            quoteList = listOf(
+                "A journey of thousand miles starts with one step",
+                "hi",
+                "sdflldsfk"
+            )
         )
     }
 
     override suspend fun handleEvent(event: QuoteEvent) {
         when (event) {
-            is QuoteEvent.QuoteInput -> {
+            is QuoteEvent.QuoteChange -> {
                 writeQuoteAct(event.quote)
             }
             QuoteEvent.Clear -> {
