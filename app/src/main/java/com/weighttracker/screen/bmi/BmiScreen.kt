@@ -48,7 +48,11 @@ private fun UI(
         ) {
             if (state.quote != null && state.quote.isNotBlank()) {
                 Text(
-                    modifier = Modifier.weight(1f),
+                    modifier = Modifier
+                        .weight(1f)
+                        .clickable {
+                            navigateTo(Screens.Quote)
+                        },
                     text = "${state.quote}",
                     color = Color.Magenta,
                     fontStyle = FontStyle.Italic
@@ -78,6 +82,9 @@ private fun UI(
             })
             Spacer(modifier = Modifier.width(8.dp))
             Text(
+                modifier = Modifier.clickable {
+                    navigateTo(Screens.Settings)
+                },
                 fontWeight = FontWeight.Bold,
                 text = if (state.kg) "kg" else "lb"
             )
@@ -91,6 +98,9 @@ private fun UI(
             })
             Spacer(modifier = Modifier.width(8.dp))
             Text(
+                modifier = Modifier.clickable {
+                    navigateTo(Screens.Settings)
+                },
                 fontWeight = FontWeight.Bold,
                 text = if (state.m) "m" else "foot"
             )
