@@ -42,9 +42,15 @@ private fun UI(
     Column(
         modifier = Modifier.padding(horizontal = 16.dp)
     ) {
-        MoreMenuButton(
-            modifier = Modifier.align(Alignment.End)
-        )
+        Row() {
+            Text(text = "")
+
+            Spacer(modifier = Modifier.width(32.dp))
+
+            MoreMenuButton(
+                modifier = Modifier.align(Alignment.CenterVertically)
+            )
+        }
 
         Spacer(modifier = Modifier.height(0.dp))
 

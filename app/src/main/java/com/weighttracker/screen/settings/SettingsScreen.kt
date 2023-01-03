@@ -128,6 +128,10 @@ private fun UI(
         Button(
             modifier = Modifier
                 .fillMaxWidth(),
+            colors = ButtonDefaults.buttonColors(
+                contentColor = Color.White,
+                containerColor = Color.DarkGray
+            ),
             enabled = true,
             shape = RoundedCornerShape(32.dp),
             onClick = {
@@ -135,6 +139,24 @@ private fun UI(
             }
         ) {
             Text(text = "Convert units")
+        }
+
+        Spacer(modifier = Modifier.height(16.dp))
+
+        Button(
+            modifier = Modifier
+                .fillMaxWidth(),
+            colors = ButtonDefaults.buttonColors(
+                contentColor = Color.White,
+                containerColor = Color.Magenta
+            ),
+            enabled = true,
+            shape = RoundedCornerShape(32.dp),
+            onClick = {
+                navigateTo(Screens.Quote)
+            }
+        ) {
+            Text(text = "Add a quote to home screen")
         }
     }
 }
