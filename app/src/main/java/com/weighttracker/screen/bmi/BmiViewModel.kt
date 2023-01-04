@@ -43,9 +43,9 @@ class BmiViewModel @Inject constructor(
         BmiState(
             weight = weight,
             height = height,
-            bmi = if (weight != null && height != null) {
+            bmi = if (weight != null && height != null && weight > 0 && height > 0) {
                 calculateBmi(weight, height, kgSelected, mSelected)
-            } else 0.0,
+            } else null,
             kg = kgSelected,
             m = mSelected,
             quote = quote,

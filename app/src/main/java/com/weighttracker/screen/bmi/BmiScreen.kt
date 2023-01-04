@@ -108,13 +108,20 @@ private fun UI(
 
         Spacer(modifier = Modifier.height(16.dp))
 
-        val bmiFormatted =
-            if (state.bmi != null) DecimalFormat("###,###.#").format(state.bmi) else ""
-        Text(text = "Your BMI is $bmiFormatted.", fontWeight = FontWeight.Bold, fontSize = 16.sp)
+        if (state.bmi != null && state.bmi > 0) {
+            val bmiFormatted = DecimalFormat("###,###.#").format(state.bmi)
+            Text(
+                text = "Your BMI is $bmiFormatted.",
+                fontWeight = FontWeight.Bold,
+                fontSize = 16.sp
+            )
+        }
 
         Spacer(modifier = Modifier.height(8.dp))
 
-        if (state.normalWeightRange != null) {
+        if (state.normalWeightRange != null && state.normalWeightRange.first > 0 &&
+            state.normalWeightRange.second > 0
+        ) {
             val minWeightFormatted = DecimalFormat("###,###.#")
                 .format(state.normalWeightRange.first)
             val maxWeightFormatted = DecimalFormat("###,###.#")
