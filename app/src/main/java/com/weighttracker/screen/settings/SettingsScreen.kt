@@ -123,7 +123,7 @@ private fun UI(
             }
         }
 
-        Spacer(modifier = Modifier.height(16.dp))
+        Spacer(modifier = Modifier.height(12.dp))
 
         Button(
             modifier = Modifier
@@ -141,7 +141,7 @@ private fun UI(
             Text(text = "Convert units")
         }
 
-        Spacer(modifier = Modifier.height(16.dp))
+        Spacer(modifier = Modifier.height(12.dp))
 
         Button(
             modifier = Modifier
@@ -157,6 +157,24 @@ private fun UI(
             }
         ) {
             Text(text = "Add a quote to home screen")
+        }
+
+        Spacer(modifier = Modifier.height(12.dp))
+
+        Button(
+            modifier = Modifier
+                .fillMaxWidth(),
+            colors = ButtonDefaults.buttonColors(
+                contentColor = Color.White,
+                containerColor = Color(0xFF478148)
+            ),
+            enabled = true,
+            shape = RoundedCornerShape(32.dp),
+            onClick = {
+                navigateTo(Screens.WeightGoal)
+            }
+        ) {
+            Text(text = "Weight goal")
         }
     }
 }

@@ -5,7 +5,7 @@ import androidx.compose.runtime.mutableStateOf
 val currentScreen = mutableStateOf(Screens.BMI)
 
 enum class Screens {
-    BMI, Settings, Converter, Quote
+    BMI, Settings, Converter, Quote, WeightGoal
 }
 
 fun navigateTo(screens: Screens) {

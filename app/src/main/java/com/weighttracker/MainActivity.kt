@@ -7,6 +7,7 @@ import com.weighttracker.screen.bmi.BmiScreen
 import com.weighttracker.screen.converter.ConverterScreen
 import com.weighttracker.screen.quote.QuoteScreen
 import com.weighttracker.screen.settings.SettingsScreen
+import com.weighttracker.screen.weightGoal.WeightGoalScreen
 import dagger.hilt.android.AndroidEntryPoint
 
 @AndroidEntryPoint
@@ -20,6 +21,7 @@ class MainActivity : ComponentActivity() {
                     Screens.Settings -> SettingsScreen()
                     Screens.Converter -> ConverterScreen()
                     Screens.Quote -> QuoteScreen()
+                    Screens.WeightGoal -> WeightGoalScreen()
                 }
             }
         }
