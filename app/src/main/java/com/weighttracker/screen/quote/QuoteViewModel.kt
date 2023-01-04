@@ -14,7 +14,8 @@ class QuoteViewModel @Inject constructor(
     private val writeQuoteAct: WriteQuoteAct
 ) : SimpleFlowViewModel<QuoteState, QuoteEvent>() {
     override val initialUi = QuoteState(
-        quote = "",
+        //while loading
+        quote = null,
         quoteList = emptyList()
     )
 

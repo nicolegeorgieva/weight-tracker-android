@@ -12,7 +12,7 @@ class KgSelectedFlow @Inject constructor(
     private val dataStoreKeys: DataStoreKeys,
 ) : FlowAction<Unit, Boolean>() {
     override fun Unit.createFlow(): Flow<Boolean> =
-        appDataStore.get(dataStoreKeys.kgSelected).map {
-            it ?: true //if from phone is null it returns true
+        appDataStore.get(dataStoreKeys.kgSelected).map { weightFromPhone ->
+            weightFromPhone ?: true //if from phone is null it returns true
         }
 }
