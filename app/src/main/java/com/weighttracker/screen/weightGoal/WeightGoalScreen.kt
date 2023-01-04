@@ -46,7 +46,7 @@ private fun UI(
 
             NumberInputField(modifier = Modifier
                 .width(64.dp)
-                .height(48.dp),
+                .height(52.dp),
                 number = state.goalWeight,
                 placeholder = "", onValueChange = {
                     onEvent(WeightGoalEvent.WeightGoalInput(targetWeight = it))
