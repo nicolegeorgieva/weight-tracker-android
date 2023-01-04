@@ -39,27 +39,37 @@ class BmiViewModel @Inject constructor(
         kgSelectedFlow(Unit),
         mSelectedFlow(Unit),
         quoteFlow(Unit)
-    ) { weight, height, kg, m, quote ->
+    ) { weight, height, kgSelected, mSelected, quote ->
         BmiState(
             weight = weight,
             height = height,
             bmi = if (weight != null && height != null) {
-                calculateBmi(weight, height, kg, m)
+                calculateBmi(weight, height, kgSelected, mSelected)
             } else 0.0,
-            kg = kg,
-            m = m,
+            kg = kgSelected,
+            m = mSelected,
             quote = quote,
-            normalWeightRange = height?.let { calculateNormalWeightRange(it, m) }
+            normalWeightRange = if (height != null) {
+                calculateNormalWeightRange(height, mSelected, kgSelected)
+            } else {
+                null
+            }
         )
     }
 
-    private fun calculateNormalWeightRange(height: Double, mSelected: Boolean):
+    private fun calculateNormalWeightRange(height: Double, mSelected: Boolean, kgSelected: Boolean):
             Pair<Double, Double> {
         val heightInM = convertToM(height, mSelected)
         val minWeight = 18.5 * (heightInM * heightInM)
         val maxWeight = 24.9 * (heightInM * heightInM)
+        val minWeightInLb = minWeight * 2.205
+        val maxWeightInLb = maxWeight * 2.205
 
-        return Pair(minWeight, maxWeight)
+        return if (kgSelected) {
+            Pair(minWeight, maxWeight)
+        } else {
+            Pair(minWeightInLb, maxWeightInLb)
+        }
     }
 
     private fun calculateBmi(

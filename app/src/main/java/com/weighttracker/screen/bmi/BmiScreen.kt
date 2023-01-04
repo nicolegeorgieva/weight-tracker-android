@@ -115,13 +115,15 @@ private fun UI(
         Spacer(modifier = Modifier.height(8.dp))
 
         if (state.normalWeightRange != null) {
+            val minWeightFormatted = DecimalFormat("###,###.#")
+                .format(state.normalWeightRange.first)
+            val maxWeightFormatted = DecimalFormat("###,###.#")
+                .format(state.normalWeightRange.second)
+            val weightUnit = if (state.kg) "kg" else "lb"
+
             Text(
-                text = "Your normal weight should be in the range " +
-                        DecimalFormat("###,###.#").format(state.normalWeightRange.first) +
-                        " - ${
-                            DecimalFormat("###,###.#")
-                                .format(state.normalWeightRange.second)
-                        } according to your BMI.",
+                text = "Your normal weight should be in the range $minWeightFormatted - " +
+                        "$maxWeightFormatted $weightUnit according to your BMI.",
                 fontSize = 16.sp
             )
 
