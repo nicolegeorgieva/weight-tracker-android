@@ -114,12 +114,19 @@ private fun UI(
 
         Spacer(modifier = Modifier.height(8.dp))
 
-        Text(
-            text = "Your normal weight should be in the range X - Y kg/lbs according to your BMI.",
-            fontWeight = FontWeight.Bold, fontSize = 16.sp
-        )
+        if (state.normalWeightRange != null) {
+            Text(
+                text = "Your normal weight should be in the range " +
+                        DecimalFormat("###,###.#").format(state.normalWeightRange.first) +
+                        " - ${
+                            DecimalFormat("###,###.#")
+                                .format(state.normalWeightRange.second)
+                        } according to your BMI.",
+                fontSize = 16.sp
+            )
 
-        Spacer(modifier = Modifier.height(16.dp))
+            Spacer(modifier = Modifier.height(24.dp))
+        }
 
         if (state.bmi != null) {
             val info = bmiInfo(state.bmi)
@@ -289,7 +296,8 @@ private fun Preview() {
                 bmi = 0.0,
                 kg = true,
                 m = true,
-                quote = ""
+                quote = "",
+                normalWeightRange = null
             ),
             onEvent = {}
         )

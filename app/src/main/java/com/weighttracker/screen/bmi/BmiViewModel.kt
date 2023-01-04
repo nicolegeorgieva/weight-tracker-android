@@ -29,7 +29,8 @@ class BmiViewModel @Inject constructor(
         bmi = 0.0,
         kg = true,
         m = true,
-        quote = ""
+        quote = "",
+        normalWeightRange = null
     )
 
     override val uiFlow: Flow<BmiState> = combine(
@@ -47,8 +48,18 @@ class BmiViewModel @Inject constructor(
             } else 0.0,
             kg = kg,
             m = m,
-            quote = quote
+            quote = quote,
+            normalWeightRange = height?.let { calculateNormalWeightRange(it, m) }
         )
+    }
+
+    private fun calculateNormalWeightRange(height: Double, mSelected: Boolean):
+            Pair<Double, Double> {
+        val heightInM = convertToM(height, mSelected)
+        val minWeight = 18.5 * (heightInM * heightInM)
+        val maxWeight = 24.9 * (heightInM * heightInM)
+
+        return Pair(minWeight, maxWeight)
     }
 
     private fun calculateBmi(

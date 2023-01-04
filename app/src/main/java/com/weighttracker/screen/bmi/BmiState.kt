@@ -6,5 +6,6 @@ data class BmiState(
     val bmi: Double?,
     val kg: Boolean,
     val m: Boolean,
-    val quote: String?
+    val quote: String?,
+    val normalWeightRange: Pair<Double, Double>?
 )
