@@ -57,8 +57,11 @@ class BmiViewModel @Inject constructor(
         )
     }
 
-    private fun calculateNormalWeightRange(height: Double, mSelected: Boolean, kgSelected: Boolean):
-            Pair<Double, Double> {
+    private fun calculateNormalWeightRange(
+        height: Double,
+        mSelected: Boolean,
+        kgSelected: Boolean
+    ): Pair<Double, Double> {
         val heightInM = convertToM(height, mSelected)
         val minWeightInKg = 18.5 * (heightInM * heightInM)
         val maxWeightInKg = 24.9 * (heightInM * heightInM)
