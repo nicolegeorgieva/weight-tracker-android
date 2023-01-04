@@ -3,13 +3,13 @@ package com.weighttracker.screen.bmi
 import androidx.compose.foundation.clickable
 import androidx.compose.foundation.layout.*
 import androidx.compose.material.icons.Icons
+import androidx.compose.material.icons.filled.KeyboardArrowDown
+import androidx.compose.material.icons.filled.KeyboardArrowUp
 import androidx.compose.material.icons.filled.Menu
 import androidx.compose.material3.Icon
 import androidx.compose.material3.IconButton
 import androidx.compose.material3.Text
-import androidx.compose.runtime.Composable
-import androidx.compose.runtime.collectAsState
-import androidx.compose.runtime.getValue
+import androidx.compose.runtime.*
 import androidx.compose.ui.Alignment
 import androidx.compose.ui.Modifier
 import androidx.compose.ui.graphics.Color
@@ -112,30 +112,60 @@ private fun UI(
             if (state.bmi != null) DecimalFormat("###,###.#").format(state.bmi) else ""
         Text(text = "Your BMI is $bmiFormatted.", fontWeight = FontWeight.Bold, fontSize = 16.sp)
 
+        Spacer(modifier = Modifier.height(8.dp))
+
+        Text(
+            text = "Your normal weight should be in the range X - Y kg/lbs according to your BMI.",
+            fontWeight = FontWeight.Bold, fontSize = 16.sp
+        )
+
         Spacer(modifier = Modifier.height(16.dp))
 
         if (state.bmi != null) {
             val info = bmiInfo(state.bmi)
 
             val browser = browser()
-            Text(
-                modifier = Modifier.clickable {
-                    browser.openUri(info.link)
-                },
-                text = info.type,
-                color = info.color,
-                fontSize = 20.sp,
-                textDecoration = TextDecoration.Underline,
-                fontWeight = FontWeight.Bold
-            )
 
-            Spacer(modifier = Modifier.height(16.dp))
+            var expandedInfo by remember {
+                mutableStateOf(false)
+            }
 
-            Text(
-                text = info.message,
-                color = Color.Black,
-                fontSize = 16.sp
-            )
+            Row() {
+                Text(
+                    modifier = Modifier.clickable {
+                        browser.openUri(info.link)
+                    },
+                    text = info.type,
+                    color = info.color,
+                    fontSize = 20.sp,
+                    textDecoration = TextDecoration.Underline,
+                    fontWeight = FontWeight.Bold
+                )
+
+                Spacer(modifier = Modifier.weight(1f))
+
+                Icon(
+                    if (expandedInfo) {
+                        Icons.Default.KeyboardArrowUp
+                    } else {
+                        Icons.Default.KeyboardArrowDown
+                    },
+                    contentDescription = "",
+                    modifier = Modifier.clickable {
+                        expandedInfo = !expandedInfo
+                    }
+                )
+            }
+
+            if (expandedInfo) {
+                Spacer(modifier = Modifier.height(16.dp))
+
+                Text(
+                    text = info.message,
+                    color = Color.Black,
+                    fontSize = 16.sp
+                )
+            }
         }
     }
 }
