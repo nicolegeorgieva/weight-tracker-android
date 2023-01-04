@@ -15,7 +15,7 @@ import androidx.lifecycle.viewmodel.compose.viewModel
 import com.weighttracker.Screens
 import com.weighttracker.component.BackButton
 import com.weighttracker.component.NumberInputField
-import java.text.DecimalFormat
+import com.weighttracker.formatNumber
 
 @Composable
 fun WeightGoalScreen() {
@@ -59,53 +59,53 @@ private fun UI(
 
         Spacer(modifier = Modifier.height(16.dp))
 
-        Text(
-            text = "You have to lose ${state.weightToLose} ${state.weightUnit} to achieve your" +
-                    " weight goal.", fontSize = 16.sp
-        )
+        val weightToLose = state.weightToLose?.let { formatNumber(it) }
 
-        Spacer(modifier = Modifier.height(64.dp))
-
-        Text(
-            text = "WEIGHT LOSS PLAN:",
-            fontWeight = FontWeight.Bold,
-            fontSize = 24.sp
-        )
-
-        Spacer(modifier = Modifier.height(16.dp))
-
-        val optimisticMonthsFormatted = state.weightLossPeriod?.let {
-            DecimalFormat("###,###.#")
-                .format(it.optimisticMonths)
+        if (weightToLose != null) {
+            Text(
+                text = "You have to lose $weightToLose ${state.weightUnit} to achieve your" +
+                        " weight goal.", fontSize = 16.sp
+            )
+            Spacer(modifier = Modifier.height(64.dp))
         }
 
-        val realisticMonthsFormatted = state.weightLossPeriod?.let {
-            DecimalFormat("###,###.#")
-                .format(it.realisticMonths)
+        if (state.plan != null) {
+            Text(
+                text = "WEIGHT LOSS PLAN:",
+                fontWeight = FontWeight.Bold,
+                fontSize = 20.sp
+            )
+
+            Spacer(modifier = Modifier.height(16.dp))
+
+            val optimisticMonths = formatNumber(state.plan.optimistic.totalMonths)
+            val realisticMonths = formatNumber(state.plan.realistic.totalMonths)
+            val pessimisticMonths = formatNumber(state.plan.pessimistic.totalMonths)
+
+            Text(
+                text = "optimistic: $optimisticMonths months (${state.plan.optimistic.lossPerMonth}"
+                        + " ${state.weightUnit} per month)",
+                fontSize = 16.sp,
+                color = Color.Red
+            )
+
+            Spacer(modifier = Modifier.height(8.dp))
+
+            Text(
+                text = "realistic: $realisticMonths months (${state.plan.realistic.lossPerMonth}" +
+                        " ${state.weightUnit} per month)",
+                fontSize = 16.sp,
+                color = Color(0xFF17701B)
+            )
+
+            Spacer(modifier = Modifier.height(8.dp))
+
+            Text(
+                text = "pessimistic: $pessimisticMonths months (${state.plan.pessimistic.lossPerMonth}" +
+                        " ${state.weightUnit} per month)",
+                fontSize = 16.sp,
+                color = Color(0xFF3C2A2A)
+            )
         }
-
-        val pessimisticMonthsFormatted = state.weightLossPeriod?.let {
-            DecimalFormat("###,###.#")
-                .format(it.pessimisticMonths)
-        }
-
-        Text(
-            text = "optimistic: $optimisticMonthsFormatted months",
-            color = Color.Red
-        )
-
-        Spacer(modifier = Modifier.height(8.dp))
-
-        Text(
-            text = "realistic: $realisticMonthsFormatted months",
-            color = Color(0xFF17701B)
-        )
-
-        Spacer(modifier = Modifier.height(8.dp))
-
-        Text(
-            text = "pessimistic: $pessimisticMonthsFormatted months",
-            color = Color(0xFF3C2A2A)
-        )
     }
 }

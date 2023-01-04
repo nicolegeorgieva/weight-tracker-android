@@ -5,11 +5,16 @@ data class WeightGoalState(
     val weightUnit: String,
     val goalWeight: Double?,
     val weightToLose: Double?,
-    val weightLossPeriod: WeightLossPeriod?
+    val plan: WeightLossPlan?
 )
 
-data class WeightLossPeriod(
-    val optimisticMonths: Double,
-    val realisticMonths: Double,
-    val pessimisticMonths: Double
+data class WeightLossPlan(
+    val optimistic: WeightLossInfo,
+    val realistic: WeightLossInfo,
+    val pessimistic: WeightLossInfo,
+)
+
+data class WeightLossInfo(
+    val totalMonths: Double,
+    val lossPerMonth: Double
 )
