@@ -48,27 +48,53 @@ class WeightGoalViewModel @Inject constructor(
             currentWeight = currentWeight,
             goalWeight = goalWeight,
             weightToLose = weightToLose,
-            plan = weightLossPeriod(weightToLose = weightToLose)
+            plan = weightLossPeriod(weightToLose = weightToLose, kgSelected = kgSelected)
         )
     }
 
-    private fun weightLossPeriod(weightToLose: Double): WeightLossPlan {
-        val optimistic = weightToLose / 4 //4 per month
-        val realistic = weightToLose / 2
-        val pessimistic = weightToLose / 1
+    private fun weightLossPeriod(weightToLose: Double, kgSelected: Boolean): WeightLossPlan {
+        val optimistic = if (kgSelected) {
+            weightToLose / 4 //4 per month
+        } else {
+            weightToLose / 8.81849049
+        }
+
+        val realistic = if (kgSelected) {
+            weightToLose / 2
+        } else {
+            weightToLose / 4.40924524
+        }
+
+        val pessimistic = if (kgSelected) {
+            weightToLose / 1
+        } else {
+            weightToLose / 2.20462262
+        }
 
         return WeightLossPlan(
             optimistic = WeightLossInfo(
                 totalMonths = optimistic,
-                lossPerMonth = 4.0
+                lossPerMonth = if (kgSelected) {
+                    4.0
+                } else {
+                    8.8
+                }
             ),
             realistic = WeightLossInfo(
                 totalMonths = realistic,
-                lossPerMonth = 2.0
+                lossPerMonth = if (kgSelected) {
+                    2.0
+                } else {
+                    4.4
+                }
             ),
             pessimistic = WeightLossInfo(
                 totalMonths = pessimistic,
-                lossPerMonth = 1.0
+                lossPerMonth = if (kgSelected) {
+                    1.0
+                } else {
+                    2.2
+                }
             )
         )
     }

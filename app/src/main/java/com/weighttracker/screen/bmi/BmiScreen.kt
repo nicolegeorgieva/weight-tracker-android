@@ -204,14 +204,14 @@ private fun bmiInfo(bmi: Double): BmiInfo {
                     " You should probably visit a nutritionist to prepare a better diet plan," +
                     " with caloric surplus."
         )
-    } else if (bmi in 18.5..24.9) {
+    } else if (bmi in 18.5..25.0) {
         BmiInfo(
             type = "Normal",
             link = "https://www.hioscar.com/blog/how-to-maintain-a-healthy-body-mass-index-bmi",
             color = Color(0xFF4CBB17),
             message = "Your BMI falls within the healthy weight range. Keep it up!"
         )
-    } else if (bmi in 25.0..29.9) {
+    } else if (bmi in 25.0..30.0) {
         BmiInfo(
             type = "Overweight",
             link = "https://www.hioscar.com/blog/how-to-maintain-a-healthy-body-mass-index-bmi",
@@ -220,7 +220,7 @@ private fun bmiInfo(bmi: Double): BmiInfo {
                     " your lifestyle is sedentary. You should probably consider developing a healthier," +
                     " more balanced diet and move more everyday."
         )
-    } else if (bmi in 30.0..34.9) {
+    } else if (bmi in 30.0..35.0) {
         BmiInfo(
             type = "Obesity Class 1",
             link = "https://medlineplus.gov/ency/patientinstructions/000348.htm",
@@ -238,7 +238,7 @@ private fun bmiInfo(bmi: Double): BmiInfo {
                     "• Gallstones and liver problems;\n" +
                     "• Some cancers."
         )
-    } else if (bmi in 35.0..39.9) {
+    } else if (bmi in 35.0..40.0) {
         BmiInfo(
             type = "Obesity Class 2",
             link = "https://medlineplus.gov/ency/patientinstructions/000348.htm",
