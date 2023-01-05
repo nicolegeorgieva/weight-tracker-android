@@ -1,7 +1,10 @@
 package com.weighttracker.screen.weightGoal
 
 import com.weighttracker.base.SimpleFlowViewModel
+import com.weighttracker.domain.calculateNormalWeightRange
+import com.weighttracker.persistence.height.HeightFlow
 import com.weighttracker.persistence.kgselected.KgSelectedFlow
+import com.weighttracker.persistence.mselected.MSelectedFlow
 import com.weighttracker.persistence.weight.WeightFlow
 import com.weighttracker.persistence.weightGoal.WeightGoalFlow
 import com.weighttracker.persistence.weightGoal.WriteWeightGoalAct
@@ -15,10 +18,13 @@ class WeightGoalViewModel @Inject constructor(
     private val kgSelectedFlow: KgSelectedFlow,
     private val weightFlow: WeightFlow,
     private val weightGoalFlow: WeightGoalFlow,
-    private val writeWeightGoalAct: WriteWeightGoalAct
+    private val writeWeightGoalAct: WriteWeightGoalAct,
+    private val heightFlow: HeightFlow,
+    private val mSelectedFlow: MSelectedFlow
 ) : SimpleFlowViewModel<WeightGoalState, WeightGoalEvent>() {
     override val initialUi = WeightGoalState(
         currentWeight = 0.0, weightUnit = "", goalWeight = 0.0, weightToLose = 0.0,
+        idealWeight = 0.0,
         plan = WeightLossPlan(
             optimistic = WeightLossInfo(
                 totalMonths = 0.0,
@@ -38,8 +44,10 @@ class WeightGoalViewModel @Inject constructor(
     override val uiFlow: Flow<WeightGoalState> = combine(
         kgSelectedFlow(Unit),
         weightFlow(Unit),
-        weightGoalFlow(Unit)
-    ) { kgSelected, currentWeight, goalWeight ->
+        weightGoalFlow(Unit),
+        heightFlow(Unit),
+        mSelectedFlow(Unit)
+    ) { kgSelected, currentWeight, goalWeight, height, mSelected ->
         val weightToLose = if (currentWeight != null && goalWeight != null) {
             currentWeight - goalWeight
         } else 0.0
@@ -48,8 +56,30 @@ class WeightGoalViewModel @Inject constructor(
             currentWeight = currentWeight,
             goalWeight = goalWeight,
             weightToLose = weightToLose,
+            idealWeight = if (height != null) {
+                calculateIdealWeight(
+                    height = height,
+                    mSelected = mSelected,
+                    kgSelected = kgSelected
+                )
+            } else {
+                null
+            },
             plan = weightLossPeriod(weightToLose = weightToLose, kgSelected = kgSelected)
         )
+    }
+
+    private fun calculateIdealWeight(
+        height: Double,
+        mSelected: Boolean,
+        kgSelected: Boolean
+    ): Double {
+        val pair = calculateNormalWeightRange(height, mSelected, kgSelected)
+
+        val minWeight = pair.first
+        val maxWeight = pair.second
+
+        return (maxWeight + minWeight) / 2
     }
 
     private fun weightLossPeriod(weightToLose: Double, kgSelected: Boolean): WeightLossPlan {

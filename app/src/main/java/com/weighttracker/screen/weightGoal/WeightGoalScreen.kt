@@ -1,6 +1,7 @@
 package com.weighttracker.screen.weightGoal
 
 import androidx.compose.foundation.layout.*
+import androidx.compose.material3.Button
 import androidx.compose.material3.Text
 import androidx.compose.runtime.Composable
 import androidx.compose.runtime.collectAsState
@@ -45,7 +46,7 @@ private fun UI(
             Spacer(modifier = Modifier.width(4.dp))
 
             NumberInputField(modifier = Modifier
-                .width(64.dp)
+                .width(72.dp)
                 .height(52.dp),
                 number = state.goalWeight,
                 placeholder = "", onValueChange = {
@@ -66,8 +67,24 @@ private fun UI(
                 text = "You have to lose $weightToLose ${state.weightUnit} to achieve your" +
                         " weight goal.", fontSize = 16.sp
             )
-            Spacer(modifier = Modifier.height(64.dp))
+            Spacer(modifier = Modifier.height(16.dp))
         }
+
+        Row(verticalAlignment = Alignment.Bottom) {
+            Text(text = "Your ideal weight would be:", fontSize = 16.sp)
+
+            Spacer(modifier = Modifier.width(8.dp))
+
+            val idealWeightFormatted = state.idealWeight?.let { formatNumber(it) }
+
+            Button(onClick = {
+                onEvent(WeightGoalEvent.WeightGoalInput(targetWeight = state.idealWeight))
+            }, enabled = true) {
+                Text(text = "$idealWeightFormatted ${state.weightUnit}", fontSize = 16.sp)
+            }
+        }
+
+        Spacer(modifier = Modifier.height(48.dp))
 
         if (state.plan != null) {
             Text(
@@ -76,7 +93,7 @@ private fun UI(
                 fontSize = 20.sp
             )
 
-            Spacer(modifier = Modifier.height(16.dp))
+            Spacer(modifier = Modifier.height(24.dp))
 
             val optimisticMonths = formatNumber(state.plan.optimistic.totalMonths)
             val realisticMonths = formatNumber(state.plan.realistic.totalMonths)

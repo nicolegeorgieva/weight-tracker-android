@@ -1,6 +1,8 @@
 package com.weighttracker.screen.bmi
 
 import com.weighttracker.base.SimpleFlowViewModel
+import com.weighttracker.domain.calculateNormalWeightRange
+import com.weighttracker.domain.convertToM
 import com.weighttracker.persistence.height.HeightFlow
 import com.weighttracker.persistence.height.WriteHeightAct
 import com.weighttracker.persistence.kgselected.KgSelectedFlow
@@ -57,24 +59,6 @@ class BmiViewModel @Inject constructor(
         )
     }
 
-    private fun calculateNormalWeightRange(
-        height: Double,
-        mSelected: Boolean,
-        kgSelected: Boolean
-    ): Pair<Double, Double> {
-        val heightInM = convertToM(height, mSelected)
-        val minWeightInKg = 18.5 * (heightInM * heightInM)
-        val maxWeightInKg = 24.9 * (heightInM * heightInM)
-
-        return if (kgSelected) {
-            Pair(minWeightInKg, maxWeightInKg)
-        } else {
-            val minWeightInLb = minWeightInKg * 2.205
-            val maxWeightInLb = maxWeightInKg * 2.205
-            Pair(minWeightInLb, maxWeightInLb)
-        }
-    }
-
     private fun calculateBmi(
         weight: Double, height: Double,
         kgSelected: Boolean, mSelected: Boolean
@@ -91,15 +75,6 @@ class BmiViewModel @Inject constructor(
         } else {
             // lb selected
             weight * 0.45359237
-        }
-    }
-
-    private fun convertToM(height: Double, mSelected: Boolean): Double {
-        return if (mSelected) {
-            height
-        } else {
-            // foot selected
-            height * 0.3048
         }
     }
 

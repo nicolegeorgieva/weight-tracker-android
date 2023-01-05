@@ -5,6 +5,7 @@ data class WeightGoalState(
     val weightUnit: String,
     val goalWeight: Double?,
     val weightToLose: Double?,
+    val idealWeight: Double?,
     val plan: WeightLossPlan?
 )
 

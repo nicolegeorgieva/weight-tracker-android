@@ -9,5 +9,5 @@ import java.text.DecimalFormat
 fun browser(): UriHandler = LocalUriHandler.current
 
 fun formatNumber(number: Double): String {
-    return DecimalFormat("###,###.#").format(number)
+    return DecimalFormat("###,###.##").format(number)
 }
