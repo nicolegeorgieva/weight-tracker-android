@@ -7,11 +7,10 @@ import kotlinx.coroutines.flow.Flow
 import kotlinx.coroutines.flow.map
 import javax.inject.Inject
 
-class QuotesFlow @Inject constructor(
-
+class RemoteQuotesFlow @Inject constructor(
 ) : FlowAction<Unit, List<String>>() {
     override fun Unit.createFlow(): Flow<List<String>> = request<QuotesResponse> {
-        it.get("fdgdfg")
+        it.get("https://raw.githubusercontent.com/nicolegeorgieva/weight-tracker-android/main/quotes.json")
     }.map { response ->
         response?.quotes ?: emptyList()
     }
