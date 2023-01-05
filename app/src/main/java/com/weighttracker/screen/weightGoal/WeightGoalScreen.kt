@@ -1,15 +1,19 @@
 package com.weighttracker.screen.weightGoal
 
+import androidx.compose.foundation.clickable
 import androidx.compose.foundation.layout.*
+import androidx.compose.material.icons.Icons
+import androidx.compose.material.icons.filled.KeyboardArrowDown
+import androidx.compose.material.icons.filled.KeyboardArrowUp
 import androidx.compose.material3.Button
+import androidx.compose.material3.Icon
 import androidx.compose.material3.Text
-import androidx.compose.runtime.Composable
-import androidx.compose.runtime.collectAsState
-import androidx.compose.runtime.getValue
+import androidx.compose.runtime.*
 import androidx.compose.ui.Alignment
 import androidx.compose.ui.Modifier
 import androidx.compose.ui.graphics.Color
 import androidx.compose.ui.text.font.FontWeight
+import androidx.compose.ui.text.style.TextDecoration
 import androidx.compose.ui.unit.dp
 import androidx.compose.ui.unit.sp
 import androidx.lifecycle.viewmodel.compose.viewModel
@@ -70,18 +74,55 @@ private fun UI(
             Spacer(modifier = Modifier.height(16.dp))
         }
 
+        var expandedInfo by remember {
+            mutableStateOf(false)
+        }
+
         Row(verticalAlignment = Alignment.Bottom) {
-            Text(text = "Your ideal weight would be:", fontSize = 16.sp)
+            Row() {
+                Icon(
+                    if (expandedInfo) {
+                        Icons.Default.KeyboardArrowUp
+                    } else {
+                        Icons.Default.KeyboardArrowDown
+                    },
+                    contentDescription = "",
+                    modifier = Modifier.clickable {
+                        expandedInfo = !expandedInfo
+                    }
+                )
+
+                Text(
+                    modifier = Modifier.clickable {
+                        expandedInfo = !expandedInfo
+                    },
+                    text = "Your ideal weight would be:", fontSize = 16.sp,
+                    textDecoration = TextDecoration.Underline
+                )
+            }
 
             Spacer(modifier = Modifier.width(8.dp))
 
-            val idealWeightFormatted = state.idealWeight?.let { formatNumber(it) }
+            Row() {
+                val idealWeightFormatted = state.idealWeight?.let { formatNumber(it) }
 
-            Button(onClick = {
-                onEvent(WeightGoalEvent.WeightGoalInput(targetWeight = state.idealWeight))
-            }, enabled = true) {
-                Text(text = "$idealWeightFormatted ${state.weightUnit}", fontSize = 16.sp)
+                Button(onClick = {
+                    onEvent(WeightGoalEvent.WeightGoalInput(targetWeight = state.idealWeight))
+                }, enabled = true) {
+                    Text(text = "$idealWeightFormatted ${state.weightUnit}", fontSize = 16.sp)
+                }
             }
+        }
+
+        if (expandedInfo) {
+            Spacer(modifier = Modifier.height(16.dp))
+
+            Text(
+                text = "Your ideal weight is the arithmetic mean between your" +
+                        " minimal and maximum normal weight.",
+                color = Color.Black,
+                fontSize = 16.sp
+            )
         }
 
         Spacer(modifier = Modifier.height(48.dp))
