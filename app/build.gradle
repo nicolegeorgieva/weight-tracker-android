@@ -63,6 +63,15 @@ dependencies {
     debugImplementation "androidx.compose.ui:ui-tooling:$compose_version"
     debugImplementation "androidx.compose.ui:ui-test-manifest:$compose_version"
 
+    var ktor = "2.0.3"
+    implementation "io.ktor:ktor-client-core:$ktor"
+    implementation "io.ktor:ktor-client-okhttp:$ktor"
+    implementation "io.ktor:ktor-client-logging:$ktor"
+    implementation "io.ktor:ktor-client-content-negotiation:$ktor"
+    implementation "io.ktor:ktor-serialization-gson:$ktor"
+    implementation "com.google.code.gson:gson:2.9.0"
+
+
     implementation "androidx.lifecycle:lifecycle-viewmodel-compose:2.5.1"
 
     implementation "com.google.dagger:hilt-android:2.44"
