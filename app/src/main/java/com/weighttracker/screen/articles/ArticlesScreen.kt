@@ -1,5 +1,6 @@
 package com.weighttracker.screen.articles
 
+import androidx.compose.foundation.clickable
 import androidx.compose.foundation.layout.Column
 import androidx.compose.foundation.layout.Spacer
 import androidx.compose.foundation.layout.height
@@ -13,7 +14,9 @@ import androidx.compose.runtime.getValue
 import androidx.compose.ui.Modifier
 import androidx.compose.ui.unit.dp
 import androidx.lifecycle.viewmodel.compose.viewModel
+import coil.compose.AsyncImage
 import com.weighttracker.Screens
+import com.weighttracker.browser
 import com.weighttracker.component.BackButton
 
 @Composable
@@ -44,5 +47,13 @@ private fun UI(
 
 @Composable
 private fun ArticleCard(article: Article) {
-    Text(text = "This is an article")
+    val browser = browser()
+    Column(
+        modifier = Modifier.clickable {
+            browser.openUri(article.articleLink)
+        }
+    ) {
+        AsyncImage(model = article.image, contentDescription = "")
+        Text(text = article.title)
+    }
 }

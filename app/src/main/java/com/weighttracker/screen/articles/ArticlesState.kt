@@ -7,10 +7,10 @@ data class ArticlesState(
 )
 
 data class Article(
-    @SerializedName("title")
-    val title: String,
     @SerializedName("image")
     val image: String,
+    @SerializedName("title")
+    val title: String,
     @SerializedName("articleLink")
     val articleLink: String
 )

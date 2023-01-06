@@ -11,7 +11,7 @@ class RemoteArticlesFlow @Inject constructor(
 ) : FlowAction<Unit, List<Article>>() {
     override fun Unit.createFlow(): Flow<List<Article>> =
         com.weighttracker.network.request<ArticlesResponse> {
-            it.get("https://raw.githubusercontent.com/nicolegeorgieva/weight-tracker-android/main/quotes.json")
+            it.get("https://raw.githubusercontent.com/nicolegeorgieva/weight-tracker-android/main/articles.json")
         }.map { response ->
             response?.articles ?: emptyList()
         }
