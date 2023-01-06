@@ -33,11 +33,11 @@ private fun UI(
     Column(modifier = Modifier.padding(horizontal = 16.dp, vertical = 16.dp)) {
         BackButton(screens = Screens.BMI)
 
-        Spacer(modifier = Modifier.height(32.dp))
+        Spacer(modifier = Modifier.height(28.dp))
 
         Text(text = "Weight unit", fontSize = 16.sp)
 
-        Spacer(modifier = Modifier.height(16.dp))
+        Spacer(modifier = Modifier.height(8.dp))
 
         Row() {
             Button(
@@ -51,7 +51,7 @@ private fun UI(
                     containerColor = Color.Gray,
                     contentColor = Color.White
                 ),
-                shape = RoundedCornerShape(32.dp),
+                shape = RoundedCornerShape(24.dp),
                 onClick = {
                     onEvent(SettingsEvent.KgSelect(kg = true))
                 }) {
@@ -69,7 +69,7 @@ private fun UI(
                     containerColor = Color.Blue,
                     contentColor = Color.White
                 ),
-                shape = RoundedCornerShape(32.dp),
+                shape = RoundedCornerShape(24.dp),
                 onClick = {
                     onEvent(SettingsEvent.KgSelect(kg = false))
                 }) {
@@ -77,11 +77,11 @@ private fun UI(
             }
         }
 
-        Spacer(modifier = Modifier.height(16.dp))
+        Spacer(modifier = Modifier.height(8.dp))
 
         Text(text = "Height unit", fontSize = 16.sp)
 
-        Spacer(modifier = Modifier.height(16.dp))
+        Spacer(modifier = Modifier.height(8.dp))
 
         Row() {
             Button(
@@ -95,7 +95,7 @@ private fun UI(
                     containerColor = Color.Gray,
                     contentColor = Color.White
                 ),
-                shape = RoundedCornerShape(32.dp),
+                shape = RoundedCornerShape(24.dp),
                 onClick = {
                     onEvent(SettingsEvent.MSelect(m = true))
                 }
@@ -114,7 +114,7 @@ private fun UI(
                     containerColor = Color.Blue,
                     contentColor = Color.White
                 ),
-                shape = RoundedCornerShape(32.dp),
+                shape = RoundedCornerShape(24.dp),
                 onClick = {
                     onEvent(SettingsEvent.MSelect(m = false))
                 }
@@ -123,17 +123,18 @@ private fun UI(
             }
         }
 
-        Spacer(modifier = Modifier.height(12.dp))
+        Spacer(modifier = Modifier.height(16.dp))
 
         Button(
             modifier = Modifier
-                .fillMaxWidth(),
+                .fillMaxWidth()
+                .height(48.dp),
             colors = ButtonDefaults.buttonColors(
                 contentColor = Color.White,
                 containerColor = Color.DarkGray
             ),
             enabled = true,
-            shape = RoundedCornerShape(32.dp),
+            shape = RoundedCornerShape(16.dp),
             onClick = {
                 navigateTo(Screens.Converter)
             }
@@ -145,13 +146,14 @@ private fun UI(
 
         Button(
             modifier = Modifier
-                .fillMaxWidth(),
+                .fillMaxWidth()
+                .height(48.dp),
             colors = ButtonDefaults.buttonColors(
                 contentColor = Color.White,
                 containerColor = Color.Magenta
             ),
             enabled = true,
-            shape = RoundedCornerShape(32.dp),
+            shape = RoundedCornerShape(16.dp),
             onClick = {
                 navigateTo(Screens.Quote)
             }
@@ -163,13 +165,14 @@ private fun UI(
 
         Button(
             modifier = Modifier
-                .fillMaxWidth(),
+                .fillMaxWidth()
+                .height(48.dp),
             colors = ButtonDefaults.buttonColors(
                 contentColor = Color.White,
                 containerColor = Color(0xFF478148)
             ),
             enabled = true,
-            shape = RoundedCornerShape(32.dp),
+            shape = RoundedCornerShape(16.dp),
             onClick = {
                 navigateTo(Screens.WeightGoal)
             }
@@ -181,13 +184,14 @@ private fun UI(
 
         Button(
             modifier = Modifier
-                .fillMaxWidth(),
+                .fillMaxWidth()
+                .height(48.dp),
             colors = ButtonDefaults.buttonColors(
                 contentColor = Color.White,
                 containerColor = Color(0xFFFF9800)
             ),
             enabled = true,
-            shape = RoundedCornerShape(32.dp),
+            shape = RoundedCornerShape(16.dp),
             onClick = {
                 navigateTo(Screens.Articles)
             }

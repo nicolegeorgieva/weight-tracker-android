@@ -36,7 +36,7 @@ private fun UI(
     onEvent: (WeightGoalEvent) -> Unit
 ) {
     Column(modifier = Modifier.padding(horizontal = 16.dp, vertical = 16.dp)) {
-        BackButton(screens = Screens.BMI)
+        BackButton(screens = Screens.Settings)
 
         Spacer(modifier = Modifier.height(32.dp))
 
