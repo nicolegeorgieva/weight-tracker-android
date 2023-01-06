@@ -176,5 +176,23 @@ private fun UI(
         ) {
             Text(text = "Weight goal")
         }
+
+        Spacer(modifier = Modifier.height(12.dp))
+
+        Button(
+            modifier = Modifier
+                .fillMaxWidth(),
+            colors = ButtonDefaults.buttonColors(
+                contentColor = Color.White,
+                containerColor = Color(0xFFFF9800)
+            ),
+            enabled = true,
+            shape = RoundedCornerShape(32.dp),
+            onClick = {
+                navigateTo(Screens.Articles)
+            }
+        ) {
+            Text(text = "Articles")
+        }
     }
 }

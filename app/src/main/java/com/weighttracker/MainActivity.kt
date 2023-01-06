@@ -3,6 +3,7 @@ package com.weighttracker
 import android.os.Bundle
 import androidx.activity.ComponentActivity
 import androidx.activity.compose.setContent
+import com.weighttracker.screen.articles.ArticlesScreen
 import com.weighttracker.screen.bmi.BmiScreen
 import com.weighttracker.screen.converter.ConverterScreen
 import com.weighttracker.screen.quote.QuoteScreen
@@ -22,6 +23,7 @@ class MainActivity : ComponentActivity() {
                     Screens.Converter -> ConverterScreen()
                     Screens.Quote -> QuoteScreen()
                     Screens.WeightGoal -> WeightGoalScreen()
+                    Screens.Articles -> ArticlesScreen()
                 }
             }
         }
