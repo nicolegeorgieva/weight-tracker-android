@@ -1,0 +1,50 @@
+name: Build
+
+on: [ push, pull_request, workflow_dispatch ]
+
+jobs:
+  build:
+    runs-on: ubuntu-latest
+
+    # Fix GitHub Actions crashing with:
+    # CRASH: Gradle build daemon disappeared unexpectedly (it may have been killed or may have crashed)
+    env:
+      GRADLE_OPTS: -Dorg.gradle.jvmargs="-XX:MaxMetaspaceSize=1g"
+
+    steps:
+      - name: Checkout GIT
+        uses: actions/checkout@v2
+
+      - name: Setup Java SDK
+        uses: actions/setup-java@v2
+        with:
+          distribution: 'adopt'
+          java-version: '11'
+      #----------------------------------------------------
+
+      #Optimization
+      - name: Enable Gradle Wrapper caching (optimization)
+        uses: actions/cache@v2
+        with:
+          path: |
+            ~/.gradle/caches
+            ~/.gradle/wrapper
+          key: ${{ runner.os }}-gradle-${{ hashFiles('**/*.gradle*', '**/gradle-wrapper.properties') }}
+          restore-keys: |
+            ${{ runner.os }}-gradle-
+      #---------------------------------------------------
+
+      # RUN
+      - name: Build demo APK
+        run: ./gradlew assembleDemo
+
+      - name: Set commit SHA as an output so it can be included in the APK filename
+        id: vars
+        run: echo "::set-output name=sha_short::$(git rev-parse --short HEAD)"
+
+      - name: Upload APK
+        uses: actions/upload-artifact@v2
+        with:
+          name: "Weight-Tracker-${{ steps.vars.outputs.sha_short }}.apk"
+          path: app/build/outputs/apk/demo/app-demo.apk
+      #------------------------------------------------------------------
