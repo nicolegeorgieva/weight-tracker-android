@@ -1,18 +1,20 @@
 package com.weighttracker.screen.articles
 
 import androidx.compose.foundation.clickable
-import androidx.compose.foundation.layout.Column
-import androidx.compose.foundation.layout.Spacer
-import androidx.compose.foundation.layout.height
-import androidx.compose.foundation.layout.padding
+import androidx.compose.foundation.layout.*
 import androidx.compose.foundation.lazy.LazyColumn
 import androidx.compose.foundation.lazy.items
 import androidx.compose.material3.Text
 import androidx.compose.runtime.Composable
 import androidx.compose.runtime.collectAsState
 import androidx.compose.runtime.getValue
+import androidx.compose.ui.Alignment
 import androidx.compose.ui.Modifier
+import androidx.compose.ui.layout.ContentScale
+import androidx.compose.ui.text.font.FontWeight
+import androidx.compose.ui.text.style.TextDecoration
 import androidx.compose.ui.unit.dp
+import androidx.compose.ui.unit.sp
 import androidx.lifecycle.viewmodel.compose.viewModel
 import coil.compose.AsyncImage
 import com.weighttracker.Screens
@@ -37,9 +39,10 @@ private fun UI(
 
         Spacer(modifier = Modifier.height(32.dp))
 
-        LazyColumn {
+        LazyColumn() {
             items(items = state.articles) { articleItem ->
                 ArticleCard(article = articleItem)
+                Spacer(modifier = Modifier.height(16.dp))
             }
         }
     }
@@ -49,11 +52,24 @@ private fun UI(
 private fun ArticleCard(article: Article) {
     val browser = browser()
     Column(
-        modifier = Modifier.clickable {
-            browser.openUri(article.articleLink)
-        }
+        modifier = Modifier
+            .clickable {
+                browser.openUri(article.articleLink)
+            }
+            .fillMaxWidth(),
+        horizontalAlignment = Alignment.CenterHorizontally
     ) {
-        AsyncImage(model = article.image, contentDescription = "")
-        Text(text = article.title)
+        AsyncImage(
+            modifier = Modifier
+                .fillMaxWidth()
+                .height(200.dp),
+            model = article.image, contentDescription = "",
+            contentScale = ContentScale.Crop
+        )
+        Spacer(modifier = Modifier.height(8.dp))
+        Text(
+            text = article.title, fontSize = 16.sp, fontWeight = FontWeight.Bold,
+            textDecoration = TextDecoration.Underline
+        )
     }
 }
