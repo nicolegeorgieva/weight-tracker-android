@@ -3,6 +3,8 @@ package com.weighttracker.screen.bmi
 import com.weighttracker.base.SimpleFlowViewModel
 import com.weighttracker.domain.calculateNormalWeightRange
 import com.weighttracker.domain.convertToM
+import com.weighttracker.persistence.database.weightrecords.WeightRecordEntity
+import com.weighttracker.persistence.database.weightrecords.WriteWeightRecordAct
 import com.weighttracker.persistence.datastore.height.HeightFlow
 import com.weighttracker.persistence.datastore.height.WriteHeightAct
 import com.weighttracker.persistence.datastore.kgselected.KgSelectedFlow
@@ -10,9 +12,12 @@ import com.weighttracker.persistence.datastore.mselected.MSelectedFlow
 import com.weighttracker.persistence.datastore.quote.QuoteFlow
 import com.weighttracker.persistence.datastore.weight.WeightFlow
 import com.weighttracker.persistence.datastore.weight.WriteWeightAct
+import com.weighttracker.toUtc
 import dagger.hilt.android.lifecycle.HiltViewModel
 import kotlinx.coroutines.flow.Flow
 import kotlinx.coroutines.flow.combine
+import java.time.LocalDateTime
+import java.util.*
 import javax.inject.Inject
 
 @HiltViewModel
@@ -23,7 +28,8 @@ class BmiViewModel @Inject constructor(
     private val writeHeightAct: WriteHeightAct,
     private val kgSelectedFlow: KgSelectedFlow,
     private val mSelectedFlow: MSelectedFlow,
-    private val quoteFlow: QuoteFlow
+    private val quoteFlow: QuoteFlow,
+    private val writeWeightRecordAct: WriteWeightRecordAct
 ) : SimpleFlowViewModel<BmiState, BmiEvent>() {
     override val initialUi = BmiState(
         weight = 0.0,
@@ -85,6 +91,18 @@ class BmiViewModel @Inject constructor(
             }
             is BmiEvent.HeightChange -> {
                 writeHeightAct(event.newHeightRec)
+            }
+            BmiEvent.SaveWeightRecord -> {
+                val weight = uiState.value.weight
+                if (weight != null) {
+                    writeWeightRecordAct(
+                        WeightRecordEntity(
+                            id = UUID.randomUUID(),
+                            dateTime = LocalDateTime.now().toUtc(),
+                            weightKg = weight
+                        )
+                    )
+                }
             }
         }
     }

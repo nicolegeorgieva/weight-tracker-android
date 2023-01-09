@@ -16,8 +16,6 @@ fun formatNumber(number: Double): String {
     return DecimalFormat("###,###.##").format(number)
 }
 
-fun uuid(): UUID = UUID.randomUUID()
-
 fun String.toUUID(): UUID = UUID.fromString(this)
 
 fun String.toUUIDOrNull(): UUID? = try {

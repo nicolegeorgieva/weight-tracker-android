@@ -6,6 +6,7 @@ import androidx.compose.material.icons.Icons
 import androidx.compose.material.icons.filled.KeyboardArrowDown
 import androidx.compose.material.icons.filled.KeyboardArrowUp
 import androidx.compose.material.icons.filled.Menu
+import androidx.compose.material3.Button
 import androidx.compose.material3.Icon
 import androidx.compose.material3.IconButton
 import androidx.compose.material3.Text
@@ -77,9 +78,10 @@ private fun UI(
         Spacer(modifier = Modifier.height(16.dp))
 
         Row(verticalAlignment = Alignment.CenterVertically) {
-            NumberInputField(number = state.weight, placeholder = "Weight", onValueChange = {
-                onEvent(BmiEvent.WeightChange(newWeightRec = it))
-            })
+            NumberInputField(number = state.weight,
+                modifier = Modifier.weight(1f), placeholder = "Weight", onValueChange = {
+                    onEvent(BmiEvent.WeightChange(newWeightRec = it))
+                })
             Spacer(modifier = Modifier.width(8.dp))
             Text(
                 modifier = Modifier.clickable {
@@ -88,14 +90,23 @@ private fun UI(
                 fontWeight = FontWeight.Bold,
                 text = if (state.kg) "kg" else "lb"
             )
+
+            Spacer(modifier = Modifier.width(16.dp))
+
+            Button(onClick = {
+                onEvent(BmiEvent.SaveWeightRecord)
+            }) {
+                Text(text = "Save")
+            }
         }
 
         Spacer(modifier = Modifier.height(16.dp))
 
         Row(verticalAlignment = Alignment.CenterVertically) {
-            NumberInputField(number = state.height, placeholder = "Height", onValueChange = {
-                onEvent(BmiEvent.HeightChange(newHeightRec = it))
-            })
+            NumberInputField(number = state.height,
+                modifier = Modifier.weight(1f), placeholder = "Height", onValueChange = {
+                    onEvent(BmiEvent.HeightChange(newHeightRec = it))
+                })
             Spacer(modifier = Modifier.width(8.dp))
             Text(
                 modifier = Modifier.clickable {
