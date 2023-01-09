@@ -5,8 +5,10 @@ import androidx.compose.ui.platform.LocalUriHandler
 import androidx.compose.ui.platform.UriHandler
 import java.text.DecimalFormat
 import java.time.Instant
+import java.time.LocalDate
 import java.time.LocalDateTime
 import java.time.ZoneId
+import java.time.format.DateTimeFormatter
 import java.util.*
 
 @Composable
@@ -40,3 +42,9 @@ fun LocalDateTime.toEpochMilli(): Long =
 
 fun LocalDateTime.toEpochSeconds() =
     toUtc().epochSecond
+
+fun LocalDateTime.format(pattern: String): String =
+    this.format(DateTimeFormatter.ofPattern(pattern))
+
+fun LocalDate.format(pattern: String): String =
+    this.format(DateTimeFormatter.ofPattern(pattern))

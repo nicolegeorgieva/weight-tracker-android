@@ -15,6 +15,7 @@ import androidx.compose.ui.unit.dp
 import androidx.lifecycle.viewmodel.compose.viewModel
 import com.weighttracker.Screens
 import com.weighttracker.component.BackButton
+import com.weighttracker.format
 import com.weighttracker.persistence.database.weightrecords.WeightRecordEntity
 import com.weighttracker.toLocal
 
@@ -54,7 +55,7 @@ private fun WeightRecordCard(weightRecord: WeightRecordEntity) {
             .background(color = Color.LightGray),
         horizontalAlignment = Alignment.CenterHorizontally
     ) {
-        Text(text = "${weightRecord.dateTime.toLocal()}")
+        Text(text = weightRecord.dateTime.toLocal().format("dd. MMM yyyy   HH:mm"))
         Spacer(modifier = Modifier.height(12.dp))
         Text(text = "${weightRecord.weightKg}")
     }
