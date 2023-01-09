@@ -1,4 +1,4 @@
-package com.weighttracker.persistence
+package com.weighttracker.persistence.datastore
 
 import androidx.datastore.preferences.core.booleanPreferencesKey
 import androidx.datastore.preferences.core.doublePreferencesKey

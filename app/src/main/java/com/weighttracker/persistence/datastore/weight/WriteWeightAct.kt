@@ -1,15 +1,16 @@
-package com.weighttracker.persistence.weightGoal
+package com.weighttracker.persistence.datastore.weight
 
 import com.weighttracker.base.Action
 import com.weighttracker.base.persistence.AppDataStore
-import com.weighttracker.persistence.DataStoreKeys
+import com.weighttracker.persistence.datastore.DataStoreKeys
 import javax.inject.Inject
 
-class WriteWeightGoalAct @Inject constructor(
+// Writes "weight" in the datastore
+class WriteWeightAct @Inject constructor(
     private val appDataStore: AppDataStore,
     private val dataStoreKeys: DataStoreKeys,
 ) : Action<Double, Unit>() {
     override suspend fun Double.willDo() {
-        appDataStore.put(dataStoreKeys.weightGoal, this)
+        appDataStore.put(dataStoreKeys.weight, this)
     }
 }

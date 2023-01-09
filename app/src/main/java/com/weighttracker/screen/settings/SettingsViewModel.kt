@@ -1,10 +1,10 @@
 package com.weighttracker.screen.settings
 
 import com.weighttracker.base.SimpleFlowViewModel
-import com.weighttracker.persistence.kgselected.KgSelectedFlow
-import com.weighttracker.persistence.kgselected.WriteKgSelectedAct
-import com.weighttracker.persistence.mselected.MSelectedFlow
-import com.weighttracker.persistence.mselected.WriteMSelectedAct
+import com.weighttracker.persistence.datastore.kgselected.KgSelectedFlow
+import com.weighttracker.persistence.datastore.kgselected.WriteKgSelectedAct
+import com.weighttracker.persistence.datastore.mselected.MSelectedFlow
+import com.weighttracker.persistence.datastore.mselected.WriteMSelectedAct
 import dagger.hilt.android.lifecycle.HiltViewModel
 import kotlinx.coroutines.flow.Flow
 import kotlinx.coroutines.flow.combine

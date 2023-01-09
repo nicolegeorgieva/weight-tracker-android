@@ -2,8 +2,8 @@ package com.weighttracker.screen.quote
 
 import com.weighttracker.base.SimpleFlowViewModel
 import com.weighttracker.network.quotes.RemoteQuotesFlow
-import com.weighttracker.persistence.quote.QuoteFlow
-import com.weighttracker.persistence.quote.WriteQuoteAct
+import com.weighttracker.persistence.datastore.quote.QuoteFlow
+import com.weighttracker.persistence.datastore.quote.WriteQuoteAct
 import dagger.hilt.android.lifecycle.HiltViewModel
 import kotlinx.coroutines.flow.Flow
 import kotlinx.coroutines.flow.combine

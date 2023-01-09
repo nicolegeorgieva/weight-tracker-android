@@ -1,8 +1,8 @@
-package com.weighttracker.persistence.height
+package com.weighttracker.persistence.datastore.height
 
 import com.weighttracker.base.Action
 import com.weighttracker.base.persistence.AppDataStore
-import com.weighttracker.persistence.DataStoreKeys
+import com.weighttracker.persistence.datastore.DataStoreKeys
 import javax.inject.Inject
 
 class WriteHeightAct @Inject constructor(

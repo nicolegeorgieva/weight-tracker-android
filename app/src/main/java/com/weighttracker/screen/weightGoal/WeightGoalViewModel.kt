@@ -2,12 +2,12 @@ package com.weighttracker.screen.weightGoal
 
 import com.weighttracker.base.SimpleFlowViewModel
 import com.weighttracker.domain.calculateNormalWeightRange
-import com.weighttracker.persistence.height.HeightFlow
-import com.weighttracker.persistence.kgselected.KgSelectedFlow
-import com.weighttracker.persistence.mselected.MSelectedFlow
-import com.weighttracker.persistence.weight.WeightFlow
-import com.weighttracker.persistence.weightGoal.WeightGoalFlow
-import com.weighttracker.persistence.weightGoal.WriteWeightGoalAct
+import com.weighttracker.persistence.datastore.height.HeightFlow
+import com.weighttracker.persistence.datastore.kgselected.KgSelectedFlow
+import com.weighttracker.persistence.datastore.mselected.MSelectedFlow
+import com.weighttracker.persistence.datastore.weight.WeightFlow
+import com.weighttracker.persistence.datastore.weightGoal.WeightGoalFlow
+import com.weighttracker.persistence.datastore.weightGoal.WriteWeightGoalAct
 import dagger.hilt.android.lifecycle.HiltViewModel
 import kotlinx.coroutines.flow.Flow
 import kotlinx.coroutines.flow.combine

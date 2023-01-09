@@ -1,8 +1,8 @@
-package com.weighttracker.persistence.weightGoal
+package com.weighttracker.persistence.datastore.weightGoal
 
 import com.weighttracker.base.FlowAction
 import com.weighttracker.base.persistence.AppDataStore
-import com.weighttracker.persistence.DataStoreKeys
+import com.weighttracker.persistence.datastore.DataStoreKeys
 import kotlinx.coroutines.flow.Flow
 import javax.inject.Inject
 
