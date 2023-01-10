@@ -4,6 +4,7 @@ import com.weighttracker.base.SimpleFlowViewModel
 import com.weighttracker.persistence.database.weightrecords.DeleteWeightRecordAct
 import com.weighttracker.persistence.database.weightrecords.WeightRecordsFlow
 import com.weighttracker.persistence.database.weightrecords.WriteWeightRecordAct
+import com.weighttracker.persistence.datastore.kgselected.KgSelectedFlow
 import dagger.hilt.android.lifecycle.HiltViewModel
 import kotlinx.coroutines.flow.Flow
 import kotlinx.coroutines.flow.combine
@@ -13,19 +14,22 @@ import javax.inject.Inject
 class WeightRecordsViewModel @Inject constructor(
     private val weightRecordsFlow: WeightRecordsFlow,
     private val writeWeightRecordAct: WriteWeightRecordAct,
-    private val deleteWeightRecordAct: DeleteWeightRecordAct
+    private val deleteWeightRecordAct: DeleteWeightRecordAct,
+    private val kgSelectedFlow: KgSelectedFlow
 ) : SimpleFlowViewModel<WeightRecordsState, WeightRecordsEvent>() {
     override val initialUi = WeightRecordsState(
         //while loading
-        weightRecords = emptyList()
+        weightRecords = emptyList(),
+        weightUnit = "kg"
     )
 
     override val uiFlow: Flow<WeightRecordsState> = combine(
         weightRecordsFlow(Unit),
-        weightRecordsFlow(Unit),
-    ) { weightRecords, _ ->
+        kgSelectedFlow(Unit)
+    ) { weightRecords, kgSelected ->
         WeightRecordsState(
-            weightRecords = weightRecords.sortedByDescending { it.dateTime }
+            weightRecords = weightRecords.sortedByDescending { it.dateTime },
+            weightUnit = if (kgSelected) "kg" else "lb"
         )
     }
 

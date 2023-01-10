@@ -13,8 +13,10 @@ import androidx.compose.material3.Text
 import androidx.compose.runtime.*
 import androidx.compose.ui.Alignment
 import androidx.compose.ui.Modifier
+import androidx.compose.ui.draw.clip
 import androidx.compose.ui.graphics.Color
 import androidx.compose.ui.res.painterResource
+import androidx.compose.ui.text.font.FontWeight
 import androidx.compose.ui.text.style.TextAlign
 import androidx.compose.ui.unit.dp
 import androidx.lifecycle.viewmodel.compose.viewModel
@@ -46,7 +48,10 @@ private fun UI(
 
         LazyColumn() {
             items(items = state.weightRecords) { weightRecordItem ->
-                WeightRecordCard(weightRecord = weightRecordItem, onEvent = onEvent)
+                WeightRecordCard(
+                    weightRecord = weightRecordItem, onEvent = onEvent,
+                    state = state
+                )
                 Spacer(modifier = Modifier.height(16.dp))
             }
         }
@@ -56,7 +61,8 @@ private fun UI(
 @Composable
 private fun WeightRecordCard(
     weightRecord: WeightRecordEntity,
-    onEvent: (WeightRecordsEvent) -> Unit
+    onEvent: (WeightRecordsEvent) -> Unit,
+    state: WeightRecordsState
 ) {
     var editCard by remember {
         mutableStateOf(false)
@@ -64,8 +70,11 @@ private fun WeightRecordCard(
     Column(
         modifier = Modifier
             .fillMaxWidth()
-            .background(color = Color.LightGray)
-            .clickable { editCard = true },
+            .clip(CircleShape)
+            .background(color = Color(0xFFE6E6E6))
+            .clickable { editCard = true }
+            .padding(horizontal = 12.dp, vertical = 12.dp)
+            .padding(start = 8.dp),
         horizontalAlignment = Alignment.CenterHorizontally
     ) {
         if (!editCard) {
@@ -74,8 +83,9 @@ private fun WeightRecordCard(
                     Text(text = weightRecord.dateTime.toLocal().format("dd. MMM yyyy   HH:mm"))
                     Spacer(modifier = Modifier.height(12.dp))
                     Text(
-                        text = "${weightRecord.weightKg}",
-                        textAlign = TextAlign.Center
+                        text = "${weightRecord.weightKg} ${state.weightUnit}",
+                        textAlign = TextAlign.Center,
+                        fontWeight = FontWeight.Bold
                     )
                 }
                 Button(
@@ -102,7 +112,7 @@ private fun WeightRecordCard(
                 Column(modifier = Modifier.weight(1f)) {
                     NumberInputField(
                         number = weightInput,
-                        placeholder = "weight",
+                        placeholder = "Weight",
                         onValueChange = {
                             weightInput = it
                         }
