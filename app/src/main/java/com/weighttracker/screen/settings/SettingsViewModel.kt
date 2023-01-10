@@ -1,6 +1,8 @@
 package com.weighttracker.screen.settings
 
 import com.weighttracker.base.SimpleFlowViewModel
+import com.weighttracker.persistence.datastore.height.HeightFlow
+import com.weighttracker.persistence.datastore.height.WriteHeightAct
 import com.weighttracker.persistence.datastore.kgselected.KgSelectedFlow
 import com.weighttracker.persistence.datastore.kgselected.WriteKgSelectedAct
 import com.weighttracker.persistence.datastore.mselected.MSelectedFlow
@@ -20,7 +22,9 @@ class SettingsViewModel @Inject constructor(
     private val mSelectedFlow: MSelectedFlow,
     private val writeMSelectedAct: WriteMSelectedAct,
     private val weightFlow: WeightFlow,
-    private val writeWeightAct: WriteWeightAct
+    private val writeWeightAct: WriteWeightAct,
+    private val heightFlow: HeightFlow,
+    private val writeHeightAct: WriteHeightAct
 ) : SimpleFlowViewModel<SettingsState, SettingsEvent>() {
     override val initialUi = SettingsState(
         kg = true, m = true
@@ -55,7 +59,20 @@ class SettingsViewModel @Inject constructor(
                 }
             }
             is SettingsEvent.MSelect -> {
+                val mAlreadySelected = uiState.value.m
+                val currentHeight = heightFlow(Unit).first()
+
                 writeMSelectedAct(event.m)
+                if (currentHeight != null) {
+                    val convertedHeight = if (mAlreadySelected && !event.m) {
+                        currentHeight * 3.28084
+                    } else if (!mAlreadySelected && event.m) {
+                        currentHeight * 0.3048
+                    } else {
+                        currentHeight
+                    }
+                    writeHeightAct(convertedHeight)
+                }
             }
         }
     }
