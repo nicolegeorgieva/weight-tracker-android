@@ -31,6 +31,9 @@ class WeightRecordsViewModel @Inject constructor(
 
     override suspend fun handleEvent(event: WeightRecordsEvent) {
         when (event) {
+            is WeightRecordsEvent.DeleteWeightRecord -> {
+                deleteWeightRecordAct(event.record.id)
+            }
             else -> {}
         }
     }
