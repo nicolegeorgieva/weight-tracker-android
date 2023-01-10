@@ -34,6 +34,9 @@ class WeightRecordsViewModel @Inject constructor(
             is WeightRecordsEvent.DeleteWeightRecord -> {
                 deleteWeightRecordAct(event.record.id)
             }
+            is WeightRecordsEvent.UpdateWeightRecord -> {
+                writeWeightRecordAct(event.newRecord)
+            }
             else -> {}
         }
     }

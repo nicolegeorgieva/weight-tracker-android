@@ -1,24 +1,27 @@
 package com.weighttracker.screen.weightRecords
 
 import androidx.compose.foundation.background
+import androidx.compose.foundation.clickable
 import androidx.compose.foundation.layout.*
 import androidx.compose.foundation.lazy.LazyColumn
 import androidx.compose.foundation.lazy.items
 import androidx.compose.foundation.shape.CircleShape
 import androidx.compose.material3.Button
 import androidx.compose.material3.ButtonDefaults
+import androidx.compose.material3.Icon
 import androidx.compose.material3.Text
-import androidx.compose.runtime.Composable
-import androidx.compose.runtime.collectAsState
-import androidx.compose.runtime.getValue
+import androidx.compose.runtime.*
 import androidx.compose.ui.Alignment
 import androidx.compose.ui.Modifier
 import androidx.compose.ui.graphics.Color
+import androidx.compose.ui.res.painterResource
 import androidx.compose.ui.text.style.TextAlign
 import androidx.compose.ui.unit.dp
 import androidx.lifecycle.viewmodel.compose.viewModel
+import com.weighttracker.R
 import com.weighttracker.Screens
 import com.weighttracker.component.BackButton
+import com.weighttracker.component.NumberInputField
 import com.weighttracker.format
 import com.weighttracker.persistence.database.weightrecords.WeightRecordEntity
 import com.weighttracker.toLocal
@@ -55,35 +58,82 @@ private fun WeightRecordCard(
     weightRecord: WeightRecordEntity,
     onEvent: (WeightRecordsEvent) -> Unit
 ) {
+    var editCard by remember {
+        mutableStateOf(false)
+    }
     Column(
         modifier = Modifier
             .fillMaxWidth()
-            .padding(horizontal = 12.dp)
-            .background(color = Color.LightGray),
+            .background(color = Color.LightGray)
+            .clickable { editCard = true },
         horizontalAlignment = Alignment.CenterHorizontally
     ) {
-        Row() {
-            Column(modifier = Modifier.weight(1f)) {
-                Text(text = weightRecord.dateTime.toLocal().format("dd. MMM yyyy   HH:mm"))
-                Spacer(modifier = Modifier.height(12.dp))
-                Text(
-                    text = "${weightRecord.weightKg}",
-                    textAlign = TextAlign.Center
-                )
+        if (!editCard) {
+            Row() {
+                Column(modifier = Modifier.weight(1f)) {
+                    Text(text = weightRecord.dateTime.toLocal().format("dd. MMM yyyy   HH:mm"))
+                    Spacer(modifier = Modifier.height(12.dp))
+                    Text(
+                        text = "${weightRecord.weightKg}",
+                        textAlign = TextAlign.Center
+                    )
+                }
+                Button(
+                    modifier = Modifier.size(48.dp),
+                    onClick = {
+                        onEvent(WeightRecordsEvent.DeleteWeightRecord(weightRecord))
+                    }, colors = ButtonDefaults.buttonColors(
+                        contentColor = Color.White,
+                        containerColor = Color(0xFFFF1010)
+                    ),
+                    enabled = true,
+                    shape = CircleShape,
+                    contentPadding = PaddingValues(0.dp)
+                ) {
+                    Text(text = "X")
+                }
             }
-            Button(
-                modifier = Modifier.size(48.dp),
-                onClick = {
-                    onEvent(WeightRecordsEvent.DeleteWeightRecord(weightRecord))
-                }, colors = ButtonDefaults.buttonColors(
-                    contentColor = Color.White,
-                    containerColor = Color(0xFFFF1010)
-                ),
-                enabled = true,
-                shape = CircleShape,
-                contentPadding = PaddingValues(0.dp)
-            ) {
-                Text(text = "X")
+        } else {
+            Row() {
+                var weightInput by remember {
+                    mutableStateOf(weightRecord.weightKg)
+                }
+
+                Column(modifier = Modifier.weight(1f)) {
+                    NumberInputField(
+                        number = weightInput,
+                        placeholder = "weight",
+                        onValueChange = {
+                            weightInput = it
+                        }
+                    )
+                }
+                Button(
+                    modifier = Modifier.size(48.dp),
+                    onClick = {
+                        editCard = false
+                        onEvent(
+                            WeightRecordsEvent.UpdateWeightRecord(
+                                newRecord = WeightRecordEntity(
+                                    id = weightRecord.id,
+                                    dateTime = weightRecord.dateTime,
+                                    weightKg = weightInput
+                                )
+                            )
+                        )
+                    }, colors = ButtonDefaults.buttonColors(
+                        contentColor = Color.White,
+                        containerColor = Color(0xFF168A0E)
+                    ),
+                    enabled = true,
+                    shape = CircleShape,
+                    contentPadding = PaddingValues(0.dp)
+                ) {
+                    Icon(
+                        painter = painterResource(id = R.drawable.baseline_check_24),
+                        contentDescription = "", tint = Color.White
+                    )
+                }
             }
         }
     }
