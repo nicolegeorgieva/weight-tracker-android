@@ -20,13 +20,11 @@ import androidx.compose.ui.text.font.FontWeight
 import androidx.compose.ui.text.style.TextAlign
 import androidx.compose.ui.unit.dp
 import androidx.lifecycle.viewmodel.compose.viewModel
+import com.weighttracker.*
 import com.weighttracker.R
-import com.weighttracker.Screens
 import com.weighttracker.component.BackButton
 import com.weighttracker.component.NumberInputField
-import com.weighttracker.format
 import com.weighttracker.persistence.database.weightrecords.WeightRecordEntity
-import com.weighttracker.toLocal
 
 @Composable
 fun WeightRecordsScreen() {
@@ -79,11 +77,13 @@ private fun WeightRecordCard(
     ) {
         if (!editCard) {
             Row() {
+                val formattedWeight = formatNumber(weightRecord.weightKg)
+
                 Column(modifier = Modifier.weight(1f)) {
                     Text(text = weightRecord.dateTime.toLocal().format("dd. MMM yyyy   HH:mm"))
                     Spacer(modifier = Modifier.height(12.dp))
                     Text(
-                        text = "${weightRecord.weightKg} ${state.weightUnit}",
+                        text = "$formattedWeight ${state.weightUnit}",
                         textAlign = TextAlign.Center,
                         fontWeight = FontWeight.Bold
                     )

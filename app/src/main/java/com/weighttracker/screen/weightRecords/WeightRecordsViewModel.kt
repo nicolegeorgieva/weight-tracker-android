@@ -2,6 +2,7 @@ package com.weighttracker.screen.weightRecords
 
 import com.weighttracker.base.SimpleFlowViewModel
 import com.weighttracker.persistence.database.weightrecords.DeleteWeightRecordAct
+import com.weighttracker.persistence.database.weightrecords.WeightRecordEntity
 import com.weighttracker.persistence.database.weightrecords.WeightRecordsFlow
 import com.weighttracker.persistence.database.weightrecords.WriteWeightRecordAct
 import com.weighttracker.persistence.datastore.kgselected.KgSelectedFlow
@@ -28,7 +29,19 @@ class WeightRecordsViewModel @Inject constructor(
         kgSelectedFlow(Unit)
     ) { weightRecords, kgSelected ->
         WeightRecordsState(
-            weightRecords = weightRecords.sortedByDescending { it.dateTime },
+            weightRecords = weightRecords
+                .sortedByDescending { it.dateTime }
+                .map { record ->
+                    WeightRecordEntity(
+                        id = record.id,
+                        dateTime = record.dateTime,
+                        weightKg = if (kgSelected) {
+                            record.weightKg
+                        } else {
+                            record.weightKg * 2.205
+                        }
+                    )
+                },
             weightUnit = if (kgSelected) "kg" else "lb"
         )
     }
