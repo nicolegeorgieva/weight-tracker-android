@@ -1,10 +1,13 @@
 package com.weighttracker.screen.bmi
 
 import com.weighttracker.base.SimpleFlowViewModel
+import com.weighttracker.combine
 import com.weighttracker.domain.calculateNormalWeightRange
 import com.weighttracker.domain.convertToM
 import com.weighttracker.persistence.database.weightrecords.WeightRecordEntity
 import com.weighttracker.persistence.database.weightrecords.WriteWeightRecordAct
+import com.weighttracker.persistence.datastore.activity.ActivityFlow
+import com.weighttracker.persistence.datastore.activity.WriteActivityAct
 import com.weighttracker.persistence.datastore.height.HeightFlow
 import com.weighttracker.persistence.datastore.height.WriteHeightAct
 import com.weighttracker.persistence.datastore.kgselected.KgSelectedFlow
@@ -15,7 +18,6 @@ import com.weighttracker.persistence.datastore.weight.WriteWeightAct
 import com.weighttracker.toUtc
 import dagger.hilt.android.lifecycle.HiltViewModel
 import kotlinx.coroutines.flow.Flow
-import kotlinx.coroutines.flow.combine
 import java.time.LocalDateTime
 import java.util.*
 import javax.inject.Inject
@@ -29,7 +31,9 @@ class BmiViewModel @Inject constructor(
     private val kgSelectedFlow: KgSelectedFlow,
     private val mSelectedFlow: MSelectedFlow,
     private val quoteFlow: QuoteFlow,
-    private val writeWeightRecordAct: WriteWeightRecordAct
+    private val writeWeightRecordAct: WriteWeightRecordAct,
+    private val activityFlow: ActivityFlow,
+    private val writeActivityAct: WriteActivityAct
 ) : SimpleFlowViewModel<BmiState, BmiEvent>() {
     override val initialUi = BmiState(
         weight = 0.0,
@@ -38,7 +42,8 @@ class BmiViewModel @Inject constructor(
         kg = true,
         m = true,
         quote = "",
-        normalWeightRange = null
+        normalWeightRange = null,
+        activity = ""
     )
 
     override val uiFlow: Flow<BmiState> = combine(
@@ -46,8 +51,9 @@ class BmiViewModel @Inject constructor(
         heightFlow(Unit),
         kgSelectedFlow(Unit),
         mSelectedFlow(Unit),
-        quoteFlow(Unit)
-    ) { weight, height, kgSelected, mSelected, quote ->
+        quoteFlow(Unit),
+        activityFlow(Unit),
+    ) { weight, height, kgSelected, mSelected, quote, activity ->
         BmiState(
             weight = weight,
             height = height,
@@ -57,6 +63,7 @@ class BmiViewModel @Inject constructor(
             kg = kgSelected,
             m = mSelected,
             quote = quote,
+            activity = activity,
             normalWeightRange = if (height != null) {
                 calculateNormalWeightRange(height, mSelected, kgSelected)
             } else {
@@ -104,7 +111,9 @@ class BmiViewModel @Inject constructor(
                     )
                 }
             }
-            is BmiEvent.ActivityChange -> TODO()
+            is BmiEvent.ActivityChange -> {
+                writeActivityAct(event.newActivityRec)
+            }
             BmiEvent.SaveActivityRecord -> TODO()
         }
     }

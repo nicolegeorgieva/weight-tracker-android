@@ -169,7 +169,7 @@ private fun UI(
                 .height(48.dp),
             colors = ButtonDefaults.buttonColors(
                 contentColor = Color.White,
-                containerColor = Color(0xFF478148)
+                containerColor = Color(0xFFE91E63)
             ),
             enabled = true,
             shape = RoundedCornerShape(16.dp),
@@ -207,7 +207,7 @@ private fun UI(
                 .height(48.dp),
             colors = ButtonDefaults.buttonColors(
                 contentColor = Color.White,
-                containerColor = Color(0xFF318874)
+                containerColor = Color(0xFF228CB6)
             ),
             enabled = true,
             shape = RoundedCornerShape(16.dp),
@@ -216,6 +216,25 @@ private fun UI(
             }
         ) {
             Text(text = "Weight records")
+        }
+
+        Spacer(modifier = Modifier.height(12.dp))
+
+        Button(
+            modifier = Modifier
+                .fillMaxWidth()
+                .height(48.dp),
+            colors = ButtonDefaults.buttonColors(
+                contentColor = Color.White,
+                containerColor = Color(0xFF119917)
+            ),
+            enabled = true,
+            shape = RoundedCornerShape(16.dp),
+            onClick = {
+                navigateTo(Screens.WeightRecords)
+            }
+        ) {
+            Text(text = "Activity records")
         }
     }
 }

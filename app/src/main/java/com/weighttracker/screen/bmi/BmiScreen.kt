@@ -91,9 +91,14 @@ private fun UI(
 
             Spacer(modifier = Modifier.width(16.dp))
 
-            Button(onClick = {
-                onEvent(BmiEvent.SaveWeightRecord)
-            }) {
+            Button(
+                onClick = {
+                    onEvent(BmiEvent.SaveWeightRecord)
+                }, colors = ButtonDefaults.buttonColors(
+                    contentColor = Color.White,
+                    containerColor = Color(0xFF228CB6)
+                )
+            ) {
                 Text(text = "Save")
             }
         }
@@ -126,13 +131,15 @@ private fun UI(
         Spacer(modifier = Modifier.height(16.dp))
 
         Row(verticalAlignment = Alignment.CenterVertically) {
-            InputField(
-                value = "",
-                modifier = Modifier.weight(1f),
-                placeholder = "e.g. swimming, tennis, walking 10k steps, gym",
-                onValueChange = {
-                    onEvent(BmiEvent.ActivityChange(newActivityRec = it))
-                })
+            state.activity?.let { it ->
+                InputField(
+                    value = it,
+                    modifier = Modifier.weight(1f),
+                    placeholder = "e.g. swimming, tennis, walking 10k steps, gym",
+                    onValueChange = {
+                        onEvent(BmiEvent.ActivityChange(newActivityRec = it))
+                    })
+            }
 
             Spacer(modifier = Modifier.width(16.dp))
 
@@ -350,7 +357,8 @@ private fun Preview() {
                 kg = true,
                 m = true,
                 quote = "",
-                normalWeightRange = null
+                normalWeightRange = null,
+                activity = ""
             ),
             onEvent = {}
         )
