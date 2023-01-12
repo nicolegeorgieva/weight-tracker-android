@@ -8,7 +8,7 @@ import javax.inject.Inject
 class DeleteWeightRecordAct @Inject constructor(
     private val appDatabase: AppDatabase
 ) : Action<UUID, Unit>() {
-    override suspend fun UUID.willDo() {
-        appDatabase.weightRecordDao().deleteById(this)
+    override suspend fun action(input: UUID) {
+        appDatabase.weightRecordDao().deleteById(input)
     }
 }

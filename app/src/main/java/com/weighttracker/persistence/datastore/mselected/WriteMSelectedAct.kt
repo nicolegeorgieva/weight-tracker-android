@@ -9,7 +9,7 @@ class WriteMSelectedAct @Inject constructor(
     private val appDataStore: AppDataStore,
     private val dataStoreKeys: DataStoreKeys,
 ) : Action<Boolean, Unit>() {
-    override suspend fun Boolean.willDo() {
-        appDataStore.put(dataStoreKeys.mSelected, this)
+    override suspend fun action(input: Boolean) {
+        appDataStore.put(dataStoreKeys.mSelected, input)
     }
 }

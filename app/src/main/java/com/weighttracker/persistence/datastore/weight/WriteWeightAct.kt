@@ -10,7 +10,7 @@ class WriteWeightAct @Inject constructor(
     private val appDataStore: AppDataStore,
     private val dataStoreKeys: DataStoreKeys,
 ) : Action<Double, Unit>() {
-    override suspend fun Double.willDo() {
-        appDataStore.put(dataStoreKeys.weight, this)
+    override suspend fun action(input: Double) {
+        appDataStore.put(dataStoreKeys.weight, input)
     }
 }

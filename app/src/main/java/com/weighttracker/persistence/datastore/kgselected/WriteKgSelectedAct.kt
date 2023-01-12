@@ -9,7 +9,7 @@ class WriteKgSelectedAct @Inject constructor(
     private val appDataStore: AppDataStore,
     private val dataStoreKeys: DataStoreKeys,
 ) : Action<Boolean, Unit>() {
-    override suspend fun Boolean.willDo() {
-        appDataStore.put(dataStoreKeys.kgSelected, this)
+    override suspend fun action(input: Boolean) {
+        appDataStore.put(dataStoreKeys.kgSelected, input)
     }
 }

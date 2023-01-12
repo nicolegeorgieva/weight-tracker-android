@@ -7,7 +7,7 @@ import javax.inject.Inject
 class WriteWeightRecordAct @Inject constructor(
     private val appDatabase: AppDatabase
 ) : Action<WeightRecordEntity, Unit>() {
-    override suspend fun WeightRecordEntity.willDo() {
-        appDatabase.weightRecordDao().save(this)
+    override suspend fun action(input: WeightRecordEntity) {
+        appDatabase.weightRecordDao().save(input)
     }
 }
