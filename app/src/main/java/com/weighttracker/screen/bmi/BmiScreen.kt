@@ -6,10 +6,7 @@ import androidx.compose.material.icons.Icons
 import androidx.compose.material.icons.filled.KeyboardArrowDown
 import androidx.compose.material.icons.filled.KeyboardArrowUp
 import androidx.compose.material.icons.filled.Menu
-import androidx.compose.material3.Button
-import androidx.compose.material3.Icon
-import androidx.compose.material3.IconButton
-import androidx.compose.material3.Text
+import androidx.compose.material3.*
 import androidx.compose.runtime.*
 import androidx.compose.ui.Alignment
 import androidx.compose.ui.Modifier
@@ -24,6 +21,7 @@ import androidx.lifecycle.viewmodel.compose.viewModel
 import com.weighttracker.AppTheme
 import com.weighttracker.Screens
 import com.weighttracker.browser
+import com.weighttracker.component.InputField
 import com.weighttracker.component.NumberInputField
 import com.weighttracker.navigateTo
 import java.text.DecimalFormat
@@ -118,6 +116,41 @@ private fun UI(
         }
 
         Spacer(modifier = Modifier.height(16.dp))
+
+        Text(
+            text = "Log your activity for today",
+            fontSize = 20.sp,
+            fontWeight = FontWeight.Bold
+        )
+
+        Spacer(modifier = Modifier.height(16.dp))
+
+        Row(verticalAlignment = Alignment.CenterVertically) {
+            InputField(
+                value = "",
+                modifier = Modifier.weight(1f),
+                placeholder = "e.g. swimming, tennis, walking 10k steps, gym",
+                onValueChange = {
+                    onEvent(BmiEvent.ActivityChange(newActivityRec = it))
+                })
+
+            Spacer(modifier = Modifier.width(16.dp))
+
+            Button(
+                onClick = {
+                    onEvent(BmiEvent.SaveActivityRecord)
+                }, colors = ButtonDefaults.buttonColors(
+                    contentColor = Color.White,
+                    containerColor = Color(0xFF119917)
+                )
+            ) {
+                Text(text = "Save")
+            }
+        }
+
+        Spacer(modifier = Modifier.height(24.dp))
+        Text(text = "__________________________________________________________")
+        Spacer(modifier = Modifier.height(24.dp))
 
         if (state.bmi != null && state.bmi > 0) {
             val bmiFormatted = DecimalFormat("###,###.#").format(state.bmi)

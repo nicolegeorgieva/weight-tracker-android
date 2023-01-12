@@ -104,6 +104,8 @@ class BmiViewModel @Inject constructor(
                     )
                 }
             }
+            is BmiEvent.ActivityChange -> TODO()
+            BmiEvent.SaveActivityRecord -> TODO()
         }
     }
 }
