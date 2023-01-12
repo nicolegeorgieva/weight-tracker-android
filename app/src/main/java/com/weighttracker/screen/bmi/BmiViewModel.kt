@@ -4,6 +4,8 @@ import com.weighttracker.base.SimpleFlowViewModel
 import com.weighttracker.combine
 import com.weighttracker.domain.calculateNormalWeightRange
 import com.weighttracker.domain.convertToM
+import com.weighttracker.persistence.database.activityrecords.ActivityRecordEntity
+import com.weighttracker.persistence.database.activityrecords.WriteActivityRecordAct
 import com.weighttracker.persistence.database.weightrecords.WeightRecordEntity
 import com.weighttracker.persistence.database.weightrecords.WriteWeightRecordAct
 import com.weighttracker.persistence.datastore.activity.ActivityFlow
@@ -33,7 +35,8 @@ class BmiViewModel @Inject constructor(
     private val quoteFlow: QuoteFlow,
     private val writeWeightRecordAct: WriteWeightRecordAct,
     private val activityFlow: ActivityFlow,
-    private val writeActivityAct: WriteActivityAct
+    private val writeActivityAct: WriteActivityAct,
+    private val writeActivityRecordAct: WriteActivityRecordAct
 ) : SimpleFlowViewModel<BmiState, BmiEvent>() {
     override val initialUi = BmiState(
         weight = 0.0,
@@ -114,7 +117,19 @@ class BmiViewModel @Inject constructor(
             is BmiEvent.ActivityChange -> {
                 writeActivityAct(event.newActivityRec)
             }
-            BmiEvent.SaveActivityRecord -> TODO()
+
+            BmiEvent.SaveActivityRecord -> {
+                val activity = uiState.value.activity
+                if (activity != null) {
+                    writeActivityRecordAct(
+                        ActivityRecordEntity(
+                            id = UUID.randomUUID(),
+                            dateTime = LocalDateTime.now().toUtc(),
+                            activity = activity
+                        )
+                    )
+                }
+            }
         }
     }
 }

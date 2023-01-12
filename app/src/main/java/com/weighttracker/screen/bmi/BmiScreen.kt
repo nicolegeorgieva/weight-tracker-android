@@ -131,15 +131,13 @@ private fun UI(
         Spacer(modifier = Modifier.height(16.dp))
 
         Row(verticalAlignment = Alignment.CenterVertically) {
-            state.activity?.let { it ->
-                InputField(
-                    value = it,
-                    modifier = Modifier.weight(1f),
-                    placeholder = "e.g. swimming, tennis, walking 10k steps, gym",
-                    onValueChange = {
-                        onEvent(BmiEvent.ActivityChange(newActivityRec = it))
-                    })
-            }
+            InputField(
+                value = state.activity ?: "",
+                modifier = Modifier.weight(1f),
+                placeholder = "e.g. swimming, tennis, walking 10k steps, gym",
+                onValueChange = {
+                    onEvent(BmiEvent.ActivityChange(newActivityRec = it))
+                })
 
             Spacer(modifier = Modifier.width(16.dp))
 
