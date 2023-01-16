@@ -159,6 +159,14 @@ private fun UI(
 
         Spacer(modifier = Modifier.height(16.dp))
 
+        Text(
+            text = "Log your water consumption for today",
+            fontSize = 20.sp,
+            fontWeight = FontWeight.Bold
+        )
+
+        Spacer(modifier = Modifier.height(16.dp))
+
         Row(verticalAlignment = Alignment.CenterVertically) {
             NumberInputField(
                 number = state.water,
