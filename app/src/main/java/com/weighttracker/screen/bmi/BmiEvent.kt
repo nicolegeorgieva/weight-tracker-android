@@ -6,4 +6,6 @@ sealed interface BmiEvent {
     object SaveWeightRecord : BmiEvent
     data class ActivityChange(val newActivityRec: String) : BmiEvent
     object SaveActivityRecord : BmiEvent
+    data class WaterChange(val newWaterRec: Double) : BmiEvent
+    object SaveWaterRecord : BmiEvent
 }

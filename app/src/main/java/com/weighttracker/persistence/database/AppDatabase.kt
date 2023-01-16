@@ -7,13 +7,16 @@ import androidx.room.RoomDatabase
 import androidx.room.TypeConverters
 import com.weighttracker.persistence.database.activityrecords.ActivityRecordDao
 import com.weighttracker.persistence.database.activityrecords.ActivityRecordEntity
+import com.weighttracker.persistence.database.waterrecords.WaterRecordDao
+import com.weighttracker.persistence.database.waterrecords.WaterRecordEntity
 import com.weighttracker.persistence.database.weightrecords.WeightRecordDao
 import com.weighttracker.persistence.database.weightrecords.WeightRecordEntity
 
 @Database(
     entities = [
         WeightRecordEntity::class,
-        ActivityRecordEntity::class
+        ActivityRecordEntity::class,
+        WaterRecordEntity::class
     ],
     version = 1,
     exportSchema = true,
@@ -24,6 +27,7 @@ import com.weighttracker.persistence.database.weightrecords.WeightRecordEntity
 abstract class AppDatabase : RoomDatabase() {
     abstract fun weightRecordDao(): WeightRecordDao
     abstract fun activityRecordDao(): ActivityRecordDao
+    abstract fun waterRecordDao(): WaterRecordDao
 
     companion object {
         private const val DB_NAME = "weight-tracker.db"

@@ -236,5 +236,24 @@ private fun UI(
         ) {
             Text(text = "Activity records")
         }
+
+        Spacer(modifier = Modifier.height(12.dp))
+
+        Button(
+            modifier = Modifier
+                .fillMaxWidth()
+                .height(48.dp),
+            colors = ButtonDefaults.buttonColors(
+                contentColor = Color.White,
+                containerColor = Color(0xFF2A337A)
+            ),
+            enabled = true,
+            shape = RoundedCornerShape(16.dp),
+            onClick = {
+                navigateTo(Screens.WaterRecords)
+            }
+        ) {
+            Text(text = "Water records")
+        }
     }
 }

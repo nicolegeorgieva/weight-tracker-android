@@ -9,6 +9,7 @@ import com.weighttracker.screen.bmi.BmiScreen
 import com.weighttracker.screen.converter.ConverterScreen
 import com.weighttracker.screen.quote.QuoteScreen
 import com.weighttracker.screen.settings.SettingsScreen
+import com.weighttracker.screen.waterRecords.WaterRecordsScreen
 import com.weighttracker.screen.weightGoal.WeightGoalScreen
 import com.weighttracker.screen.weightRecords.WeightRecordsScreen
 import dagger.hilt.android.AndroidEntryPoint
@@ -28,6 +29,7 @@ class MainActivity : ComponentActivity() {
                     Screens.Articles -> ArticlesScreen()
                     Screens.WeightRecords -> WeightRecordsScreen()
                     Screens.ActivityRecords -> ActivityRecordsScreen()
+                    Screens.WaterRecords -> WaterRecordsScreen()
                 }
             }
         }

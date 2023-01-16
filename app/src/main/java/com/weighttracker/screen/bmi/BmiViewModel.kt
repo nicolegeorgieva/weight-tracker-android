@@ -6,6 +6,8 @@ import com.weighttracker.domain.calculateNormalWeightRange
 import com.weighttracker.domain.convertToM
 import com.weighttracker.persistence.database.activityrecords.ActivityRecordEntity
 import com.weighttracker.persistence.database.activityrecords.WriteActivityRecordAct
+import com.weighttracker.persistence.database.waterrecords.WaterRecordEntity
+import com.weighttracker.persistence.database.waterrecords.WriteWaterRecordAct
 import com.weighttracker.persistence.database.weightrecords.WeightRecordEntity
 import com.weighttracker.persistence.database.weightrecords.WriteWeightRecordAct
 import com.weighttracker.persistence.datastore.activity.ActivityFlow
@@ -15,6 +17,8 @@ import com.weighttracker.persistence.datastore.height.WriteHeightAct
 import com.weighttracker.persistence.datastore.kgselected.KgSelectedFlow
 import com.weighttracker.persistence.datastore.mselected.MSelectedFlow
 import com.weighttracker.persistence.datastore.quote.QuoteFlow
+import com.weighttracker.persistence.datastore.water.WaterFlow
+import com.weighttracker.persistence.datastore.water.WriteWaterAct
 import com.weighttracker.persistence.datastore.weight.WeightFlow
 import com.weighttracker.persistence.datastore.weight.WriteWeightAct
 import com.weighttracker.toUtc
@@ -36,7 +40,10 @@ class BmiViewModel @Inject constructor(
     private val writeWeightRecordAct: WriteWeightRecordAct,
     private val activityFlow: ActivityFlow,
     private val writeActivityAct: WriteActivityAct,
-    private val writeActivityRecordAct: WriteActivityRecordAct
+    private val writeActivityRecordAct: WriteActivityRecordAct,
+    private val waterFlow: WaterFlow,
+    private val writeWaterAct: WriteWaterAct,
+    private val writeWaterRecordAct: WriteWaterRecordAct
 ) : SimpleFlowViewModel<BmiState, BmiEvent>() {
     override val initialUi = BmiState(
         weight = 0.0,
@@ -46,7 +53,8 @@ class BmiViewModel @Inject constructor(
         m = true,
         quote = "",
         normalWeightRange = null,
-        activity = ""
+        activity = "",
+        water = null
     )
 
     override val uiFlow: Flow<BmiState> = combine(
@@ -56,7 +64,8 @@ class BmiViewModel @Inject constructor(
         mSelectedFlow(Unit),
         quoteFlow(Unit),
         activityFlow(Unit),
-    ) { weight, height, kgSelected, mSelected, quote, activity ->
+        waterFlow(Unit)
+    ) { weight, height, kgSelected, mSelected, quote, activity, water ->
         BmiState(
             weight = weight,
             height = height,
@@ -67,6 +76,7 @@ class BmiViewModel @Inject constructor(
             m = mSelected,
             quote = quote,
             activity = activity,
+            water = water,
             normalWeightRange = if (height != null) {
                 calculateNormalWeightRange(height, mSelected, kgSelected)
             } else {
@@ -129,6 +139,21 @@ class BmiViewModel @Inject constructor(
                         )
                     )
                 }
+            }
+            BmiEvent.SaveWaterRecord -> {
+                val water = uiState.value.water
+                if (water != null) {
+                    writeWaterRecordAct(
+                        WaterRecordEntity(
+                            id = UUID.randomUUID(),
+                            dateTime = LocalDateTime.now().toUtc(),
+                            water = water
+                        )
+                    )
+                }
+            }
+            is BmiEvent.WaterChange -> {
+                writeWaterAct(event.newWaterRec)
             }
         }
     }

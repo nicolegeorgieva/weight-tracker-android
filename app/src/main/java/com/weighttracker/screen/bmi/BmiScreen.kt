@@ -100,7 +100,7 @@ private fun UI(
                     onEvent(BmiEvent.SaveWeightRecord)
                 }, colors = ButtonDefaults.buttonColors(
                     contentColor = Color.White,
-                    containerColor = Color(0xFF228CB6)
+                    containerColor = Color(0xFF444647)
                 )
             ) {
                 Text(text = "Save")
@@ -151,6 +151,30 @@ private fun UI(
                 }, colors = ButtonDefaults.buttonColors(
                     contentColor = Color.White,
                     containerColor = Color(0xFF119917)
+                )
+            ) {
+                Text(text = "Save")
+            }
+        }
+
+        Spacer(modifier = Modifier.height(16.dp))
+
+        Row(verticalAlignment = Alignment.CenterVertically) {
+            NumberInputField(
+                number = state.water,
+                placeholder = "Water: 1, 2, 1.5, ...",
+                onValueChange = {
+                    onEvent(BmiEvent.WaterChange(newWaterRec = it))
+                })
+
+            Spacer(modifier = Modifier.width(16.dp))
+
+            Button(
+                onClick = {
+                    onEvent(BmiEvent.SaveWaterRecord)
+                }, colors = ButtonDefaults.buttonColors(
+                    contentColor = Color.White,
+                    containerColor = Color(0xFF0E3C5F)
                 )
             ) {
                 Text(text = "Save")
@@ -360,7 +384,8 @@ private fun Preview() {
                 m = true,
                 quote = "",
                 normalWeightRange = null,
-                activity = ""
+                activity = "",
+                water = null
             ),
             onEvent = {}
         )

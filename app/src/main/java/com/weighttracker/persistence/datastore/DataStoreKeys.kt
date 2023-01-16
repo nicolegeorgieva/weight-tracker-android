@@ -15,4 +15,5 @@ class DataStoreKeys @Inject constructor() {
     val quote by lazy { stringPreferencesKey(name = "quote") }
     val weightGoal by lazy { doublePreferencesKey(name = "weight_goal") }
     val activity by lazy { stringPreferencesKey(name = "activity") }
+    val water by lazy { doublePreferencesKey(name = "water") }
 }
