@@ -20,16 +20,16 @@ class MainActivity : ComponentActivity() {
         super.onCreate(savedInstanceState)
         setContent {
             AppTheme {
-                when (currentScreen.value) {
+                when (val screen = currentScreen.value) {
                     Screens.BMI -> BmiScreen()
                     Screens.Settings -> SettingsScreen()
                     Screens.Converter -> ConverterScreen()
                     Screens.Quote -> QuoteScreen()
                     Screens.WeightGoal -> WeightGoalScreen()
                     Screens.Articles -> ArticlesScreen()
-                    Screens.WeightRecords -> WeightRecordsScreen()
                     Screens.ActivityRecords -> ActivityRecordsScreen()
                     Screens.WaterRecords -> WaterRecordsScreen()
+                    is Screens.WeightRecords -> WeightRecordsScreen(screen = screen)
                 }
             }
         }

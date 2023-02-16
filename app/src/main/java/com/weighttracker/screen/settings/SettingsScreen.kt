@@ -212,7 +212,7 @@ private fun UI(
             enabled = true,
             shape = RoundedCornerShape(16.dp),
             onClick = {
-                navigateTo(Screens.WeightRecords)
+                navigateTo(Screens.WeightRecords(backTo = Screens.Settings))
             }
         ) {
             Text(text = "Weight records")

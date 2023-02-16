@@ -98,7 +98,7 @@ private fun UI(
             Button(
                 onClick = {
                     onEvent(BmiEvent.SaveWeightRecord)
-                    navigateTo(Screens.WeightRecords)
+                    navigateTo(Screens.WeightRecords(backTo = Screens.BMI))
                 }, colors = ButtonDefaults.buttonColors(
                     contentColor = Color.White,
                     containerColor = Color(0xFF444647)
