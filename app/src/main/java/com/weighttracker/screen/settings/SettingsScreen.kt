@@ -231,7 +231,7 @@ private fun UI(
             enabled = true,
             shape = RoundedCornerShape(16.dp),
             onClick = {
-                navigateTo(Screens.ActivityRecords)
+                navigateTo(Screens.ActivityRecords(backTo = Screens.Settings))
             }
         ) {
             Text(text = "Activity records")
@@ -250,7 +250,7 @@ private fun UI(
             enabled = true,
             shape = RoundedCornerShape(16.dp),
             onClick = {
-                navigateTo(Screens.WaterRecords)
+                navigateTo(Screens.WaterRecords(backTo = Screens.Settings))
             }
         ) {
             Text(text = "Water records")

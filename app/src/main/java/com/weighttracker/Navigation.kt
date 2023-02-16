@@ -12,8 +12,8 @@ sealed interface Screens {
     object WeightGoal : Screens
     object Articles : Screens
     data class WeightRecords(val backTo: Screens) : Screens
-    object ActivityRecords : Screens
-    object WaterRecords : Screens
+    data class ActivityRecords(val backTo: Screens) : Screens
+    data class WaterRecords(val backTo: Screens) : Screens
 }
 
 fun navigateTo(screens: Screens) {

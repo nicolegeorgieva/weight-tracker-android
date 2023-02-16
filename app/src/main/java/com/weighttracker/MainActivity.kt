@@ -27,9 +27,9 @@ class MainActivity : ComponentActivity() {
                     Screens.Quote -> QuoteScreen()
                     Screens.WeightGoal -> WeightGoalScreen()
                     Screens.Articles -> ArticlesScreen()
-                    Screens.ActivityRecords -> ActivityRecordsScreen()
-                    Screens.WaterRecords -> WaterRecordsScreen()
                     is Screens.WeightRecords -> WeightRecordsScreen(screen = screen)
+                    is Screens.ActivityRecords -> ActivityRecordsScreen(screen = screen)
+                    is Screens.WaterRecords -> WaterRecordsScreen(screen = screen)
                 }
             }
         }

@@ -149,6 +149,7 @@ private fun UI(
             Button(
                 onClick = {
                     onEvent(BmiEvent.SaveActivityRecord)
+                    navigateTo(Screens.ActivityRecords(backTo = Screens.BMI))
                 }, colors = ButtonDefaults.buttonColors(
                     contentColor = Color.White,
                     containerColor = Color(0xFF119917)
@@ -181,6 +182,7 @@ private fun UI(
             Button(
                 onClick = {
                     onEvent(BmiEvent.SaveWaterRecord)
+                    navigateTo(Screens.WaterRecords(backTo = Screens.BMI))
                 }, colors = ButtonDefaults.buttonColors(
                     contentColor = Color.White,
                     containerColor = Color(0xFF0E3C5F)
