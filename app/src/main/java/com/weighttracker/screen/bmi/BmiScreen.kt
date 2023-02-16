@@ -193,7 +193,7 @@ private fun UI(
         }
 
         Spacer(modifier = Modifier.height(24.dp))
-        Text(text = "__________________________________________________________")
+        Divider(modifier = Modifier.fillMaxWidth(), thickness = 1.dp)
         Spacer(modifier = Modifier.height(24.dp))
 
         if (state.bmi != null && state.bmi > 0) {
