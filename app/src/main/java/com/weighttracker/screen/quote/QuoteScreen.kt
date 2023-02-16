@@ -18,20 +18,21 @@ import com.weighttracker.component.BackButton
 import com.weighttracker.component.InputField
 
 @Composable
-fun QuoteScreen() {
+fun QuoteScreen(screen: Screens.Quote) {
     val viewModel: QuoteViewModel = viewModel()
     val state by viewModel.uiState.collectAsState()
 
-    UI(state = state, onEvent = viewModel::onEvent)
+    UI(state = state, onEvent = viewModel::onEvent, screen = screen)
 }
 
 @Composable
 private fun UI(
+    screen: Screens.Quote,
     state: QuoteState,
     onEvent: (QuoteEvent) -> Unit,
 ) {
     Column(modifier = Modifier.padding(horizontal = 16.dp, vertical = 16.dp)) {
-        BackButton(screens = Screens.Settings)
+        BackButton(screens = screen.backTo)
 
         Spacer(modifier = Modifier.height(32.dp))
 

@@ -8,7 +8,7 @@ sealed interface Screens {
     object BMI : Screens
     object Settings : Screens
     object Converter : Screens
-    object Quote : Screens
+    data class Quote(val backTo: Screens) : Screens
     object WeightGoal : Screens
     object Articles : Screens
     data class WeightRecords(val backTo: Screens) : Screens

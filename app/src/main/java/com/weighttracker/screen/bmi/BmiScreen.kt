@@ -54,7 +54,7 @@ private fun UI(
                     modifier = Modifier
                         .weight(1f)
                         .clickable {
-                            navigateTo(Screens.Quote)
+                            navigateTo(Screens.Quote(backTo = Screens.BMI))
                         },
                     text = "${state.quote}",
                     color = Color.Magenta,

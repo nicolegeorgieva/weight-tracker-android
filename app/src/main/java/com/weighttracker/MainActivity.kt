@@ -24,12 +24,12 @@ class MainActivity : ComponentActivity() {
                     Screens.BMI -> BmiScreen()
                     Screens.Settings -> SettingsScreen()
                     Screens.Converter -> ConverterScreen()
-                    Screens.Quote -> QuoteScreen()
                     Screens.WeightGoal -> WeightGoalScreen()
                     Screens.Articles -> ArticlesScreen()
                     is Screens.WeightRecords -> WeightRecordsScreen(screen = screen)
                     is Screens.ActivityRecords -> ActivityRecordsScreen(screen = screen)
                     is Screens.WaterRecords -> WaterRecordsScreen(screen = screen)
+                    is Screens.Quote -> QuoteScreen(screen = screen)
                 }
             }
         }

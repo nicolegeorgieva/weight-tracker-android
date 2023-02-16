@@ -155,7 +155,7 @@ private fun UI(
             enabled = true,
             shape = RoundedCornerShape(16.dp),
             onClick = {
-                navigateTo(Screens.Quote)
+                navigateTo(Screens.Quote(backTo = Screens.Settings))
             }
         ) {
             Text(text = "Add a quote to home screen")
