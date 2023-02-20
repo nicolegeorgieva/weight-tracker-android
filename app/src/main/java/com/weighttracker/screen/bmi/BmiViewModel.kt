@@ -4,6 +4,7 @@ import com.weighttracker.base.SimpleFlowViewModel
 import com.weighttracker.combine
 import com.weighttracker.domain.calculateBmi
 import com.weighttracker.domain.calculateNormalWeightRange
+import com.weighttracker.domain.glasses
 import com.weighttracker.persistence.database.activityrecords.ActivityRecordEntity
 import com.weighttracker.persistence.database.activityrecords.WriteActivityRecordAct
 import com.weighttracker.persistence.database.waterrecords.WaterRecordEntity
@@ -54,7 +55,8 @@ class BmiViewModel @Inject constructor(
         quote = "",
         normalWeightRange = null,
         activity = "",
-        water = null
+        water = 0.0,
+        glasses = emptyList()
     )
 
     override val uiFlow: Flow<BmiState> = combine(
@@ -76,12 +78,13 @@ class BmiViewModel @Inject constructor(
             m = mSelected,
             quote = quote,
             activity = activity,
-            water = water,
+            water = water ?: 0.0,
             normalWeightRange = if (height != null) {
                 calculateNormalWeightRange(height, mSelected, kgSelected)
             } else {
                 null
-            }
+            },
+            glasses = glasses(water ?: 0.0)
         )
     }
 
@@ -135,6 +138,14 @@ class BmiViewModel @Inject constructor(
             }
             is BmiEvent.WaterChange -> {
                 writeWaterAct(event.newWaterRec)
+            }
+            is BmiEvent.GlassClick -> {
+                val water = uiState.value.water
+                if (event.filled) { //a full glass is clicked so it becomes empty
+                    writeWaterAct(water - 0.25)
+                } else {
+                    writeWaterAct(water + 0.25)
+                }
             }
         }
     }

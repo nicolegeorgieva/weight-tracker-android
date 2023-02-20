@@ -2,8 +2,9 @@ package com.weighttracker.screen.bmi
 
 import androidx.compose.foundation.clickable
 import androidx.compose.foundation.layout.*
-import androidx.compose.foundation.rememberScrollState
-import androidx.compose.foundation.verticalScroll
+import androidx.compose.foundation.lazy.grid.GridCells
+import androidx.compose.foundation.lazy.grid.LazyVerticalGrid
+import androidx.compose.foundation.lazy.grid.items
 import androidx.compose.material.icons.Icons
 import androidx.compose.material.icons.filled.KeyboardArrowDown
 import androidx.compose.material.icons.filled.KeyboardArrowUp
@@ -23,6 +24,7 @@ import androidx.lifecycle.viewmodel.compose.viewModel
 import com.weighttracker.AppTheme
 import com.weighttracker.Screens
 import com.weighttracker.browser
+import com.weighttracker.component.Glass
 import com.weighttracker.component.InputField
 import com.weighttracker.component.NumberInputField
 import com.weighttracker.domain.formatBmi
@@ -45,7 +47,7 @@ private fun UI(
     Column(
         modifier = Modifier
             .padding(horizontal = 16.dp)
-            .verticalScroll(rememberScrollState())
+//            .verticalScroll(rememberScrollState())
     ) {
         Row(
             verticalAlignment = Alignment.CenterVertically
@@ -170,6 +172,10 @@ private fun UI(
 
         Spacer(modifier = Modifier.height(16.dp))
 
+        GlassesGrid(glasses = state.glasses, onEvent = onEvent)
+
+        Spacer(modifier = Modifier.height(16.dp))
+
         Row(verticalAlignment = Alignment.CenterVertically) {
             NumberInputField(
                 number = state.water,
@@ -270,6 +276,22 @@ private fun UI(
                     fontSize = 16.sp
                 )
             }
+        }
+    }
+}
+
+@Composable
+fun GlassesGrid(glasses: List<Boolean>, onEvent: (BmiEvent) -> Unit) {
+    LazyVerticalGrid(
+        columns = GridCells.Adaptive(64.dp),
+        userScrollEnabled = false,
+    ) {
+        items(items = glasses) { filled ->
+            Glass(
+                modifier = Modifier.padding(vertical = 8.dp),
+                filled = filled,
+                onFilledChange = { onEvent(BmiEvent.GlassClick(filled = filled)) }
+            )
         }
     }
 }
@@ -396,7 +418,8 @@ private fun Preview() {
                 quote = "",
                 normalWeightRange = null,
                 activity = "",
-                water = null
+                water = 0.0,
+                glasses = emptyList()
             ),
             onEvent = {}
         )

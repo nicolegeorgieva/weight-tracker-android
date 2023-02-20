@@ -8,4 +8,5 @@ sealed interface BmiEvent {
     object SaveActivityRecord : BmiEvent
     data class WaterChange(val newWaterRec: Double) : BmiEvent
     object SaveWaterRecord : BmiEvent
+    data class GlassClick(val filled: Boolean) : BmiEvent
 }

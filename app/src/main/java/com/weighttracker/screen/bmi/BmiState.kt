@@ -9,5 +9,6 @@ data class BmiState(
     val quote: String?,
     val normalWeightRange: Pair<Double, Double>?,
     val activity: String?,
-    val water: Double?
+    val water: Double,
+    val glasses: List<Boolean>
 )
