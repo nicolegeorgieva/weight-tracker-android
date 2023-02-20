@@ -7,12 +7,12 @@ plugins {
 
 android {
     namespace 'com.weighttracker'
-    compileSdk 32
+    compileSdk 33
 
     defaultConfig {
         applicationId "com.weighttracker"
         minSdk 29
-        targetSdk 32
+        targetSdk 33
         versionCode 1
         versionName "1.0"
 
@@ -85,6 +85,9 @@ dependencies {
     debugImplementation "androidx.compose.ui:ui-test-manifest:$compose_version"
     testImplementation "io.kotest:kotest-runner-junit5:5.5.5"
     testImplementation "io.kotest:kotest-assertions-core:5.5.5"
+
+    implementation 'com.google.accompanist:accompanist-webview:0.29.1-alpha'
+
 
     // region Network
     var ktor = "2.0.3"

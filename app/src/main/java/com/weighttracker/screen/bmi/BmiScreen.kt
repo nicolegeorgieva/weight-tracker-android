@@ -2,9 +2,8 @@ package com.weighttracker.screen.bmi
 
 import androidx.compose.foundation.clickable
 import androidx.compose.foundation.layout.*
-import androidx.compose.foundation.lazy.grid.GridCells
-import androidx.compose.foundation.lazy.grid.LazyVerticalGrid
-import androidx.compose.foundation.lazy.grid.items
+import androidx.compose.foundation.rememberScrollState
+import androidx.compose.foundation.verticalScroll
 import androidx.compose.material.icons.Icons
 import androidx.compose.material.icons.filled.KeyboardArrowDown
 import androidx.compose.material.icons.filled.KeyboardArrowUp
@@ -47,7 +46,7 @@ private fun UI(
     Column(
         modifier = Modifier
             .padding(horizontal = 16.dp)
-//            .verticalScroll(rememberScrollState())
+            .verticalScroll(rememberScrollState())
     ) {
         Row(
             verticalAlignment = Alignment.CenterVertically
@@ -280,13 +279,14 @@ private fun UI(
     }
 }
 
+@OptIn(ExperimentalLayoutApi::class)
 @Composable
 fun GlassesGrid(glasses: List<Boolean>, onEvent: (BmiEvent) -> Unit) {
-    LazyVerticalGrid(
-        columns = GridCells.Adaptive(64.dp),
-        userScrollEnabled = false,
+    FlowRow(
+        modifier = Modifier.fillMaxWidth(),
+        maxItemsInEachRow = 4,
     ) {
-        items(items = glasses) { filled ->
+        glasses.forEach { filled ->
             Glass(
                 modifier = Modifier.padding(vertical = 8.dp),
                 filled = filled,
