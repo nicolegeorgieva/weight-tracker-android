@@ -61,6 +61,12 @@ android {
             excludes += '/META-INF/{AL2.0,LGPL2.1}'
         }
     }
+
+    testOptions {
+        unitTests.all {
+            it.useJUnitPlatform()
+        }
+    }
 }
 
 dependencies {
@@ -77,6 +83,8 @@ dependencies {
     androidTestImplementation "androidx.compose.ui:ui-test-junit4:$compose_version"
     debugImplementation "androidx.compose.ui:ui-tooling:$compose_version"
     debugImplementation "androidx.compose.ui:ui-test-manifest:$compose_version"
+    testImplementation "io.kotest:kotest-runner-junit5:5.5.5"
+    testImplementation "io.kotest:kotest-assertions-core:5.5.5"
 
     // region Network
     var ktor = "2.0.3"

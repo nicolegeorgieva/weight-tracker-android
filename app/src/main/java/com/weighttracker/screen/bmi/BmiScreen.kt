@@ -25,6 +25,7 @@ import com.weighttracker.Screens
 import com.weighttracker.browser
 import com.weighttracker.component.InputField
 import com.weighttracker.component.NumberInputField
+import com.weighttracker.domain.formatBmi
 import com.weighttracker.navigateTo
 import java.text.DecimalFormat
 
@@ -197,9 +198,8 @@ private fun UI(
         Spacer(modifier = Modifier.height(24.dp))
 
         if (state.bmi != null && state.bmi > 0) {
-            val bmiFormatted = DecimalFormat("###,###.#").format(state.bmi)
             Text(
-                text = "Your BMI is $bmiFormatted.",
+                text = "Your BMI is ${formatBmi(state.bmi)}.",
                 fontWeight = FontWeight.Bold,
                 fontSize = 16.sp
             )

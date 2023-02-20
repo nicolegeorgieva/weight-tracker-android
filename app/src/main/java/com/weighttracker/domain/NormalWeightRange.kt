@@ -17,12 +17,3 @@ fun calculateNormalWeightRange(
         Pair(minWeightInLb, maxWeightInLb)
     }
 }
-
-fun convertToM(height: Double, mSelected: Boolean): Double {
-    return if (mSelected) {
-        height
-    } else {
-        // foot selected
-        height * 0.3048
-    }
-}
