@@ -284,7 +284,6 @@ private fun UI(
 fun GlassesGrid(glasses: List<Boolean>, onEvent: (BmiEvent) -> Unit) {
     FlowRow(
         modifier = Modifier.fillMaxWidth(),
-        maxItemsInEachRow = 4,
     ) {
         glasses.forEach { filled ->
             Glass(

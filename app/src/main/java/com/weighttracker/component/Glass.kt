@@ -16,7 +16,7 @@ fun Glass(
 ) {
     AsyncImage(
         modifier = modifier
-            .size(48.dp)
+            .size(56.dp)
             .clickable {
                 onFilledChange(!filled)
             },
