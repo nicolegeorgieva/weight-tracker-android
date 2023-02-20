@@ -1,8 +1,16 @@
 package com.weighttracker.screen.weightRecords
 
-import com.weighttracker.persistence.database.weightrecords.WeightRecordEntity
+import java.time.Instant
+import java.util.*
+
+data class WeightRecordWithBmi(
+    val id: UUID,
+    val weightInKg: Double,
+    val date: Instant,
+    val bmi: String?
+)
 
 data class WeightRecordsState(
-    val weightRecords: List<WeightRecordEntity>,
+    val weightRecords: List<WeightRecordWithBmi>,
     val weightUnit: String
 )

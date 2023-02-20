@@ -24,7 +24,6 @@ import com.weighttracker.*
 import com.weighttracker.R
 import com.weighttracker.component.BackButton
 import com.weighttracker.component.NumberInputField
-import com.weighttracker.persistence.database.weightrecords.WeightRecordEntity
 
 @Composable
 fun WeightRecordsScreen(screen: Screens.WeightRecords) {
@@ -59,7 +58,7 @@ private fun UI(
 
 @Composable
 private fun WeightRecordCard(
-    weightRecord: WeightRecordEntity,
+    weightRecord: WeightRecordWithBmi,
     onEvent: (WeightRecordsEvent) -> Unit,
     state: WeightRecordsState
 ) {
@@ -77,18 +76,25 @@ private fun WeightRecordCard(
         horizontalAlignment = Alignment.CenterHorizontally
     ) {
         if (!editCard) {
-            Row() {
-                val formattedWeight = formatNumber(weightRecord.weightKg)
+            Row(verticalAlignment = Alignment.CenterVertically) {
+                val formattedWeight = formatNumber(weightRecord.weightInKg)
 
                 Column(modifier = Modifier.weight(1f)) {
-                    Text(text = weightRecord.dateTime.toLocal().format("dd. MMM yyyy   HH:mm"))
+                    Text(text = weightRecord.date.toLocal().format("dd. MMM yyyy   HH:mm"))
                     Spacer(modifier = Modifier.height(12.dp))
                     Text(
                         text = "$formattedWeight ${state.weightUnit}",
                         textAlign = TextAlign.Center,
                         fontWeight = FontWeight.Bold
                     )
+                    Spacer(modifier = Modifier.height(12.dp))
+                    Text(
+                        text = "BMI: ${weightRecord.bmi}",
+                        textAlign = TextAlign.Center
+                    )
+
                 }
+
                 Button(
                     modifier = Modifier.size(48.dp),
                     onClick = {
@@ -107,7 +113,7 @@ private fun WeightRecordCard(
         } else {
             Row() {
                 var weightInput by remember {
-                    mutableStateOf(weightRecord.weightKg)
+                    mutableStateOf(weightRecord.weightInKg)
                 }
 
                 Column(modifier = Modifier.weight(1f)) {
@@ -125,10 +131,11 @@ private fun WeightRecordCard(
                         editCard = false
                         onEvent(
                             WeightRecordsEvent.UpdateWeightRecord(
-                                newRecord = WeightRecordEntity(
+                                newRecord = WeightRecordWithBmi(
                                     id = weightRecord.id,
-                                    dateTime = weightRecord.dateTime,
-                                    weightKg = weightInput
+                                    date = weightRecord.date,
+                                    weightInKg = weightInput,
+                                    bmi = weightRecord.bmi
                                 )
                             )
                         )
