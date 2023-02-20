@@ -6,7 +6,7 @@ import androidx.compose.ui.Modifier
 import androidx.compose.ui.platform.LocalSoftwareKeyboardController
 import androidx.compose.ui.text.input.ImeAction
 import androidx.compose.ui.text.input.KeyboardType
-import java.text.DecimalFormat
+import com.weighttracker.formatNumber
 
 @OptIn(ExperimentalComposeUiApi::class)
 @Composable
@@ -20,7 +20,7 @@ fun NumberInputField(
     InputField(
         modifier = modifier,
         value = if (number != null)
-            DecimalFormat("###,###.##").format(number) else "",
+            formatNumber(number) else "",
         placeholder = placeholder,
         keyboardType = KeyboardType.Number,
         onValueChange = {

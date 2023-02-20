@@ -17,6 +17,9 @@ import java.util.*
 @Composable
 fun browser(): UriHandler = LocalUriHandler.current
 
+/**
+ * @return 2 decimals after "." if they make sense (e.g. "50.0" -> 50; "49.45" -> "49.45")
+ */
 fun formatNumber(number: Double): String {
     return DecimalFormat("###,###.##").format(number)
 }
