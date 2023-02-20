@@ -14,5 +14,5 @@ data class WeightRecordEntity(
     @ColumnInfo(name = "dateTime")
     val dateTime: Instant,
     @ColumnInfo(name = "weightKg")
-    val weightKg: Double
+    val weightInKg: Double
 )

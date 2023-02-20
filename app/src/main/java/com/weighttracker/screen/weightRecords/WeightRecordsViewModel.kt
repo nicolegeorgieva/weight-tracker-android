@@ -2,6 +2,7 @@ package com.weighttracker.screen.weightRecords
 
 import com.weighttracker.base.SimpleFlowViewModel
 import com.weighttracker.domain.calculateBmi
+import com.weighttracker.domain.convertToKg
 import com.weighttracker.persistence.database.weightrecords.DeleteWeightRecordAct
 import com.weighttracker.persistence.database.weightrecords.WeightRecordEntity
 import com.weighttracker.persistence.database.weightrecords.WeightRecordsFlow
@@ -43,14 +44,13 @@ class WeightRecordsViewModel @Inject constructor(
                     WeightRecordWithBmi(
                         id = record.id,
                         date = record.dateTime,
-                        weightInKg = if (kgSelected) {
-                            record.weightKg
-                        } else {
-                            record.weightKg * 2.205
-                        },
+                        weightInKg = convertToKg(
+                            weight = record.weightInKg,
+                            kgSelected = kgSelected
+                        ),
                         bmi = if (height != null) {
                             calculateBmi(
-                                weight = record.weightKg, height = height,
+                                weight = record.weightInKg, height = height,
                                 kgSelected = kgSelected, mSelected = mSelected
                             )
                         } else null
@@ -68,7 +68,7 @@ class WeightRecordsViewModel @Inject constructor(
             is WeightRecordsEvent.UpdateWeightRecord -> {
                 val entity = WeightRecordEntity(
                     id = event.newRecord.id,
-                    dateTime = event.newRecord.date, weightKg = event.newRecord.weightInKg
+                    dateTime = event.newRecord.date, weightInKg = event.newRecord.weightInKg
                 )
                 writeWeightRecordAct(entity)
             }

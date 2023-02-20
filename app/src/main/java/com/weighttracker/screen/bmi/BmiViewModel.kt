@@ -100,7 +100,7 @@ class BmiViewModel @Inject constructor(
                         WeightRecordEntity(
                             id = UUID.randomUUID(),
                             dateTime = LocalDateTime.now().toUtc(),
-                            weightKg = weight
+                            weightInKg = weight
                         )
                     )
                 }
