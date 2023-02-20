@@ -24,6 +24,7 @@ import com.weighttracker.*
 import com.weighttracker.R
 import com.weighttracker.component.BackButton
 import com.weighttracker.component.NumberInputField
+import com.weighttracker.domain.formatBmi
 
 @Composable
 fun WeightRecordsScreen(screen: Screens.WeightRecords) {
@@ -78,6 +79,9 @@ private fun WeightRecordCard(
         if (!editCard) {
             Row(verticalAlignment = Alignment.CenterVertically) {
                 val formattedWeight = formatNumber(weightRecord.weightInKg)
+                val formattedBmi = if (weightRecord.bmi != null) {
+                    formatBmi(weightRecord.bmi)
+                } else null
 
                 Column(modifier = Modifier.weight(1f)) {
                     Text(text = weightRecord.date.toLocal().format("dd. MMM yyyy   HH:mm"))
@@ -89,7 +93,19 @@ private fun WeightRecordCard(
                     )
                     Spacer(modifier = Modifier.height(12.dp))
                     Text(
-                        text = "BMI: ${weightRecord.bmi}",
+                        text = "BMI: $formattedBmi",
+                        color = if (weightRecord.bmi != null) {
+                            when (weightRecord.bmi) {
+                                in 0.0..18.49 -> Color(0xFFA7C7E7)
+                                in 18.5..25.0 -> Color(0xFF4CBB17)
+                                in 25.0..30.0 -> Color(0xFFE2D02B)
+                                in 30.0..35.0 -> Color(0xFFFFA500)
+                                in 35.0..40.0 -> Color.Red
+                                else -> {
+                                    Color(0xFFC41E3A)
+                                }
+                            }
+                        } else Color.Black,
                         textAlign = TextAlign.Center
                     )
 

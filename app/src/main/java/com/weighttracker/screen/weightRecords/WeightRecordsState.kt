@@ -7,7 +7,7 @@ data class WeightRecordWithBmi(
     val id: UUID,
     val weightInKg: Double,
     val date: Instant,
-    val bmi: String?
+    val bmi: Double?
 )
 
 data class WeightRecordsState(
