@@ -2,8 +2,7 @@ package com.weighttracker.screen.bmi
 
 import androidx.compose.foundation.clickable
 import androidx.compose.foundation.layout.*
-import androidx.compose.foundation.rememberScrollState
-import androidx.compose.foundation.verticalScroll
+import androidx.compose.foundation.lazy.LazyColumn
 import androidx.compose.material.icons.Icons
 import androidx.compose.material.icons.filled.KeyboardArrowDown
 import androidx.compose.material.icons.filled.KeyboardArrowUp
@@ -43,238 +42,264 @@ private fun UI(
     state: BmiState,
     onEvent: (BmiEvent) -> Unit,
 ) {
-    Column(
-        modifier = Modifier
-            .padding(horizontal = 16.dp)
-            .verticalScroll(rememberScrollState())
+    LazyColumn(
+        modifier = Modifier.fillMaxSize(),
+        contentPadding = PaddingValues(16.dp)
     ) {
-        Row(
-            verticalAlignment = Alignment.CenterVertically
-        ) {
-            if (state.quote != null && state.quote.isNotBlank()) {
+        item {
+            Row(
+                verticalAlignment = Alignment.CenterVertically
+            ) {
+                if (state.quote != null && state.quote.isNotBlank()) {
+                    Text(
+                        modifier = Modifier
+                            .weight(1f)
+                            .clickable {
+                                navigateTo(Screens.Quote(backTo = Screens.BMI))
+                            },
+                        text = "${state.quote}",
+                        color = Color.Magenta,
+                        fontStyle = FontStyle.Italic
+                    )
+
+                    Spacer(modifier = Modifier.width(32.dp))
+                } else {
+                    Spacer(modifier = Modifier.weight(1f))
+                }
+
+                MoreMenuButton()
+            }
+        }
+
+        item {
+            Text(
+                text = "Log your weight and height",
+                fontSize = 20.sp,
+                fontWeight = FontWeight.Bold
+            )
+
+            Spacer(modifier = Modifier.height(16.dp))
+        }
+
+        item {
+            Row(verticalAlignment = Alignment.CenterVertically) {
+                NumberInputField(number = state.weight,
+                    modifier = Modifier.weight(1f), placeholder = "Weight", onValueChange = {
+                        onEvent(BmiEvent.WeightChange(newWeightRec = it))
+                    })
+                Spacer(modifier = Modifier.width(8.dp))
                 Text(
-                    modifier = Modifier
-                        .weight(1f)
-                        .clickable {
-                            navigateTo(Screens.Quote(backTo = Screens.BMI))
-                        },
-                    text = "${state.quote}",
-                    color = Color.Magenta,
-                    fontStyle = FontStyle.Italic
+                    modifier = Modifier.clickable {
+                        navigateTo(Screens.Settings)
+                    },
+                    fontWeight = FontWeight.Bold,
+                    text = if (state.kg) "kg" else "lb"
                 )
 
-                Spacer(modifier = Modifier.width(32.dp))
-            } else {
-                Spacer(modifier = Modifier.weight(1f))
+                Spacer(modifier = Modifier.width(16.dp))
+
+                Button(
+                    onClick = {
+                        onEvent(BmiEvent.SaveWeightRecord)
+                        navigateTo(Screens.WeightRecords(backTo = Screens.BMI))
+                    }, colors = ButtonDefaults.buttonColors(
+                        contentColor = Color.White,
+                        containerColor = Color(0xFF444647)
+                    )
+                ) {
+                    Text(text = "Save")
+                }
             }
 
-            MoreMenuButton()
+            Spacer(modifier = Modifier.height(16.dp))
         }
 
-        Spacer(modifier = Modifier.height(0.dp))
-
-        Text(
-            text = "Log your weight and height",
-            fontSize = 20.sp,
-            fontWeight = FontWeight.Bold
-        )
-
-        Spacer(modifier = Modifier.height(16.dp))
-
-        Row(verticalAlignment = Alignment.CenterVertically) {
-            NumberInputField(number = state.weight,
-                modifier = Modifier.weight(1f), placeholder = "Weight", onValueChange = {
-                    onEvent(BmiEvent.WeightChange(newWeightRec = it))
-                })
-            Spacer(modifier = Modifier.width(8.dp))
-            Text(
-                modifier = Modifier.clickable {
-                    navigateTo(Screens.Settings)
-                },
-                fontWeight = FontWeight.Bold,
-                text = if (state.kg) "kg" else "lb"
-            )
-
-            Spacer(modifier = Modifier.width(16.dp))
-
-            Button(
-                onClick = {
-                    onEvent(BmiEvent.SaveWeightRecord)
-                    navigateTo(Screens.WeightRecords(backTo = Screens.BMI))
-                }, colors = ButtonDefaults.buttonColors(
-                    contentColor = Color.White,
-                    containerColor = Color(0xFF444647)
+        item {
+            Row(verticalAlignment = Alignment.CenterVertically) {
+                NumberInputField(number = state.height,
+                    modifier = Modifier.weight(1f), placeholder = "Height", onValueChange = {
+                        onEvent(BmiEvent.HeightChange(newHeightRec = it))
+                    })
+                Spacer(modifier = Modifier.width(8.dp))
+                Text(
+                    modifier = Modifier.clickable {
+                        navigateTo(Screens.Settings)
+                    },
+                    fontWeight = FontWeight.Bold,
+                    text = if (state.m) "m" else "foot"
                 )
-            ) {
-                Text(text = "Save")
             }
+
+            Spacer(modifier = Modifier.height(16.dp))
         }
 
-        Spacer(modifier = Modifier.height(16.dp))
-
-        Row(verticalAlignment = Alignment.CenterVertically) {
-            NumberInputField(number = state.height,
-                modifier = Modifier.weight(1f), placeholder = "Height", onValueChange = {
-                    onEvent(BmiEvent.HeightChange(newHeightRec = it))
-                })
-            Spacer(modifier = Modifier.width(8.dp))
+        item {
             Text(
-                modifier = Modifier.clickable {
-                    navigateTo(Screens.Settings)
-                },
-                fontWeight = FontWeight.Bold,
-                text = if (state.m) "m" else "foot"
+                text = "Log your activity for today",
+                fontSize = 20.sp,
+                fontWeight = FontWeight.Bold
             )
+
+            Spacer(modifier = Modifier.height(16.dp))
         }
 
-        Spacer(modifier = Modifier.height(16.dp))
+        item {
+            Row(verticalAlignment = Alignment.CenterVertically) {
+                InputField(
+                    value = state.activity ?: "",
+                    modifier = Modifier.weight(1f),
+                    placeholder = "e.g. swimming, tennis, walking 10k steps, gym",
+                    onValueChange = {
+                        onEvent(BmiEvent.ActivityChange(newActivityRec = it))
+                    })
 
-        Text(
-            text = "Log your activity for today",
-            fontSize = 20.sp,
-            fontWeight = FontWeight.Bold
-        )
+                Spacer(modifier = Modifier.width(16.dp))
 
-        Spacer(modifier = Modifier.height(16.dp))
-
-        Row(verticalAlignment = Alignment.CenterVertically) {
-            InputField(
-                value = state.activity ?: "",
-                modifier = Modifier.weight(1f),
-                placeholder = "e.g. swimming, tennis, walking 10k steps, gym",
-                onValueChange = {
-                    onEvent(BmiEvent.ActivityChange(newActivityRec = it))
-                })
-
-            Spacer(modifier = Modifier.width(16.dp))
-
-            Button(
-                onClick = {
-                    onEvent(BmiEvent.SaveActivityRecord)
-                    navigateTo(Screens.ActivityRecords(backTo = Screens.BMI))
-                }, colors = ButtonDefaults.buttonColors(
-                    contentColor = Color.White,
-                    containerColor = Color(0xFF119917)
-                )
-            ) {
-                Text(text = "Save")
+                Button(
+                    onClick = {
+                        onEvent(BmiEvent.SaveActivityRecord)
+                        navigateTo(Screens.ActivityRecords(backTo = Screens.BMI))
+                    }, colors = ButtonDefaults.buttonColors(
+                        contentColor = Color.White,
+                        containerColor = Color(0xFF119917)
+                    )
+                ) {
+                    Text(text = "Save")
+                }
             }
+
+            Spacer(modifier = Modifier.height(16.dp))
         }
 
-        Spacer(modifier = Modifier.height(16.dp))
+        item {
+            Text(
+                text = "Log your water consumption for today",
+                fontSize = 20.sp,
+                fontWeight = FontWeight.Bold
+            )
 
-        Text(
-            text = "Log your water consumption for today",
-            fontSize = 20.sp,
-            fontWeight = FontWeight.Bold
-        )
+            Spacer(modifier = Modifier.height(16.dp))
+        }
 
-        Spacer(modifier = Modifier.height(16.dp))
+        item {
+            GlassesGrid(glasses = state.glasses, onEvent = onEvent)
 
-        GlassesGrid(glasses = state.glasses, onEvent = onEvent)
+            Spacer(modifier = Modifier.height(16.dp))
+        }
 
-        Spacer(modifier = Modifier.height(16.dp))
+        item {
+            Row(verticalAlignment = Alignment.CenterVertically) {
+                NumberInputField(
+                    number = state.water,
+                    placeholder = "Water: 1, 2, 1.5, ...",
+                    onValueChange = {
+                        onEvent(BmiEvent.WaterChange(newWaterRec = it))
+                    })
 
-        Row(verticalAlignment = Alignment.CenterVertically) {
-            NumberInputField(
-                number = state.water,
-                placeholder = "Water: 1, 2, 1.5, ...",
-                onValueChange = {
-                    onEvent(BmiEvent.WaterChange(newWaterRec = it))
-                })
+                Spacer(modifier = Modifier.width(16.dp))
 
-            Spacer(modifier = Modifier.width(16.dp))
-
-            Button(
-                onClick = {
-                    onEvent(BmiEvent.SaveWaterRecord)
-                    navigateTo(Screens.WaterRecords(backTo = Screens.BMI))
-                }, colors = ButtonDefaults.buttonColors(
-                    contentColor = Color.White,
-                    containerColor = Color(0xFF0E3C5F)
-                )
-            ) {
-                Text(text = "Save")
+                Button(
+                    onClick = {
+                        onEvent(BmiEvent.SaveWaterRecord)
+                        navigateTo(Screens.WaterRecords(backTo = Screens.BMI))
+                    }, colors = ButtonDefaults.buttonColors(
+                        contentColor = Color.White,
+                        containerColor = Color(0xFF0E3C5F)
+                    )
+                ) {
+                    Text(text = "Save")
+                }
             }
-        }
-
-        Spacer(modifier = Modifier.height(24.dp))
-        Divider(modifier = Modifier.fillMaxWidth(), thickness = 1.dp)
-        Spacer(modifier = Modifier.height(24.dp))
-
-        if (state.bmi != null && state.bmi > 0) {
-            Text(
-                text = "Your BMI is ${formatBmi(state.bmi)}.",
-                fontWeight = FontWeight.Bold,
-                fontSize = 16.sp
-            )
-        }
-
-        Spacer(modifier = Modifier.height(8.dp))
-
-        if (state.normalWeightRange != null && state.normalWeightRange.first > 0 &&
-            state.normalWeightRange.second > 0
-        ) {
-            val minWeightFormatted = DecimalFormat("###,###.#")
-                .format(state.normalWeightRange.first)
-            val maxWeightFormatted = DecimalFormat("###,###.#")
-                .format(state.normalWeightRange.second)
-            val weightUnit = if (state.kg) "kg" else "lb"
-
-            Text(
-                text = "Your normal weight should be in the range $minWeightFormatted - " +
-                        "$maxWeightFormatted $weightUnit according to your BMI.",
-                fontSize = 16.sp
-            )
 
             Spacer(modifier = Modifier.height(24.dp))
         }
 
-        if (state.bmi != null) {
-            val info = bmiInfo(state.bmi)
+        item {
+            Divider(modifier = Modifier.fillMaxWidth(), thickness = 1.dp)
+            Spacer(modifier = Modifier.height(24.dp))
+        }
 
-            val browser = browser()
-
-            var expandedInfo by remember {
-                mutableStateOf(false)
-            }
-
-            Row() {
+        item {
+            if (state.bmi != null && state.bmi > 0) {
                 Text(
-                    modifier = Modifier.clickable {
-                        browser.openUri(info.link)
-                    },
-                    text = info.type,
-                    color = info.color,
-                    fontSize = 20.sp,
-                    textDecoration = TextDecoration.Underline,
-                    fontWeight = FontWeight.Bold
-                )
-
-                Spacer(modifier = Modifier.weight(1f))
-
-                Icon(
-                    if (expandedInfo) {
-                        Icons.Default.KeyboardArrowUp
-                    } else {
-                        Icons.Default.KeyboardArrowDown
-                    },
-                    contentDescription = "",
-                    modifier = Modifier.clickable {
-                        expandedInfo = !expandedInfo
-                    }
-                )
-            }
-
-            if (expandedInfo) {
-                Spacer(modifier = Modifier.height(16.dp))
-
-                Text(
-                    text = info.message,
-                    color = Color.Black,
+                    text = "Your BMI is ${formatBmi(state.bmi)}.",
+                    fontWeight = FontWeight.Bold,
                     fontSize = 16.sp
                 )
             }
+
+            Spacer(modifier = Modifier.height(8.dp))
+        }
+
+        item {
+            if (state.normalWeightRange != null && state.normalWeightRange.first > 0 &&
+                state.normalWeightRange.second > 0
+            ) {
+                val minWeightFormatted = DecimalFormat("###,###.#")
+                    .format(state.normalWeightRange.first)
+                val maxWeightFormatted = DecimalFormat("###,###.#")
+                    .format(state.normalWeightRange.second)
+                val weightUnit = if (state.kg) "kg" else "lb"
+
+                Text(
+                    text = "Your normal weight should be in the range $minWeightFormatted - " +
+                            "$maxWeightFormatted $weightUnit according to your BMI.",
+                    fontSize = 16.sp
+                )
+
+                Spacer(modifier = Modifier.height(24.dp))
+            }
+        }
+
+        item {
+            if (state.bmi != null) {
+                val info = bmiInfo(state.bmi)
+
+                val browser = browser()
+
+                var expandedInfo by remember {
+                    mutableStateOf(false)
+                }
+
+                Row() {
+                    Text(
+                        modifier = Modifier.clickable {
+                            browser.openUri(info.link)
+                        },
+                        text = info.type,
+                        color = info.color,
+                        fontSize = 20.sp,
+                        textDecoration = TextDecoration.Underline,
+                        fontWeight = FontWeight.Bold
+                    )
+
+                    Spacer(modifier = Modifier.weight(1f))
+
+                    Icon(
+                        if (expandedInfo) {
+                            Icons.Default.KeyboardArrowUp
+                        } else {
+                            Icons.Default.KeyboardArrowDown
+                        },
+                        contentDescription = "",
+                        modifier = Modifier.clickable {
+                            expandedInfo = !expandedInfo
+                        }
+                    )
+                }
+
+                if (expandedInfo) {
+                    Spacer(modifier = Modifier.height(16.dp))
+
+                    Text(
+                        text = info.message,
+                        color = Color.Black,
+                        fontSize = 16.sp
+                    )
+                }
+            }
+
+            Spacer(modifier = Modifier.height(16.dp))
         }
     }
 }

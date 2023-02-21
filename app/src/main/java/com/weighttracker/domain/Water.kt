@@ -19,7 +19,9 @@ fun glasses(water: Double): List<Boolean> {
         else -> 12
     }
 
-    for (i in 1..totalGlasses - fullGlasses) {
+    val emptyGlasses = totalGlasses - fullGlasses
+
+    for (i in 1..emptyGlasses) {
         list.add(false)
     }
 
