@@ -3,6 +3,7 @@ package com.weighttracker.screen.bmi
 import androidx.compose.foundation.clickable
 import androidx.compose.foundation.layout.*
 import androidx.compose.foundation.lazy.LazyColumn
+import androidx.compose.foundation.lazy.rememberLazyListState
 import androidx.compose.material.icons.Icons
 import androidx.compose.material.icons.filled.KeyboardArrowDown
 import androidx.compose.material.icons.filled.KeyboardArrowUp
@@ -27,6 +28,7 @@ import com.weighttracker.component.InputField
 import com.weighttracker.component.NumberInputField
 import com.weighttracker.domain.formatBmi
 import com.weighttracker.navigateTo
+import kotlinx.coroutines.launch
 import java.text.DecimalFormat
 
 @Composable
@@ -42,9 +44,13 @@ private fun UI(
     state: BmiState,
     onEvent: (BmiEvent) -> Unit,
 ) {
+    val listState = rememberLazyListState()
+    val coroutineScope = rememberCoroutineScope()
+
     LazyColumn(
         modifier = Modifier.fillMaxSize(),
-        contentPadding = PaddingValues(16.dp)
+        contentPadding = PaddingValues(16.dp),
+        state = listState
     ) {
         item(key = "quote and more menu") {
             Row(
@@ -303,6 +309,11 @@ private fun UI(
                         contentDescription = "",
                         modifier = Modifier.clickable {
                             expandedInfo = !expandedInfo
+                            coroutineScope.launch {
+                                if (expandedInfo) {
+                                    listState.animateScrollToItem(index = 13)
+                                }
+                            }
                         }
                     )
                 }
