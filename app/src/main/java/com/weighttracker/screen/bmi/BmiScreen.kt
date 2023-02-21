@@ -57,11 +57,7 @@ private fun UI(
         }
 
         item(key = "log weight and height") {
-            Text(
-                text = "Log your weight and height",
-                fontSize = 20.sp,
-                fontWeight = FontWeight.Bold
-            )
+            SectionTitle("Log your weight and height")
 
             Spacer(modifier = Modifier.height(16.dp))
         }
@@ -82,74 +78,39 @@ private fun UI(
         }
 
         item(key = "height input") {
-            Row(verticalAlignment = Alignment.CenterVertically) {
-                NumberInputField(
-                    modifier = Modifier.width(90.dp),
-                    number = state.height,
-                    placeholder = "Height",
-                    onValueChange = {
-                        onEvent(BmiEvent.HeightChange(newHeightRec = it))
-                    }
-                )
-
-                Spacer(modifier = Modifier.width(8.dp))
-
-                Text(
-                    modifier = Modifier.clickable {
-                        navigateTo(Screens.Settings)
-                    },
-                    fontWeight = FontWeight.Bold,
-                    text = if (state.m) "m" else "foot"
-                )
-            }
+            HeightInputAndSave(
+                height = state.height,
+                mSelected = state.m,
+                onHeightChange = {
+                    onEvent(BmiEvent.HeightChange(newHeightRec = it))
+                }
+            )
 
             Spacer(modifier = Modifier.height(16.dp))
         }
 
         item(key = "log activity") {
-            Text(
-                text = "Log your activity for today",
-                fontSize = 20.sp,
-                fontWeight = FontWeight.Bold
-            )
+            SectionTitle(text = "Log your activity for today")
 
             Spacer(modifier = Modifier.height(16.dp))
         }
 
         item(key = "activity input and save") {
-            Row(verticalAlignment = Alignment.CenterVertically) {
-                InputField(
-                    value = state.activity ?: "",
-                    modifier = Modifier.weight(1f),
-                    placeholder = "e.g. swimming, tennis, walking 10k steps, gym",
-                    onValueChange = {
-                        onEvent(BmiEvent.ActivityChange(newActivityRec = it))
-                    })
-
-                Spacer(modifier = Modifier.width(16.dp))
-
-                Button(
-                    onClick = {
-                        onEvent(BmiEvent.SaveActivityRecord)
-                        navigateTo(Screens.ActivityRecords(backTo = Screens.BMI))
-                    }, colors = ButtonDefaults.buttonColors(
-                        contentColor = Color.White,
-                        containerColor = Color(0xFF119917)
-                    )
-                ) {
-                    Text(text = "Save")
+            ActivityRecordAndSave(
+                activity = state.activity,
+                onActivityChange = {
+                    onEvent(BmiEvent.ActivityChange(newActivityRec = it))
+                },
+                onSave = {
+                    onEvent(BmiEvent.SaveActivityRecord)
                 }
-            }
+            )
 
             Spacer(modifier = Modifier.height(16.dp))
         }
 
         item(key = "log water consumption") {
-            Text(
-                text = "Log your water consumption for today",
-                fontSize = 20.sp,
-                fontWeight = FontWeight.Bold
-            )
+            SectionTitle(text = "Log your water consumption for today")
 
             Spacer(modifier = Modifier.height(16.dp))
         }
@@ -161,37 +122,15 @@ private fun UI(
         }
 
         item(key = "water input and save") {
-            Row(verticalAlignment = Alignment.CenterVertically) {
-                NumberInputField(
-                    modifier = Modifier.width(90.dp),
-                    number = state.water,
-                    placeholder = "1.5, ...",
-                    onValueChange = {
-                        onEvent(BmiEvent.WaterChange(newWaterRec = it))
-                    }
-                )
-
-                Spacer(modifier = Modifier.width(8.dp))
-
-                Text(
-                    text = "liters",
-                    fontWeight = FontWeight.Bold
-                )
-
-                Spacer(modifier = Modifier.width(16.dp))
-
-                Button(
-                    onClick = {
-                        onEvent(BmiEvent.SaveWaterRecord)
-                        navigateTo(Screens.WaterRecords(backTo = Screens.BMI))
-                    }, colors = ButtonDefaults.buttonColors(
-                        contentColor = Color.White,
-                        containerColor = Color(0xFF0E3C5F)
-                    )
-                ) {
-                    Text(text = "Save")
+            WaterInputAndSave(
+                water = state.water,
+                onWaterChange = {
+                    onEvent(BmiEvent.WaterChange(newWaterRec = it))
+                },
+                onSave = {
+                    onEvent(BmiEvent.SaveWaterRecord)
                 }
-            }
+            )
 
             Spacer(modifier = Modifier.height(24.dp))
         }
@@ -292,6 +231,114 @@ private fun UI(
 }
 
 @Composable
+fun WaterInputAndSave(
+    water: Double?,
+    onWaterChange: (Double) -> Unit,
+    onSave: () -> Unit
+) {
+    Row(verticalAlignment = Alignment.CenterVertically) {
+        NumberInputField(
+            modifier = Modifier.width(90.dp),
+            number = water,
+            placeholder = "1.5, ...",
+            onValueChange = {
+                onWaterChange(it)
+            }
+        )
+
+        Spacer(modifier = Modifier.width(8.dp))
+
+        Text(
+            text = "liters",
+            fontWeight = FontWeight.Bold
+        )
+
+        Spacer(modifier = Modifier.width(16.dp))
+
+        Button(
+            onClick = {
+                onSave()
+                navigateTo(Screens.WaterRecords(backTo = Screens.BMI))
+            }, colors = ButtonDefaults.buttonColors(
+                contentColor = Color.White,
+                containerColor = Color(0xFF0E3C5F)
+            )
+        ) {
+            Text(text = "Save")
+        }
+    }
+}
+
+@Composable
+fun ActivityRecordAndSave(
+    activity: String?,
+    onActivityChange: (String) -> Unit,
+    onSave: () -> Unit
+) {
+    Row(verticalAlignment = Alignment.CenterVertically) {
+        InputField(
+            value = activity ?: "",
+            modifier = Modifier.weight(1f),
+            placeholder = "e.g. swimming, tennis, walking 10k steps, gym",
+            onValueChange = {
+                onActivityChange(it)
+            }
+        )
+
+        Spacer(modifier = Modifier.width(16.dp))
+
+        Button(
+            onClick = {
+                onSave()
+                navigateTo(Screens.ActivityRecords(backTo = Screens.BMI))
+            }, colors = ButtonDefaults.buttonColors(
+                contentColor = Color.White,
+                containerColor = Color(0xFF119917)
+            )
+        ) {
+            Text(text = "Save")
+        }
+    }
+}
+
+@Composable
+fun SectionTitle(text: String) {
+    Text(
+        text = text,
+        fontSize = 20.sp,
+        fontWeight = FontWeight.Bold
+    )
+}
+
+@Composable
+fun HeightInputAndSave(
+    height: Double?,
+    mSelected: Boolean,
+    onHeightChange: (Double) -> Unit
+) {
+    Row(verticalAlignment = Alignment.CenterVertically) {
+        NumberInputField(
+            modifier = Modifier.width(90.dp),
+            number = height,
+            placeholder = "Height",
+            onValueChange = {
+                onHeightChange(it)
+            }
+        )
+
+        Spacer(modifier = Modifier.width(8.dp))
+
+        Text(
+            modifier = Modifier.clickable {
+                navigateTo(Screens.Settings)
+            },
+            fontWeight = FontWeight.Bold,
+            text = if (mSelected) "m" else "foot"
+        )
+    }
+}
+
+@Composable
 fun WeightInputAndSave(
     weight: Double?,
     kgSelected: Boolean,
@@ -307,7 +354,9 @@ fun WeightInputAndSave(
                 onWeightChange(it)
             }
         )
+
         Spacer(modifier = Modifier.width(8.dp))
+
         Text(
             modifier = Modifier.clickable {
                 navigateTo(Screens.Settings)
