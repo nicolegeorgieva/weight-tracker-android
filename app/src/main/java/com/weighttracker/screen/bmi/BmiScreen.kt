@@ -53,28 +53,7 @@ private fun UI(
         state = listState
     ) {
         item(key = "quote and more menu") {
-            Row(
-                verticalAlignment = Alignment.CenterVertically
-            ) {
-                if (state.quote != null && state.quote.isNotBlank()) {
-                    Text(
-                        modifier = Modifier
-                            .weight(1f)
-                            .clickable {
-                                navigateTo(Screens.Quote(backTo = Screens.BMI))
-                            },
-                        text = "${state.quote}",
-                        color = Color.Magenta,
-                        fontStyle = FontStyle.Italic
-                    )
-
-                    Spacer(modifier = Modifier.width(32.dp))
-                } else {
-                    Spacer(modifier = Modifier.weight(1f))
-                }
-
-                MoreMenuButton()
-            }
+            QuoteAndMoreMenu(quote = state.quote)
         }
 
         item(key = "log weight and height") {
@@ -88,38 +67,16 @@ private fun UI(
         }
 
         item(key = "weight input and save") {
-            Row(verticalAlignment = Alignment.CenterVertically) {
-                NumberInputField(
-                    modifier = Modifier.width(90.dp),
-                    number = state.weight,
-                    placeholder = "Weight",
-                    onValueChange = {
-                        onEvent(BmiEvent.WeightChange(newWeightRec = it))
-                    }
-                )
-                Spacer(modifier = Modifier.width(8.dp))
-                Text(
-                    modifier = Modifier.clickable {
-                        navigateTo(Screens.Settings)
-                    },
-                    fontWeight = FontWeight.Bold,
-                    text = if (state.kg) "kg" else "lb"
-                )
-
-                Spacer(modifier = Modifier.width(16.dp))
-
-                Button(
-                    onClick = {
-                        onEvent(BmiEvent.SaveWeightRecord)
-                        navigateTo(Screens.WeightRecords(backTo = Screens.BMI))
-                    }, colors = ButtonDefaults.buttonColors(
-                        contentColor = Color.White,
-                        containerColor = Color(0xFF444647)
-                    )
-                ) {
-                    Text(text = "Save")
+            WeightInputAndSave(
+                weight = state.weight,
+                kgSelected = state.kg,
+                onWeightChange = {
+                    onEvent(BmiEvent.WeightChange(newWeightRec = it))
+                },
+                onSave = {
+                    onEvent(BmiEvent.SaveWeightRecord)
                 }
-            }
+            )
 
             Spacer(modifier = Modifier.height(16.dp))
         }
@@ -331,6 +288,73 @@ private fun UI(
 
             Spacer(modifier = Modifier.height(16.dp))
         }
+    }
+}
+
+@Composable
+fun WeightInputAndSave(
+    weight: Double?,
+    kgSelected: Boolean,
+    onWeightChange: (Double) -> Unit,
+    onSave: () -> Unit
+) {
+    Row(verticalAlignment = Alignment.CenterVertically) {
+        NumberInputField(
+            modifier = Modifier.width(90.dp),
+            number = weight,
+            placeholder = "Weight",
+            onValueChange = {
+                onWeightChange(it)
+            }
+        )
+        Spacer(modifier = Modifier.width(8.dp))
+        Text(
+            modifier = Modifier.clickable {
+                navigateTo(Screens.Settings)
+            },
+            fontWeight = FontWeight.Bold,
+            text = if (kgSelected) "kg" else "lb"
+        )
+
+        Spacer(modifier = Modifier.width(16.dp))
+
+        Button(
+            onClick = {
+                onSave()
+                navigateTo(Screens.WeightRecords(backTo = Screens.BMI))
+            }, colors = ButtonDefaults.buttonColors(
+                contentColor = Color.White,
+                containerColor = Color(0xFF444647)
+            )
+        ) {
+            Text(text = "Save")
+        }
+    }
+}
+
+@Composable
+fun QuoteAndMoreMenu(quote: String?) {
+    Row(
+        verticalAlignment = Alignment.CenterVertically
+    ) {
+        if (quote != null && quote.isNotBlank()) {
+            Text(
+                modifier = Modifier
+                    .weight(1f)
+                    .clickable {
+                        navigateTo(Screens.Quote(backTo = Screens.BMI))
+                    },
+                text = "$quote",
+                color = Color.Magenta,
+                fontStyle = FontStyle.Italic
+            )
+
+            Spacer(modifier = Modifier.width(32.dp))
+        } else {
+            Spacer(modifier = Modifier.weight(1f))
+        }
+
+        MoreMenuButton()
     }
 }
 
