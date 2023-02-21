@@ -83,10 +83,14 @@ private fun UI(
 
         item {
             Row(verticalAlignment = Alignment.CenterVertically) {
-                NumberInputField(number = state.weight,
-                    modifier = Modifier.weight(1f), placeholder = "Weight", onValueChange = {
+                NumberInputField(
+                    modifier = Modifier.width(90.dp),
+                    number = state.weight,
+                    placeholder = "Weight",
+                    onValueChange = {
                         onEvent(BmiEvent.WeightChange(newWeightRec = it))
-                    })
+                    }
+                )
                 Spacer(modifier = Modifier.width(8.dp))
                 Text(
                     modifier = Modifier.clickable {
@@ -116,11 +120,17 @@ private fun UI(
 
         item {
             Row(verticalAlignment = Alignment.CenterVertically) {
-                NumberInputField(number = state.height,
-                    modifier = Modifier.weight(1f), placeholder = "Height", onValueChange = {
+                NumberInputField(
+                    modifier = Modifier.width(90.dp),
+                    number = state.height,
+                    placeholder = "Height",
+                    onValueChange = {
                         onEvent(BmiEvent.HeightChange(newHeightRec = it))
-                    })
+                    }
+                )
+
                 Spacer(modifier = Modifier.width(8.dp))
+
                 Text(
                     modifier = Modifier.clickable {
                         navigateTo(Screens.Settings)
@@ -190,11 +200,20 @@ private fun UI(
         item {
             Row(verticalAlignment = Alignment.CenterVertically) {
                 NumberInputField(
+                    modifier = Modifier.width(90.dp),
                     number = state.water,
-                    placeholder = "Water: 1, 2, 1.5, ...",
+                    placeholder = "1.5, ...",
                     onValueChange = {
                         onEvent(BmiEvent.WaterChange(newWaterRec = it))
-                    })
+                    }
+                )
+
+                Spacer(modifier = Modifier.width(8.dp))
+
+                Text(
+                    text = "liters",
+                    fontWeight = FontWeight.Bold
+                )
 
                 Spacer(modifier = Modifier.width(16.dp))
 
