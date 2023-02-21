@@ -3,6 +3,7 @@ package com.weighttracker.screen.bmi
 import androidx.compose.foundation.clickable
 import androidx.compose.foundation.layout.*
 import androidx.compose.foundation.lazy.LazyColumn
+import androidx.compose.foundation.lazy.LazyListState
 import androidx.compose.foundation.lazy.rememberLazyListState
 import androidx.compose.material.icons.Icons
 import androidx.compose.material.icons.filled.KeyboardArrowDown
@@ -28,6 +29,7 @@ import com.weighttracker.component.InputField
 import com.weighttracker.component.NumberInputField
 import com.weighttracker.domain.formatBmi
 import com.weighttracker.navigateTo
+import kotlinx.coroutines.CoroutineScope
 import kotlinx.coroutines.launch
 import java.text.DecimalFormat
 
@@ -137,35 +139,21 @@ private fun UI(
 
         item(key = "divider") {
             Divider(modifier = Modifier.fillMaxWidth(), thickness = 1.dp)
+
             Spacer(modifier = Modifier.height(24.dp))
         }
 
         item(key = "bmi result") {
-            if (state.bmi != null && state.bmi > 0) {
-                Text(
-                    text = "Your BMI is ${formatBmi(state.bmi)}.",
-                    fontWeight = FontWeight.Bold,
-                    fontSize = 16.sp
-                )
-            }
+            BmiResult(bmi = state.bmi)
 
             Spacer(modifier = Modifier.height(8.dp))
         }
 
         item(key = "normal weight range message") {
-            if (state.normalWeightRange != null && state.normalWeightRange.first > 0 &&
-                state.normalWeightRange.second > 0
-            ) {
-                val minWeightFormatted = DecimalFormat("###,###.#")
-                    .format(state.normalWeightRange.first)
-                val maxWeightFormatted = DecimalFormat("###,###.#")
-                    .format(state.normalWeightRange.second)
-                val weightUnit = if (state.kg) "kg" else "lb"
-
-                Text(
-                    text = "Your normal weight should be in the range $minWeightFormatted - " +
-                            "$maxWeightFormatted $weightUnit according to your BMI.",
-                    fontSize = 16.sp
+            if (state.normalWeightRange != null) {
+                NormalWeightRangeMessage(
+                    normalWeightRange = state.normalWeightRange,
+                    kgSelected = state.kg
                 )
 
                 Spacer(modifier = Modifier.height(24.dp))
@@ -173,60 +161,105 @@ private fun UI(
         }
 
         item(key = "bmi status and message") {
-            if (state.bmi != null) {
-                val info = bmiInfo(state.bmi)
-
-                val browser = browser()
-
-                var expandedInfo by remember {
-                    mutableStateOf(false)
-                }
-
-                Row() {
-                    Text(
-                        modifier = Modifier.clickable {
-                            browser.openUri(info.link)
-                        },
-                        text = info.type,
-                        color = info.color,
-                        fontSize = 20.sp,
-                        textDecoration = TextDecoration.Underline,
-                        fontWeight = FontWeight.Bold
-                    )
-
-                    Spacer(modifier = Modifier.weight(1f))
-
-                    Icon(
-                        if (expandedInfo) {
-                            Icons.Default.KeyboardArrowUp
-                        } else {
-                            Icons.Default.KeyboardArrowDown
-                        },
-                        contentDescription = "",
-                        modifier = Modifier.clickable {
-                            expandedInfo = !expandedInfo
-                            coroutineScope.launch {
-                                if (expandedInfo) {
-                                    listState.animateScrollToItem(index = 13)
-                                }
-                            }
-                        }
-                    )
-                }
-
-                if (expandedInfo) {
-                    Spacer(modifier = Modifier.height(16.dp))
-
-                    Text(
-                        text = info.message,
-                        color = Color.Black,
-                        fontSize = 16.sp
-                    )
-                }
-            }
+            BmiStatusAndMessage(
+                bmi = state.bmi,
+                coroutineScope = coroutineScope,
+                listState = listState
+            )
 
             Spacer(modifier = Modifier.height(16.dp))
         }
+    }
+}
+
+@Composable
+fun BmiStatusAndMessage(
+    bmi: Double?,
+    coroutineScope: CoroutineScope,
+    listState: LazyListState
+) {
+    if (bmi != null) {
+        val info = bmiInfo(bmi)
+
+        val browser = browser()
+
+        var expandedInfo by remember {
+            mutableStateOf(false)
+        }
+
+        Row() {
+            Text(
+                modifier = Modifier.clickable {
+                    browser.openUri(info.link)
+                },
+                text = info.type,
+                color = info.color,
+                fontSize = 20.sp,
+                textDecoration = TextDecoration.Underline,
+                fontWeight = FontWeight.Bold
+            )
+
+            Spacer(modifier = Modifier.weight(1f))
+
+            Icon(
+                if (expandedInfo) {
+                    Icons.Default.KeyboardArrowUp
+                } else {
+                    Icons.Default.KeyboardArrowDown
+                },
+                contentDescription = "",
+                modifier = Modifier.clickable {
+                    expandedInfo = !expandedInfo
+                    coroutineScope.launch {
+                        if (expandedInfo) {
+                            listState.animateScrollToItem(index = 13)
+                        }
+                    }
+                }
+            )
+        }
+
+        if (expandedInfo) {
+            Spacer(modifier = Modifier.height(16.dp))
+
+            Text(
+                text = info.message,
+                color = Color.Black,
+                fontSize = 16.sp
+            )
+        }
+    }
+}
+
+@Composable
+fun NormalWeightRangeMessage(
+    normalWeightRange: Pair<Double, Double>,
+    kgSelected: Boolean
+) {
+    if (normalWeightRange.first > 0 && normalWeightRange.second > 0
+    ) {
+        val minWeightFormatted = DecimalFormat("###,###.#")
+            .format(normalWeightRange.first)
+        val maxWeightFormatted = DecimalFormat("###,###.#")
+            .format(normalWeightRange.second)
+        val weightUnit = if (kgSelected) "kg" else "lb"
+
+        Text(
+            text = "Your normal weight should be in the range $minWeightFormatted - " +
+                    "$maxWeightFormatted $weightUnit according to your BMI.",
+            fontSize = 16.sp
+        )
+    }
+}
+
+@Composable
+fun BmiResult(bmi: Double?) {
+    if (bmi != null && bmi > 0) {
+        Text(
+            text = "Your BMI is ${formatBmi(bmi)}.",
+            fontWeight = FontWeight.Bold,
+            fontSize = 16.sp
+        )
     }
 }
 
