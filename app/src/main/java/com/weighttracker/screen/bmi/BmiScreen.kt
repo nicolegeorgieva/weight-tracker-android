@@ -46,7 +46,7 @@ private fun UI(
         modifier = Modifier.fillMaxSize(),
         contentPadding = PaddingValues(16.dp)
     ) {
-        item {
+        item(key = "quote and more menu") {
             Row(
                 verticalAlignment = Alignment.CenterVertically
             ) {
@@ -71,7 +71,7 @@ private fun UI(
             }
         }
 
-        item {
+        item(key = "log weight and height") {
             Text(
                 text = "Log your weight and height",
                 fontSize = 20.sp,
@@ -81,7 +81,7 @@ private fun UI(
             Spacer(modifier = Modifier.height(16.dp))
         }
 
-        item {
+        item(key = "weight input and save") {
             Row(verticalAlignment = Alignment.CenterVertically) {
                 NumberInputField(
                     modifier = Modifier.width(90.dp),
@@ -118,7 +118,7 @@ private fun UI(
             Spacer(modifier = Modifier.height(16.dp))
         }
 
-        item {
+        item(key = "height input") {
             Row(verticalAlignment = Alignment.CenterVertically) {
                 NumberInputField(
                     modifier = Modifier.width(90.dp),
@@ -143,7 +143,7 @@ private fun UI(
             Spacer(modifier = Modifier.height(16.dp))
         }
 
-        item {
+        item(key = "log activity") {
             Text(
                 text = "Log your activity for today",
                 fontSize = 20.sp,
@@ -153,7 +153,7 @@ private fun UI(
             Spacer(modifier = Modifier.height(16.dp))
         }
 
-        item {
+        item(key = "activity input and save") {
             Row(verticalAlignment = Alignment.CenterVertically) {
                 InputField(
                     value = state.activity ?: "",
@@ -181,7 +181,7 @@ private fun UI(
             Spacer(modifier = Modifier.height(16.dp))
         }
 
-        item {
+        item(key = "log water consumption") {
             Text(
                 text = "Log your water consumption for today",
                 fontSize = 20.sp,
@@ -191,13 +191,13 @@ private fun UI(
             Spacer(modifier = Modifier.height(16.dp))
         }
 
-        item {
+        item(key = "glasses grid") {
             GlassesGrid(glasses = state.glasses, onEvent = onEvent)
 
             Spacer(modifier = Modifier.height(16.dp))
         }
 
-        item {
+        item(key = "water input and save") {
             Row(verticalAlignment = Alignment.CenterVertically) {
                 NumberInputField(
                     modifier = Modifier.width(90.dp),
@@ -233,12 +233,12 @@ private fun UI(
             Spacer(modifier = Modifier.height(24.dp))
         }
 
-        item {
+        item(key = "divider") {
             Divider(modifier = Modifier.fillMaxWidth(), thickness = 1.dp)
             Spacer(modifier = Modifier.height(24.dp))
         }
 
-        item {
+        item(key = "bmi result") {
             if (state.bmi != null && state.bmi > 0) {
                 Text(
                     text = "Your BMI is ${formatBmi(state.bmi)}.",
@@ -250,7 +250,7 @@ private fun UI(
             Spacer(modifier = Modifier.height(8.dp))
         }
 
-        item {
+        item(key = "normal weight range message") {
             if (state.normalWeightRange != null && state.normalWeightRange.first > 0 &&
                 state.normalWeightRange.second > 0
             ) {
@@ -270,7 +270,7 @@ private fun UI(
             }
         }
 
-        item {
+        item(key = "bmi status and message") {
             if (state.bmi != null) {
                 val info = bmiInfo(state.bmi)
 
