@@ -13,12 +13,10 @@ fun glasses(water: Double): List<Boolean> {
         list.add(true)
     }
 
-    val totalGlasses = if (fullGlasses in 0..3) {
-        4
-    } else if (fullGlasses in 4..7) {
-        8
-    } else {
-        12
+    val totalGlasses = when (fullGlasses) {
+        in 0..3 -> 4
+        in 4..7 -> 8
+        else -> 12
     }
 
     for (i in 1..totalGlasses - fullGlasses) {
