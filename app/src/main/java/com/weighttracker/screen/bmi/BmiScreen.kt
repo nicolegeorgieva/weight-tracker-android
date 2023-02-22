@@ -290,6 +290,9 @@ fun NormalWeightRangeMessage(
 fun BmiResult(bmi: Double?) {
     if (bmi != null && bmi > 0) {
         Text(
+            modifier = Modifier.clickable {
+                navigateTo(Screens.WeightRecords(backTo = Screens.BMI))
+            },
             text = "Your BMI is ${formatBmi(bmi)}.",
             fontWeight = FontWeight.Bold,
             fontSize = 16.sp
