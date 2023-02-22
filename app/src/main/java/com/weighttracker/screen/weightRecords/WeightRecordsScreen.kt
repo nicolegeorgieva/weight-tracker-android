@@ -70,7 +70,7 @@ private fun WeightRecordCard(
         modifier = Modifier
             .fillMaxWidth()
             .clip(CircleShape)
-            .background(color = Color(0xFFE6E6E6))
+            .background(color = Color(0x61BE94A0))
             .clickable { editCard = true }
             .padding(horizontal = 12.dp, vertical = 12.dp)
             .padding(start = 8.dp),
@@ -117,7 +117,7 @@ private fun WeightRecordCard(
                         onEvent(WeightRecordsEvent.DeleteWeightRecord(weightRecord))
                     }, colors = ButtonDefaults.buttonColors(
                         contentColor = Color.White,
-                        containerColor = Color(0xFFFF1010)
+                        containerColor = Color(0x17F44336)
                     ),
                     enabled = true,
                     shape = CircleShape,

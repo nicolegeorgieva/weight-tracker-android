@@ -73,7 +73,7 @@ private fun WaterRecordCard(
         modifier = Modifier
             .fillMaxWidth()
             .clip(CircleShape)
-            .background(color = Color(0xFFE6E6E6))
+            .background(color = Color(0x5B2A337A))
             .clickable { editCard = true }
             .padding(horizontal = 12.dp, vertical = 12.dp)
             .padding(start = 8.dp),
@@ -96,7 +96,7 @@ private fun WaterRecordCard(
                         onEvent(WaterRecordsEvent.DeleteWaterRecord(waterRecord))
                     }, colors = ButtonDefaults.buttonColors(
                         contentColor = Color.White,
-                        containerColor = Color(0xFFFF1010)
+                        containerColor = Color(0x232A337A)
                     ),
                     enabled = true,
                     shape = CircleShape,

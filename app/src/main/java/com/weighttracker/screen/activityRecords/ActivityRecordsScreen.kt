@@ -42,7 +42,9 @@ private fun UI(
     state: ActivityRecordsState,
     onEvent: (ActivityRecordsEvent) -> Unit,
 ) {
-    Column(modifier = Modifier.padding(horizontal = 16.dp, vertical = 16.dp)) {
+    Column(
+        modifier = Modifier.padding(horizontal = 16.dp, vertical = 16.dp)
+    ) {
         BackButton(screens = screen.backTo)
 
         Spacer(modifier = Modifier.height(32.dp))
@@ -73,7 +75,7 @@ private fun ActivityRecordCard(
         modifier = Modifier
             .fillMaxWidth()
             .clip(CircleShape)
-            .background(color = Color(0xFFE6E6E6))
+            .background(color = Color(0x6B2CB432))
             .clickable { editCard = true }
             .padding(horizontal = 12.dp, vertical = 12.dp)
             .padding(start = 8.dp),
@@ -96,7 +98,7 @@ private fun ActivityRecordCard(
                         onEvent(ActivityRecordsEvent.DeleteActivityRecord(activityRecord))
                     }, colors = ButtonDefaults.buttonColors(
                         contentColor = Color.White,
-                        containerColor = Color(0xFFFF1010)
+                        containerColor = Color(0x438BC34A)
                     ),
                     enabled = true,
                     shape = CircleShape,
@@ -135,7 +137,7 @@ private fun ActivityRecordCard(
                         )
                     }, colors = ButtonDefaults.buttonColors(
                         contentColor = Color.White,
-                        containerColor = Color(0xFF168A0E)
+                        containerColor = Color(0x5C168A0E)
                     ),
                     enabled = true,
                     shape = CircleShape,

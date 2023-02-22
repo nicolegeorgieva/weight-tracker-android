@@ -158,7 +158,7 @@ private fun UI(
             FeatureButton(
                 color = ButtonDefaults.buttonColors(
                     contentColor = Color.White,
-                    containerColor = Color(0xFF228CB6)
+                    containerColor = Color(0xFF944E62)
                 ),
                 screen = Screens.WeightRecords(backTo = Screens.Settings),
                 text = "Weight records"
@@ -171,7 +171,7 @@ private fun UI(
             FeatureButton(
                 color = ButtonDefaults.buttonColors(
                     contentColor = Color.White,
-                    containerColor = Color(0xFF119917)
+                    containerColor = Color(0xFF2CB432)
                 ),
                 screen = Screens.ActivityRecords(backTo = Screens.Settings),
                 text = "Activity records"
