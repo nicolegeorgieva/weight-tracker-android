@@ -1,6 +1,7 @@
 package com.weighttracker.screen.settings
 
 import androidx.compose.foundation.layout.*
+import androidx.compose.foundation.lazy.LazyColumn
 import androidx.compose.foundation.shape.RoundedCornerShape
 import androidx.compose.material3.Button
 import androidx.compose.material3.ButtonColors
@@ -31,137 +32,164 @@ private fun UI(
     state: SettingsState,
     onEvent: (SettingsEvent) -> Unit
 ) {
-    Column(modifier = Modifier.padding(horizontal = 16.dp, vertical = 16.dp)) {
-        BackButton(screens = Screens.BMI)
+    LazyColumn(
+        modifier = Modifier.fillMaxSize(),
+        contentPadding = PaddingValues(16.dp)
+    ) {
+        item(key = "back button") {
+            BackButton(screens = Screens.BMI)
 
-        Spacer(modifier = Modifier.height(28.dp))
-
-        Text(text = "Weight unit", fontSize = 16.sp)
-
-        Spacer(modifier = Modifier.height(8.dp))
-
-        Row() {
-            UnitButton(
-                selected = state.kg,
-                onClick = {
-                    onEvent(SettingsEvent.KgSelect(kg = true))
-                },
-                text = "kg"
-            )
-
-            Spacer(modifier = Modifier.width(8.dp))
-
-            UnitButton(
-                selected = !state.kg,
-                onClick = {
-                    onEvent(SettingsEvent.KgSelect(kg = false))
-                },
-                text = "lb"
-            )
+            Spacer(modifier = Modifier.height(28.dp))
         }
 
-        Spacer(modifier = Modifier.height(8.dp))
+        item(key = "weight unit title") {
+            Text(text = "Weight unit", fontSize = 16.sp)
 
-        Text(text = "Height unit", fontSize = 16.sp)
-
-        Spacer(modifier = Modifier.height(8.dp))
-
-        Row() {
-            UnitButton(
-                selected = state.m,
-                onClick = {
-                    onEvent(SettingsEvent.MSelect(m = true))
-                },
-                text = "m"
-            )
-
-            Spacer(modifier = Modifier.width(8.dp))
-
-            UnitButton(
-                selected = !state.m,
-                onClick = {
-                    onEvent(SettingsEvent.MSelect(m = false))
-                },
-                text = "feet"
-            )
+            Spacer(modifier = Modifier.height(8.dp))
         }
 
-        Spacer(modifier = Modifier.height(16.dp))
+        item(key = "weight unit buttons") {
+            Row() {
+                UnitButton(
+                    selected = state.kg,
+                    onClick = {
+                        onEvent(SettingsEvent.KgSelect(kg = true))
+                    },
+                    text = "kg"
+                )
 
-        FeatureButton(
-            color = ButtonDefaults.buttonColors(
-                contentColor = Color.White,
-                containerColor = Color.DarkGray
-            ),
-            screen = Screens.Converter,
-            text = "Convert units"
-        )
+                Spacer(modifier = Modifier.width(8.dp))
 
-        Spacer(modifier = Modifier.height(12.dp))
+                UnitButton(
+                    selected = !state.kg,
+                    onClick = {
+                        onEvent(SettingsEvent.KgSelect(kg = false))
+                    },
+                    text = "lb"
+                )
+            }
 
-        FeatureButton(
-            color = ButtonDefaults.buttonColors(
-                contentColor = Color.White,
-                containerColor = Color.Magenta
-            ),
-            screen = Screens.Quote(backTo = Screens.Settings),
-            text = "Add a quote to home screen"
-        )
+            Spacer(modifier = Modifier.height(8.dp))
+        }
 
-        Spacer(modifier = Modifier.height(12.dp))
+        item(key = "height unit title") {
+            Text(text = "Height unit", fontSize = 16.sp)
 
-        FeatureButton(
-            color = ButtonDefaults.buttonColors(
-                contentColor = Color.White,
-                containerColor = Color(0xFFE91E63)
-            ),
-            screen = Screens.WeightGoal,
-            text = "Weight goal"
-        )
+            Spacer(modifier = Modifier.height(8.dp))
+        }
 
-        Spacer(modifier = Modifier.height(12.dp))
+        item(key = "height unit buttons") {
+            Row() {
+                UnitButton(
+                    selected = state.m,
+                    onClick = {
+                        onEvent(SettingsEvent.MSelect(m = true))
+                    },
+                    text = "m"
+                )
 
-        FeatureButton(
-            color = ButtonDefaults.buttonColors(
-                contentColor = Color.White,
-                containerColor = Color(0xFFFF9800)
-            ),
-            screen = Screens.Articles,
-            text = "Articles"
-        )
+                Spacer(modifier = Modifier.width(8.dp))
 
-        Spacer(modifier = Modifier.height(12.dp))
+                UnitButton(
+                    selected = !state.m,
+                    onClick = {
+                        onEvent(SettingsEvent.MSelect(m = false))
+                    },
+                    text = "feet"
+                )
+            }
 
-        FeatureButton(
-            color = ButtonDefaults.buttonColors(
-                contentColor = Color.White,
-                containerColor = Color(0xFF228CB6)
-            ),
-            screen = Screens.WeightRecords(backTo = Screens.Settings),
-            text = "Weight records"
-        )
+            Spacer(modifier = Modifier.height(16.dp))
+        }
 
-        Spacer(modifier = Modifier.height(12.dp))
+        item(key = "convert units") {
+            FeatureButton(
+                color = ButtonDefaults.buttonColors(
+                    contentColor = Color.White,
+                    containerColor = Color.DarkGray
+                ),
+                screen = Screens.Converter,
+                text = "Convert units"
+            )
 
-        FeatureButton(
-            color = ButtonDefaults.buttonColors(
-                contentColor = Color.White,
-                containerColor = Color(0xFF119917)
-            ),
-            screen = Screens.ActivityRecords(backTo = Screens.Settings),
-            text = "Activity records"
-        )
+            Spacer(modifier = Modifier.height(12.dp))
+        }
 
-        Spacer(modifier = Modifier.height(12.dp))
+        item(key = "add quote") {
+            FeatureButton(
+                color = ButtonDefaults.buttonColors(
+                    contentColor = Color.White,
+                    containerColor = Color.Magenta
+                ),
+                screen = Screens.Quote(backTo = Screens.Settings),
+                text = "Add a quote to home screen"
+            )
 
-        FeatureButton(
-            color = ButtonDefaults.buttonColors(
-                contentColor = Color.White,
-                containerColor = Color(0xFF2A337A)
-            ),
-            screen = Screens.WaterRecords(backTo = Screens.Settings),
-            text = "Water records"
-        )
+            Spacer(modifier = Modifier.height(12.dp))
+        }
+
+        item(key = "weight goal") {
+            FeatureButton(
+                color = ButtonDefaults.buttonColors(
+                    contentColor = Color.White,
+                    containerColor = Color(0xFFE91E63)
+                ),
+                screen = Screens.WeightGoal,
+                text = "Weight goal"
+            )
+
+            Spacer(modifier = Modifier.height(12.dp))
+        }
+
+        item(key = "articles") {
+            FeatureButton(
+                color = ButtonDefaults.buttonColors(
+                    contentColor = Color.White,
+                    containerColor = Color(0xFFFF9800)
+                ),
+                screen = Screens.Articles,
+                text = "Articles"
+            )
+
+            Spacer(modifier = Modifier.height(12.dp))
+        }
+
+        item(key = "weight records") {
+            FeatureButton(
+                color = ButtonDefaults.buttonColors(
+                    contentColor = Color.White,
+                    containerColor = Color(0xFF228CB6)
+                ),
+                screen = Screens.WeightRecords(backTo = Screens.Settings),
+                text = "Weight records"
+            )
+
+            Spacer(modifier = Modifier.height(12.dp))
+        }
+
+        item(key = "activity records") {
+            FeatureButton(
+                color = ButtonDefaults.buttonColors(
+                    contentColor = Color.White,
+                    containerColor = Color(0xFF119917)
+                ),
+                screen = Screens.ActivityRecords(backTo = Screens.Settings),
+                text = "Activity records"
+            )
+
+            Spacer(modifier = Modifier.height(12.dp))
+        }
+
+        item(key = "water records") {
+            FeatureButton(
+                color = ButtonDefaults.buttonColors(
+                    contentColor = Color.White,
+                    containerColor = Color(0xFF2A337A)
+                ),
+                screen = Screens.WaterRecords(backTo = Screens.Settings),
+                text = "Water records"
+            )
+        }
     }
 }
 
