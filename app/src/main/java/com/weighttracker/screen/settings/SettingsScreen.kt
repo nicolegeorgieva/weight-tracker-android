@@ -40,41 +40,23 @@ private fun UI(
         Spacer(modifier = Modifier.height(8.dp))
 
         Row() {
-            Button(
-                enabled = true,
-                colors = if (state.kg) {
-                    ButtonDefaults.buttonColors(
-                        containerColor = Color.Blue,
-                        contentColor = Color.White
-                    )
-                } else ButtonDefaults.buttonColors(
-                    containerColor = Color.Gray,
-                    contentColor = Color.White
-                ),
-                shape = RoundedCornerShape(24.dp),
+            UnitButton(
+                selected = state.kg,
                 onClick = {
                     onEvent(SettingsEvent.KgSelect(kg = true))
-                }) {
-                Text(text = "kg")
-            }
+                },
+                text = "kg"
+            )
+
             Spacer(modifier = Modifier.width(8.dp))
-            Button(
-                enabled = true,
-                colors = if (state.kg) {
-                    ButtonDefaults.buttonColors(
-                        containerColor = Color.Gray,
-                        contentColor = Color.White
-                    )
-                } else ButtonDefaults.buttonColors(
-                    containerColor = Color.Blue,
-                    contentColor = Color.White
-                ),
-                shape = RoundedCornerShape(24.dp),
+
+            UnitButton(
+                selected = !state.kg,
                 onClick = {
                     onEvent(SettingsEvent.KgSelect(kg = false))
-                }) {
-                Text(text = "lb")
-            }
+                },
+                text = "lb"
+            )
         }
 
         Spacer(modifier = Modifier.height(8.dp))
@@ -84,43 +66,23 @@ private fun UI(
         Spacer(modifier = Modifier.height(8.dp))
 
         Row() {
-            Button(
-                enabled = true,
-                colors = if (state.m) {
-                    ButtonDefaults.buttonColors(
-                        containerColor = Color.Blue,
-                        contentColor = Color.White
-                    )
-                } else ButtonDefaults.buttonColors(
-                    containerColor = Color.Gray,
-                    contentColor = Color.White
-                ),
-                shape = RoundedCornerShape(24.dp),
+            UnitButton(
+                selected = state.m,
                 onClick = {
                     onEvent(SettingsEvent.MSelect(m = true))
-                }
-            ) {
-                Text(text = "m")
-            }
+                },
+                text = "m"
+            )
+
             Spacer(modifier = Modifier.width(8.dp))
-            Button(
-                enabled = true,
-                colors = if (state.m) {
-                    ButtonDefaults.buttonColors(
-                        containerColor = Color.Gray,
-                        contentColor = Color.White
-                    )
-                } else ButtonDefaults.buttonColors(
-                    containerColor = Color.Blue,
-                    contentColor = Color.White
-                ),
-                shape = RoundedCornerShape(24.dp),
+
+            UnitButton(
+                selected = !state.m,
                 onClick = {
                     onEvent(SettingsEvent.MSelect(m = false))
-                }
-            ) {
-                Text(text = "feet")
-            }
+                },
+                text = "feet"
+            )
         }
 
         Spacer(modifier = Modifier.height(16.dp))
@@ -255,5 +217,26 @@ private fun UI(
         ) {
             Text(text = "Water records")
         }
+    }
+}
+
+@Composable
+fun UnitButton(selected: Boolean, onClick: () -> Unit, text: String) {
+    Button(
+        enabled = true,
+        colors = if (selected) {
+            ButtonDefaults.buttonColors(
+                containerColor = Color.Blue,
+                contentColor = Color.White
+            )
+        } else ButtonDefaults.buttonColors(
+            containerColor = Color.Gray,
+            contentColor = Color.White
+        ),
+        shape = RoundedCornerShape(24.dp),
+        onClick = {
+            onClick()
+        }) {
+        Text(text = text)
     }
 }
