@@ -83,7 +83,8 @@ private fun UI(
                     color = ButtonDefaults.buttonColors(
                         contentColor = Color.White,
                         containerColor = Color(0xFF444647)
-                    )
+                    ),
+                    screen = Screens.WeightRecords(backTo = Screens.BMI)
                 )
             }
 
@@ -124,7 +125,8 @@ private fun UI(
                     color = ButtonDefaults.buttonColors(
                         contentColor = Color.White,
                         containerColor = Color(0xFF30942D)
-                    )
+                    ),
+                    screen = Screens.ActivityRecords(backTo = Screens.BMI)
                 )
             }
 
@@ -159,7 +161,8 @@ private fun UI(
                     color = ButtonDefaults.buttonColors(
                         contentColor = Color.White,
                         containerColor = Color(0xFF0E3C5F)
-                    )
+                    ),
+                    screen = Screens.WaterRecords(backTo = Screens.BMI)
                 )
             }
 
@@ -369,12 +372,12 @@ fun HeightInputAndSave(
 }
 
 @Composable
-fun SaveButton(onSave: () -> Unit, color: ButtonColors) {
+fun SaveButton(onSave: () -> Unit, color: ButtonColors, screen: Screens) {
     Button(
         colors = color,
         onClick = {
             onSave()
-            navigateTo(Screens.WeightRecords(backTo = Screens.BMI))
+            navigateTo(screen)
         }
     ) {
         Text(text = "Save")
