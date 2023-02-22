@@ -65,16 +65,27 @@ private fun UI(
         }
 
         item(key = "weight input and save") {
-            WeightInputAndSave(
-                weight = state.weight,
-                kgSelected = state.kg,
-                onWeightChange = {
-                    onEvent(BmiEvent.WeightChange(newWeightRec = it))
-                },
-                onSave = {
-                    onEvent(BmiEvent.SaveWeightRecord)
-                }
-            )
+            Row(verticalAlignment = Alignment.CenterVertically) {
+                WeightInput(
+                    weight = state.weight,
+                    kgSelected = state.kg,
+                    onWeightChange = {
+                        onEvent(BmiEvent.WeightChange(newWeightRec = it))
+                    }
+                )
+
+                Spacer(modifier = Modifier.width(16.dp))
+
+                SaveButton(
+                    onSave = {
+                        onEvent(BmiEvent.SaveWeightRecord)
+                    },
+                    color = ButtonDefaults.buttonColors(
+                        contentColor = Color.White,
+                        containerColor = Color(0xFF444647)
+                    )
+                )
+            }
 
             Spacer(modifier = Modifier.height(16.dp))
         }
@@ -98,15 +109,24 @@ private fun UI(
         }
 
         item(key = "activity input and save") {
-            ActivityRecordAndSave(
-                activity = state.activity,
-                onActivityChange = {
-                    onEvent(BmiEvent.ActivityChange(newActivityRec = it))
-                },
-                onSave = {
-                    onEvent(BmiEvent.SaveActivityRecord)
-                }
-            )
+            Row() {
+                ActivityInput(
+                    activity = state.activity,
+                    onActivityChange = {
+                        onEvent(BmiEvent.ActivityChange(newActivityRec = it))
+                    }
+                )
+
+                Spacer(modifier = Modifier.width(16.dp))
+
+                SaveButton(
+                    onSave = { onEvent(BmiEvent.SaveActivityRecord) },
+                    color = ButtonDefaults.buttonColors(
+                        contentColor = Color.White,
+                        containerColor = Color(0xFF30942D)
+                    )
+                )
+            }
 
             Spacer(modifier = Modifier.height(16.dp))
         }
@@ -124,15 +144,24 @@ private fun UI(
         }
 
         item(key = "water input and save") {
-            WaterInputAndSave(
-                water = state.water,
-                onWaterChange = {
-                    onEvent(BmiEvent.WaterChange(newWaterRec = it))
-                },
-                onSave = {
-                    onEvent(BmiEvent.SaveWaterRecord)
-                }
-            )
+            Row() {
+                WaterInput(
+                    water = state.water,
+                    onWaterChange = {
+                        onEvent(BmiEvent.WaterChange(newWaterRec = it))
+                    }
+                )
+
+                Spacer(modifier = Modifier.width(16.dp))
+
+                SaveButton(
+                    onSave = { onEvent(BmiEvent.SaveWaterRecord) },
+                    color = ButtonDefaults.buttonColors(
+                        contentColor = Color.White,
+                        containerColor = Color(0xFF0E3C5F)
+                    )
+                )
+            }
 
             Spacer(modifier = Modifier.height(24.dp))
         }
@@ -264,10 +293,9 @@ fun BmiResult(bmi: Double?) {
 }
 
 @Composable
-fun WaterInputAndSave(
+fun WaterInput(
     water: Double?,
-    onWaterChange: (Double) -> Unit,
-    onSave: () -> Unit
+    onWaterChange: (Double) -> Unit
 ) {
     Row(verticalAlignment = Alignment.CenterVertically) {
         NumberInputField(
@@ -285,53 +313,22 @@ fun WaterInputAndSave(
             text = "liters",
             fontWeight = FontWeight.Bold
         )
-
-        Spacer(modifier = Modifier.width(16.dp))
-
-        Button(
-            onClick = {
-                onSave()
-                navigateTo(Screens.WaterRecords(backTo = Screens.BMI))
-            }, colors = ButtonDefaults.buttonColors(
-                contentColor = Color.White,
-                containerColor = Color(0xFF0E3C5F)
-            )
-        ) {
-            Text(text = "Save")
-        }
     }
 }
 
 @Composable
-fun ActivityRecordAndSave(
+fun RowScope.ActivityInput(
     activity: String?,
-    onActivityChange: (String) -> Unit,
-    onSave: () -> Unit
+    onActivityChange: (String) -> Unit
 ) {
-    Row(verticalAlignment = Alignment.CenterVertically) {
-        InputField(
-            value = activity ?: "",
-            modifier = Modifier.weight(1f),
-            placeholder = "e.g. swimming, tennis, walking 10k steps, gym",
-            onValueChange = {
-                onActivityChange(it)
-            }
-        )
-
-        Spacer(modifier = Modifier.width(16.dp))
-
-        Button(
-            onClick = {
-                onSave()
-                navigateTo(Screens.ActivityRecords(backTo = Screens.BMI))
-            }, colors = ButtonDefaults.buttonColors(
-                contentColor = Color.White,
-                containerColor = Color(0xFF119917)
-            )
-        ) {
-            Text(text = "Save")
+    InputField(
+        value = activity ?: "",
+        modifier = Modifier.weight(1f),
+        placeholder = "e.g. swimming, tennis, walking 10k steps, gym",
+        onValueChange = {
+            onActivityChange(it)
         }
-    }
+    )
 }
 
 @Composable
@@ -372,46 +369,42 @@ fun HeightInputAndSave(
 }
 
 @Composable
-fun WeightInputAndSave(
+fun SaveButton(onSave: () -> Unit, color: ButtonColors) {
+    Button(
+        colors = color,
+        onClick = {
+            onSave()
+            navigateTo(Screens.WeightRecords(backTo = Screens.BMI))
+        }
+    ) {
+        Text(text = "Save")
+    }
+}
+
+@Composable
+fun WeightInput(
     weight: Double?,
     kgSelected: Boolean,
-    onWeightChange: (Double) -> Unit,
-    onSave: () -> Unit
+    onWeightChange: (Double) -> Unit
 ) {
-    Row(verticalAlignment = Alignment.CenterVertically) {
-        NumberInputField(
-            modifier = Modifier.width(90.dp),
-            number = weight,
-            placeholder = "Weight",
-            onValueChange = {
-                onWeightChange(it)
-            }
-        )
-
-        Spacer(modifier = Modifier.width(8.dp))
-
-        Text(
-            modifier = Modifier.clickable {
-                navigateTo(Screens.Settings)
-            },
-            fontWeight = FontWeight.Bold,
-            text = if (kgSelected) "kg" else "lb"
-        )
-
-        Spacer(modifier = Modifier.width(16.dp))
-
-        Button(
-            onClick = {
-                onSave()
-                navigateTo(Screens.WeightRecords(backTo = Screens.BMI))
-            }, colors = ButtonDefaults.buttonColors(
-                contentColor = Color.White,
-                containerColor = Color(0xFF444647)
-            )
-        ) {
-            Text(text = "Save")
+    NumberInputField(
+        modifier = Modifier.width(90.dp),
+        number = weight,
+        placeholder = "Weight",
+        onValueChange = {
+            onWeightChange(it)
         }
-    }
+    )
+
+    Spacer(modifier = Modifier.width(8.dp))
+
+    Text(
+        modifier = Modifier.clickable {
+            navigateTo(Screens.Settings)
+        },
+        fontWeight = FontWeight.Bold,
+        text = if (kgSelected) "kg" else "lb"
+    )
 }
 
 @Composable
