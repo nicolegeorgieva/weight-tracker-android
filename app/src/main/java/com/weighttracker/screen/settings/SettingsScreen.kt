@@ -3,6 +3,7 @@ package com.weighttracker.screen.settings
 import androidx.compose.foundation.layout.*
 import androidx.compose.foundation.shape.RoundedCornerShape
 import androidx.compose.material3.Button
+import androidx.compose.material3.ButtonColors
 import androidx.compose.material3.ButtonDefaults
 import androidx.compose.material3.Text
 import androidx.compose.runtime.Composable
@@ -87,136 +88,96 @@ private fun UI(
 
         Spacer(modifier = Modifier.height(16.dp))
 
-        Button(
-            modifier = Modifier
-                .fillMaxWidth()
-                .height(48.dp),
-            colors = ButtonDefaults.buttonColors(
+        FeatureButton(
+            color = ButtonDefaults.buttonColors(
                 contentColor = Color.White,
                 containerColor = Color.DarkGray
             ),
-            enabled = true,
-            shape = RoundedCornerShape(16.dp),
-            onClick = {
-                navigateTo(Screens.Converter)
-            }
-        ) {
-            Text(text = "Convert units")
-        }
+            screen = Screens.Converter,
+            text = "Convert units"
+        )
 
         Spacer(modifier = Modifier.height(12.dp))
 
-        Button(
-            modifier = Modifier
-                .fillMaxWidth()
-                .height(48.dp),
-            colors = ButtonDefaults.buttonColors(
+        FeatureButton(
+            color = ButtonDefaults.buttonColors(
                 contentColor = Color.White,
                 containerColor = Color.Magenta
             ),
-            enabled = true,
-            shape = RoundedCornerShape(16.dp),
-            onClick = {
-                navigateTo(Screens.Quote(backTo = Screens.Settings))
-            }
-        ) {
-            Text(text = "Add a quote to home screen")
-        }
+            screen = Screens.Quote(backTo = Screens.Settings),
+            text = "Add a quote to home screen"
+        )
 
         Spacer(modifier = Modifier.height(12.dp))
 
-        Button(
-            modifier = Modifier
-                .fillMaxWidth()
-                .height(48.dp),
-            colors = ButtonDefaults.buttonColors(
+        FeatureButton(
+            color = ButtonDefaults.buttonColors(
                 contentColor = Color.White,
                 containerColor = Color(0xFFE91E63)
             ),
-            enabled = true,
-            shape = RoundedCornerShape(16.dp),
-            onClick = {
-                navigateTo(Screens.WeightGoal)
-            }
-        ) {
-            Text(text = "Weight goal")
-        }
+            screen = Screens.WeightGoal,
+            text = "Weight goal"
+        )
 
         Spacer(modifier = Modifier.height(12.dp))
 
-        Button(
-            modifier = Modifier
-                .fillMaxWidth()
-                .height(48.dp),
-            colors = ButtonDefaults.buttonColors(
+        FeatureButton(
+            color = ButtonDefaults.buttonColors(
                 contentColor = Color.White,
                 containerColor = Color(0xFFFF9800)
             ),
-            enabled = true,
-            shape = RoundedCornerShape(16.dp),
-            onClick = {
-                navigateTo(Screens.Articles)
-            }
-        ) {
-            Text(text = "Articles")
-        }
+            screen = Screens.Articles,
+            text = "Articles"
+        )
 
         Spacer(modifier = Modifier.height(12.dp))
 
-        Button(
-            modifier = Modifier
-                .fillMaxWidth()
-                .height(48.dp),
-            colors = ButtonDefaults.buttonColors(
+        FeatureButton(
+            color = ButtonDefaults.buttonColors(
                 contentColor = Color.White,
                 containerColor = Color(0xFF228CB6)
             ),
-            enabled = true,
-            shape = RoundedCornerShape(16.dp),
-            onClick = {
-                navigateTo(Screens.WeightRecords(backTo = Screens.Settings))
-            }
-        ) {
-            Text(text = "Weight records")
-        }
+            screen = Screens.WeightRecords(backTo = Screens.Settings),
+            text = "Weight records"
+        )
 
         Spacer(modifier = Modifier.height(12.dp))
 
-        Button(
-            modifier = Modifier
-                .fillMaxWidth()
-                .height(48.dp),
-            colors = ButtonDefaults.buttonColors(
+        FeatureButton(
+            color = ButtonDefaults.buttonColors(
                 contentColor = Color.White,
                 containerColor = Color(0xFF119917)
             ),
-            enabled = true,
-            shape = RoundedCornerShape(16.dp),
-            onClick = {
-                navigateTo(Screens.ActivityRecords(backTo = Screens.Settings))
-            }
-        ) {
-            Text(text = "Activity records")
-        }
+            screen = Screens.ActivityRecords(backTo = Screens.Settings),
+            text = "Activity records"
+        )
 
         Spacer(modifier = Modifier.height(12.dp))
 
-        Button(
-            modifier = Modifier
-                .fillMaxWidth()
-                .height(48.dp),
-            colors = ButtonDefaults.buttonColors(
+        FeatureButton(
+            color = ButtonDefaults.buttonColors(
                 contentColor = Color.White,
                 containerColor = Color(0xFF2A337A)
             ),
-            enabled = true,
-            shape = RoundedCornerShape(16.dp),
-            onClick = {
-                navigateTo(Screens.WaterRecords(backTo = Screens.Settings))
-            }
-        ) {
-            Text(text = "Water records")
+            screen = Screens.WaterRecords(backTo = Screens.Settings),
+            text = "Water records"
+        )
+    }
+}
+
+@Composable
+fun FeatureButton(color: ButtonColors, screen: Screens, text: String) {
+    Button(
+        modifier = Modifier
+            .fillMaxWidth()
+            .height(48.dp),
+        colors = color,
+        shape = RoundedCornerShape(16.dp),
+        onClick = {
+            navigateTo(screen)
         }
+    ) {
+        Text(text = text)
     }
 }
 
