@@ -26,7 +26,9 @@ class ActivityRecordsViewModel @Inject constructor(
 
         ) { activityRecords, _ ->
         ActivityRecordsState(
-            activityRecords = activityRecords
+            activityRecords = activityRecords.sortedByDescending {
+                it.dateTime
+            }
         )
     }
 

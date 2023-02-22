@@ -121,7 +121,9 @@ private fun UI(
                 Spacer(modifier = Modifier.width(16.dp))
 
                 SaveButton(
-                    onSave = { onEvent(BmiEvent.SaveActivityRecord) },
+                    onSave = {
+                        onEvent(BmiEvent.SaveActivityRecord)
+                    },
                     color = ButtonDefaults.buttonColors(
                         contentColor = Color.White,
                         containerColor = Color(0xFF30942D)

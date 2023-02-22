@@ -26,7 +26,9 @@ class WaterRecordsViewModel @Inject constructor(
 
         ) { waterRecords, _ ->
         WaterRecordsState(
-            waterRecords = waterRecords
+            waterRecords = waterRecords.sortedByDescending {
+                it.dateTime
+            }
         )
     }
 
