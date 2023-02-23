@@ -27,6 +27,7 @@ import com.weighttracker.browser
 import com.weighttracker.component.Glass
 import com.weighttracker.component.InputField
 import com.weighttracker.component.NumberInputField
+import com.weighttracker.component.SectionTitle
 import com.weighttracker.domain.formatBmi
 import com.weighttracker.navigateTo
 import kotlinx.coroutines.CoroutineScope
@@ -59,7 +60,7 @@ private fun UI(
         }
 
         item(key = "log weight and height") {
-            SectionTitle("Log your weight and height", color = Color.Black)
+            SectionTitle("Log your weight and height")
 
             Spacer(modifier = Modifier.height(16.dp))
         }
@@ -104,7 +105,7 @@ private fun UI(
         }
 
         item(key = "log activity") {
-            SectionTitle(text = "Log your activity for today", color = Color.Black)
+            SectionTitle(text = "Log your activity for today")
 
             Spacer(modifier = Modifier.height(16.dp))
         }
@@ -136,7 +137,7 @@ private fun UI(
         }
 
         item(key = "log water consumption") {
-            SectionTitle(text = "Log your water consumption for today", color = Color.Black)
+            SectionTitle(text = "Log your water consumption for today")
 
             Spacer(modifier = Modifier.height(16.dp))
         }
@@ -336,15 +337,6 @@ fun RowScope.ActivityInput(
         onValueChange = {
             onActivityChange(it)
         }
-    )
-}
-
-@Composable
-fun SectionTitle(text: String, color: Color) {
-    Text(
-        text = text,
-        fontSize = 20.sp,
-        fontWeight = FontWeight.Bold
     )
 }
 
