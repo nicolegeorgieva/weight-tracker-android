@@ -23,6 +23,7 @@ import com.weighttracker.AppTheme
 import com.weighttracker.Screens
 import com.weighttracker.browser
 import com.weighttracker.component.*
+import com.weighttracker.domain.NormalWeightRange
 import com.weighttracker.domain.formatBmi
 import com.weighttracker.navigateTo
 import kotlinx.coroutines.CoroutineScope
@@ -258,15 +259,15 @@ fun BmiStatusAndMessage(
 
 @Composable
 fun NormalWeightRangeMessage(
-    normalWeightRange: Pair<Double, Double>,
+    normalWeightRange: NormalWeightRange,
     kgSelected: Boolean
 ) {
-    if (normalWeightRange.first > 0 && normalWeightRange.second > 0
+    if (normalWeightRange.minWeight > 0 && normalWeightRange.maxWeight > 0
     ) {
         val minWeightFormatted = DecimalFormat("###,###.#")
-            .format(normalWeightRange.first)
+            .format(normalWeightRange.minWeight)
         val maxWeightFormatted = DecimalFormat("###,###.#")
-            .format(normalWeightRange.second)
+            .format(normalWeightRange.maxWeight)
         val weightUnit = if (kgSelected) "kg" else "lb"
 
         Text(

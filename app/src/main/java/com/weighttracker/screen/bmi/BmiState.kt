@@ -1,5 +1,7 @@
 package com.weighttracker.screen.bmi
 
+import com.weighttracker.domain.NormalWeightRange
+
 data class BmiState(
     val weight: Double?,
     val height: Double?,
@@ -7,7 +9,7 @@ data class BmiState(
     val kg: Boolean,
     val m: Boolean,
     val quote: String?,
-    val normalWeightRange: Pair<Double, Double>?,
+    val normalWeightRange: NormalWeightRange?,
     val activity: String?,
     val water: Double,
     val glasses: List<Boolean>

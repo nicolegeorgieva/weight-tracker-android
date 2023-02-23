@@ -74,10 +74,10 @@ class WeightGoalViewModel @Inject constructor(
         mSelected: Boolean,
         kgSelected: Boolean
     ): Double {
-        val pair = calculateNormalWeightRange(height, mSelected, kgSelected)
+        val normalWeight = calculateNormalWeightRange(height, mSelected, kgSelected)
 
-        val minWeight = pair.first
-        val maxWeight = pair.second
+        val minWeight = normalWeight.minWeight
+        val maxWeight = normalWeight.maxWeight
 
         return (maxWeight + minWeight) / 2
     }
