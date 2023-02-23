@@ -22,7 +22,7 @@ import androidx.compose.ui.unit.dp
 import androidx.lifecycle.viewmodel.compose.viewModel
 import com.weighttracker.R
 import com.weighttracker.Screens
-import com.weighttracker.component.BackButton
+import com.weighttracker.component.Header
 import com.weighttracker.component.InputField
 import com.weighttracker.format
 import com.weighttracker.persistence.database.activityrecords.ActivityRecordEntity
@@ -45,7 +45,7 @@ private fun UI(
     Column(
         modifier = Modifier.padding(horizontal = 16.dp, vertical = 16.dp)
     ) {
-        BackButton(screens = screen.backTo)
+        Header(screen = screen.backTo, title = "Activity records")
 
         Spacer(modifier = Modifier.height(32.dp))
 

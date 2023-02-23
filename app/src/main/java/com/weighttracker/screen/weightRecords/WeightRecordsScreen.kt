@@ -22,7 +22,7 @@ import androidx.compose.ui.unit.dp
 import androidx.lifecycle.viewmodel.compose.viewModel
 import com.weighttracker.*
 import com.weighttracker.R
-import com.weighttracker.component.BackButton
+import com.weighttracker.component.Header
 import com.weighttracker.component.NumberInputField
 import com.weighttracker.domain.formatBmi
 
@@ -41,7 +41,7 @@ private fun UI(
     onEvent: (WeightRecordsEvent) -> Unit,
 ) {
     Column(modifier = Modifier.padding(horizontal = 16.dp, vertical = 16.dp)) {
-        BackButton(screens = screen.backTo)
+        Header(screen = screen.backTo, title = "Weight records")
 
         Spacer(modifier = Modifier.height(32.dp))
 

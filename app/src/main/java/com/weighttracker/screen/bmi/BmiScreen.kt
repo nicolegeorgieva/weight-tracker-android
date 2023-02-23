@@ -59,7 +59,7 @@ private fun UI(
         }
 
         item(key = "log weight and height") {
-            SectionTitle("Log your weight and height")
+            SectionTitle("Log your weight and height", color = Color.Black)
 
             Spacer(modifier = Modifier.height(16.dp))
         }
@@ -104,7 +104,7 @@ private fun UI(
         }
 
         item(key = "log activity") {
-            SectionTitle(text = "Log your activity for today")
+            SectionTitle(text = "Log your activity for today", color = Color.Black)
 
             Spacer(modifier = Modifier.height(16.dp))
         }
@@ -136,7 +136,7 @@ private fun UI(
         }
 
         item(key = "log water consumption") {
-            SectionTitle(text = "Log your water consumption for today")
+            SectionTitle(text = "Log your water consumption for today", color = Color.Black)
 
             Spacer(modifier = Modifier.height(16.dp))
         }
@@ -340,7 +340,7 @@ fun RowScope.ActivityInput(
 }
 
 @Composable
-fun SectionTitle(text: String) {
+fun SectionTitle(text: String, color: Color) {
     Text(
         text = text,
         fontSize = 20.sp,

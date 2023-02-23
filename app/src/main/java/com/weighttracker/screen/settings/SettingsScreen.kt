@@ -16,8 +16,9 @@ import androidx.compose.ui.unit.dp
 import androidx.compose.ui.unit.sp
 import androidx.lifecycle.viewmodel.compose.viewModel
 import com.weighttracker.Screens
-import com.weighttracker.component.BackButton
+import com.weighttracker.component.Header
 import com.weighttracker.navigateTo
+import com.weighttracker.screen.bmi.SectionTitle
 
 @Composable
 fun SettingsScreen() {
@@ -36,8 +37,8 @@ private fun UI(
         modifier = Modifier.fillMaxSize(),
         contentPadding = PaddingValues(16.dp)
     ) {
-        item(key = "back button") {
-            BackButton(screens = Screens.BMI)
+        item(key = "header") {
+            Header(screen = Screens.BMI, title = "Settings")
 
             Spacer(modifier = Modifier.height(28.dp))
         }
@@ -104,6 +105,7 @@ private fun UI(
 
         item(key = "convert units") {
             FeatureButton(
+                modifier = Modifier.fillMaxWidth(),
                 color = ButtonDefaults.buttonColors(
                     contentColor = Color.White,
                     containerColor = Color.DarkGray
@@ -117,6 +119,7 @@ private fun UI(
 
         item(key = "add quote") {
             FeatureButton(
+                modifier = Modifier.fillMaxWidth(),
                 color = ButtonDefaults.buttonColors(
                     contentColor = Color.White,
                     containerColor = Color.Magenta
@@ -130,6 +133,7 @@ private fun UI(
 
         item(key = "weight goal") {
             FeatureButton(
+                modifier = Modifier.fillMaxWidth(),
                 color = ButtonDefaults.buttonColors(
                     contentColor = Color.White,
                     containerColor = Color(0xFFE91E63)
@@ -143,6 +147,7 @@ private fun UI(
 
         item(key = "articles") {
             FeatureButton(
+                modifier = Modifier.fillMaxWidth(),
                 color = ButtonDefaults.buttonColors(
                     contentColor = Color.White,
                     containerColor = Color(0xFFFF9800)
@@ -154,50 +159,61 @@ private fun UI(
             Spacer(modifier = Modifier.height(12.dp))
         }
 
-        item(key = "weight records") {
-            FeatureButton(
-                color = ButtonDefaults.buttonColors(
-                    contentColor = Color.White,
-                    containerColor = Color(0xFF944E62)
-                ),
-                screen = Screens.WeightRecords(backTo = Screens.Settings),
-                text = "Weight records"
-            )
+        item(key = "records section title") {
+            SectionTitle(text = "Records", color = Color.LightGray)
 
             Spacer(modifier = Modifier.height(12.dp))
         }
 
-        item(key = "activity records") {
-            FeatureButton(
-                color = ButtonDefaults.buttonColors(
-                    contentColor = Color.White,
-                    containerColor = Color(0xFF2CB432)
-                ),
-                screen = Screens.ActivityRecords(backTo = Screens.Settings),
-                text = "Activity records"
-            )
+        item(key = "weight, activity and water records") {
+            Row() {
+                FeatureButton(
+                    modifier = Modifier.weight(1f),
+                    color = ButtonDefaults.buttonColors(
+                        contentColor = Color.White,
+                        containerColor = Color(0xFF944E62)
+                    ),
+                    screen = Screens.WeightRecords(backTo = Screens.Settings),
+                    text = "Weight"
+                )
 
-            Spacer(modifier = Modifier.height(12.dp))
-        }
+                Spacer(modifier = Modifier.width(8.dp))
 
-        item(key = "water records") {
-            FeatureButton(
-                color = ButtonDefaults.buttonColors(
-                    contentColor = Color.White,
-                    containerColor = Color(0xFF2A337A)
-                ),
-                screen = Screens.WaterRecords(backTo = Screens.Settings),
-                text = "Water records"
-            )
+                FeatureButton(
+                    modifier = Modifier.weight(1f),
+                    color = ButtonDefaults.buttonColors(
+                        contentColor = Color.White,
+                        containerColor = Color(0xFF2CB432)
+                    ),
+                    screen = Screens.ActivityRecords(backTo = Screens.Settings),
+                    text = "Activity"
+                )
+
+                Spacer(modifier = Modifier.width(8.dp))
+
+                FeatureButton(
+                    modifier = Modifier.weight(1f),
+                    color = ButtonDefaults.buttonColors(
+                        contentColor = Color.White,
+                        containerColor = Color(0xFF2A337A)
+                    ),
+                    screen = Screens.WaterRecords(backTo = Screens.Settings),
+                    text = "Water"
+                )
+            }
         }
     }
 }
 
 @Composable
-fun FeatureButton(color: ButtonColors, screen: Screens, text: String) {
+fun FeatureButton(
+    color: ButtonColors,
+    screen: Screens,
+    text: String,
+    modifier: Modifier = Modifier
+) {
     Button(
-        modifier = Modifier
-            .fillMaxWidth()
+        modifier = modifier
             .height(48.dp),
         colors = color,
         shape = RoundedCornerShape(16.dp),
