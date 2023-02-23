@@ -2,11 +2,7 @@ package com.weighttracker.screen.weightGoal
 
 import androidx.compose.foundation.clickable
 import androidx.compose.foundation.layout.*
-import androidx.compose.material.icons.Icons
-import androidx.compose.material.icons.filled.KeyboardArrowDown
-import androidx.compose.material.icons.filled.KeyboardArrowUp
 import androidx.compose.material3.Button
-import androidx.compose.material3.Icon
 import androidx.compose.material3.Text
 import androidx.compose.runtime.*
 import androidx.compose.ui.Alignment
@@ -18,6 +14,7 @@ import androidx.compose.ui.unit.dp
 import androidx.compose.ui.unit.sp
 import androidx.lifecycle.viewmodel.compose.viewModel
 import com.weighttracker.Screens
+import com.weighttracker.component.ExpandCollapseArrow
 import com.weighttracker.component.Header
 import com.weighttracker.component.NumberInputField
 import com.weighttracker.formatNumber
@@ -74,27 +71,22 @@ private fun UI(
             Spacer(modifier = Modifier.height(16.dp))
         }
 
-        var expandedInfo by remember {
+        var expandedState by remember {
             mutableStateOf(false)
         }
 
         Row(verticalAlignment = Alignment.Bottom) {
             Row() {
-                Icon(
-                    if (expandedInfo) {
-                        Icons.Default.KeyboardArrowUp
-                    } else {
-                        Icons.Default.KeyboardArrowDown
-                    },
-                    contentDescription = "",
-                    modifier = Modifier.clickable {
-                        expandedInfo = !expandedInfo
+                ExpandCollapseArrow(
+                    expanded = expandedState,
+                    onExpandChange = { expanded ->
+                        expandedState = expanded
                     }
                 )
 
                 Text(
                     modifier = Modifier.clickable {
-                        expandedInfo = !expandedInfo
+                        expandedState = !expandedState
                     },
                     text = "Your ideal weight would be:", fontSize = 16.sp,
                     textDecoration = TextDecoration.Underline
@@ -114,7 +106,7 @@ private fun UI(
             }
         }
 
-        if (expandedInfo) {
+        if (expandedState) {
             Spacer(modifier = Modifier.height(16.dp))
 
             Text(
