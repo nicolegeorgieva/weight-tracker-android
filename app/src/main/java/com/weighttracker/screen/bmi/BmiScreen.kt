@@ -6,8 +6,6 @@ import androidx.compose.foundation.lazy.LazyColumn
 import androidx.compose.foundation.lazy.LazyListState
 import androidx.compose.foundation.lazy.rememberLazyListState
 import androidx.compose.material.icons.Icons
-import androidx.compose.material.icons.filled.KeyboardArrowDown
-import androidx.compose.material.icons.filled.KeyboardArrowUp
 import androidx.compose.material.icons.filled.Menu
 import androidx.compose.material3.*
 import androidx.compose.runtime.*
@@ -24,10 +22,7 @@ import androidx.lifecycle.viewmodel.compose.viewModel
 import com.weighttracker.AppTheme
 import com.weighttracker.Screens
 import com.weighttracker.browser
-import com.weighttracker.component.Glass
-import com.weighttracker.component.InputField
-import com.weighttracker.component.NumberInputField
-import com.weighttracker.component.SectionTitle
+import com.weighttracker.component.*
 import com.weighttracker.domain.formatBmi
 import com.weighttracker.navigateTo
 import kotlinx.coroutines.CoroutineScope
@@ -218,7 +213,7 @@ fun BmiStatusAndMessage(
 
         val browser = browser()
 
-        var expandedInfo by remember {
+        var expandedState by remember {
             mutableStateOf(false)
         }
 
@@ -236,17 +231,12 @@ fun BmiStatusAndMessage(
 
             Spacer(modifier = Modifier.weight(1f))
 
-            Icon(
-                if (expandedInfo) {
-                    Icons.Default.KeyboardArrowUp
-                } else {
-                    Icons.Default.KeyboardArrowDown
-                },
-                contentDescription = "",
-                modifier = Modifier.clickable {
-                    expandedInfo = !expandedInfo
+            ExpandCollapseArrow(
+                expanded = expandedState,
+                onExpandChange = { expanded ->
+                    expandedState = expanded
                     coroutineScope.launch {
-                        if (expandedInfo) {
+                        if (expanded) {
                             listState.animateScrollToItem(index = 13)
                         }
                     }
@@ -254,7 +244,7 @@ fun BmiStatusAndMessage(
             )
         }
 
-        if (expandedInfo) {
+        if (expandedState) {
             Spacer(modifier = Modifier.height(16.dp))
 
             Text(
