@@ -4,7 +4,10 @@ import androidx.compose.foundation.layout.*
 import androidx.compose.foundation.lazy.LazyColumn
 import androidx.compose.foundation.lazy.LazyListScope
 import androidx.compose.foundation.shape.RoundedCornerShape
-import androidx.compose.material3.*
+import androidx.compose.material3.Button
+import androidx.compose.material3.ButtonColors
+import androidx.compose.material3.ButtonDefaults
+import androidx.compose.material3.Text
 import androidx.compose.runtime.Composable
 import androidx.compose.runtime.collectAsState
 import androidx.compose.runtime.getValue
@@ -18,6 +21,7 @@ import androidx.lifecycle.viewmodel.compose.viewModel
 import com.weighttracker.Screens
 import com.weighttracker.component.Header
 import com.weighttracker.component.SectionTitle
+import com.weighttracker.component.customDivider
 import com.weighttracker.navigateTo
 
 @Composable
@@ -103,11 +107,7 @@ fun LazyListScope.unitsSection(
             )
         }
 
-        Divider(
-            modifier = Modifier.fillMaxWidth(),
-            color = Color.LightGray,
-            thickness = 2.dp
-        )
+        customDivider()
 
         Spacer(modifier = Modifier.height(12.dp))
     }
@@ -135,11 +135,7 @@ fun LazyListScope.unitsSection(
             )
         }
 
-        Divider(
-            modifier = Modifier.fillMaxWidth(),
-            color = Color.LightGray,
-            thickness = 2.dp
-        )
+        customDivider()
 
         Spacer(modifier = Modifier.height(12.dp))
     }
@@ -159,11 +155,7 @@ fun LazyListScope.unitsSection(
             }
         }
 
-        Divider(
-            modifier = Modifier.fillMaxWidth(),
-            color = Color.LightGray,
-            thickness = 2.dp
-        )
+        customDivider()
     }
 }
 
