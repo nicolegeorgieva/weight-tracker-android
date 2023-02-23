@@ -2,6 +2,7 @@ package com.weighttracker.screen.settings
 
 import androidx.compose.foundation.layout.*
 import androidx.compose.foundation.lazy.LazyColumn
+import androidx.compose.foundation.lazy.LazyListScope
 import androidx.compose.foundation.shape.RoundedCornerShape
 import androidx.compose.material3.*
 import androidx.compose.runtime.Composable
@@ -42,203 +43,239 @@ private fun UI(
             Spacer(modifier = Modifier.height(28.dp))
         }
 
-        item(key = "units section title") {
-            SectionTitle(text = "Units", color = Color.Gray)
-
-            Spacer(modifier = Modifier.height(8.dp))
-        }
-
-        item("weight unit title and buttons") {
-            Row(verticalAlignment = Alignment.CenterVertically) {
-                Text(modifier = Modifier.weight(2f), text = "Weight", fontSize = 16.sp)
-
-                UnitButton(
-                    selected = state.kg,
-                    onClick = {
-                        onEvent(SettingsEvent.KgSelect(kg = true))
-                    },
-                    text = "kg"
-                )
-
-                Spacer(modifier = Modifier.width(8.dp))
-
-                UnitButton(
-                    selected = !state.kg,
-                    onClick = {
-                        onEvent(SettingsEvent.KgSelect(kg = false))
-                    },
-                    text = "lb"
-                )
+        unitsSection(
+            kgSelected = state.kg,
+            onKgSelect = { kgSelected ->
+                onEvent(SettingsEvent.KgSelect(kg = kgSelected))
+            },
+            mSelected = state.m,
+            onMSelect = { mSelected ->
+                onEvent(SettingsEvent.MSelect(m = mSelected))
             }
+        )
 
-            Divider(
-                modifier = Modifier.fillMaxWidth(),
-                color = Color.LightGray,
-                thickness = 2.dp
-            )
-
-            Spacer(modifier = Modifier.height(12.dp))
-        }
-
-        item(key = "height unit title and buttons") {
-            Row(verticalAlignment = Alignment.CenterVertically) {
-                Text(modifier = Modifier.weight(2f), text = "Height", fontSize = 16.sp)
-
-                UnitButton(
-                    selected = state.m,
-                    onClick = {
-                        onEvent(SettingsEvent.MSelect(m = true))
-                    },
-                    text = "m"
-                )
-
-                Spacer(modifier = Modifier.width(8.dp))
-
-                UnitButton(
-                    selected = !state.m,
-                    onClick = {
-                        onEvent(SettingsEvent.MSelect(m = false))
-                    },
-                    text = "feet"
-                )
-            }
-
-            Divider(
-                modifier = Modifier.fillMaxWidth(),
-                color = Color.LightGray,
-                thickness = 2.dp
-            )
-
-            Spacer(modifier = Modifier.height(12.dp))
-        }
-
-        item(key = "water unit title and buttons") {
-            Row(verticalAlignment = Alignment.CenterVertically) {
-                Text(modifier = Modifier.weight(2f), text = "Water", fontSize = 16.sp)
-
-                Button(onClick = { /*TODO*/ }) {
-                    Text(text = "l")
-                }
-
-                Spacer(modifier = Modifier.width(8.dp))
-
-                Button(onClick = { /*TODO*/ }) {
-                    Text(text = "gallons")
-                }
-            }
-
-            Divider(
-                modifier = Modifier.fillMaxWidth(),
-                color = Color.LightGray,
-                thickness = 2.dp
-            )
-
+        item(key = "spacer") {
             Spacer(modifier = Modifier.height(32.dp))
         }
 
-        item(key = "convert units") {
-            FeatureButton(
-                modifier = Modifier.fillMaxWidth(),
-                height = 52.dp,
-                color = ButtonDefaults.buttonColors(
-                    contentColor = Color.White,
-                    containerColor = Color.DarkGray
-                ),
-                screen = Screens.Converter,
-                text = "Convert units"
-            )
+        recordsSection()
 
-            Spacer(modifier = Modifier.height(12.dp))
-        }
-
-        item(key = "add quote") {
-            FeatureButton(
-                modifier = Modifier.fillMaxWidth(),
-                height = 52.dp,
-                color = ButtonDefaults.buttonColors(
-                    contentColor = Color.White,
-                    containerColor = Color.Magenta
-                ),
-                screen = Screens.Quote(backTo = Screens.Settings),
-                text = "Add a quote to home screen"
-            )
-
-            Spacer(modifier = Modifier.height(12.dp))
-        }
-
-        item(key = "weight goal") {
-            FeatureButton(
-                modifier = Modifier.fillMaxWidth(),
-                height = 52.dp,
-                color = ButtonDefaults.buttonColors(
-                    contentColor = Color.White,
-                    containerColor = Color(0xFFE91E63)
-                ),
-                screen = Screens.WeightGoal,
-                text = "Weight goal"
-            )
-
-            Spacer(modifier = Modifier.height(12.dp))
-        }
-
-        item(key = "articles") {
-            FeatureButton(
-                modifier = Modifier.fillMaxWidth(),
-                height = 52.dp,
-                color = ButtonDefaults.buttonColors(
-                    contentColor = Color.White,
-                    containerColor = Color(0xFFFF9800)
-                ),
-                screen = Screens.Articles,
-                text = "Articles"
-            )
-
+        item(key = "spacer 2") {
             Spacer(modifier = Modifier.height(32.dp))
         }
 
-        item(key = "records section title") {
-            SectionTitle(text = "Records", color = Color.Gray)
+        usefulSection()
+    }
+}
 
-            Spacer(modifier = Modifier.height(12.dp))
+fun LazyListScope.unitsSection(
+    kgSelected: Boolean,
+    onKgSelect: (Boolean) -> Unit,
+    mSelected: Boolean,
+    onMSelect: (Boolean) -> Unit
+) {
+    item(key = "units section title") {
+        SectionTitle(text = "Units", color = Color.Gray)
+
+        Spacer(modifier = Modifier.height(8.dp))
+    }
+
+    item("weight unit title and buttons") {
+        Row(verticalAlignment = Alignment.CenterVertically) {
+            Text(modifier = Modifier.weight(2f), text = "Weight", fontSize = 16.sp)
+
+            UnitButton(
+                selected = kgSelected,
+                onClick = {
+                    onKgSelect(true)
+                },
+                text = "kg"
+            )
+
+            Spacer(modifier = Modifier.width(8.dp))
+
+            UnitButton(
+                selected = !kgSelected,
+                onClick = {
+                    onKgSelect(false)
+                },
+                text = "lb"
+            )
         }
 
-        item(key = "weight, activity and water records") {
-            Row() {
-                FeatureButton(
-                    modifier = Modifier.weight(1f),
-                    color = ButtonDefaults.buttonColors(
-                        contentColor = Color.White,
-                        containerColor = Color(0xFF944E62)
-                    ),
-                    screen = Screens.WeightRecords(backTo = Screens.Settings),
-                    text = "Weight"
-                )
+        Divider(
+            modifier = Modifier.fillMaxWidth(),
+            color = Color.LightGray,
+            thickness = 2.dp
+        )
 
-                Spacer(modifier = Modifier.width(8.dp))
+        Spacer(modifier = Modifier.height(12.dp))
+    }
 
-                FeatureButton(
-                    modifier = Modifier.weight(1f),
-                    color = ButtonDefaults.buttonColors(
-                        contentColor = Color.White,
-                        containerColor = Color(0xFF2CB432)
-                    ),
-                    screen = Screens.ActivityRecords(backTo = Screens.Settings),
-                    text = "Activity"
-                )
+    item(key = "height unit title and buttons") {
+        Row(verticalAlignment = Alignment.CenterVertically) {
+            Text(modifier = Modifier.weight(2f), text = "Height", fontSize = 16.sp)
 
-                Spacer(modifier = Modifier.width(8.dp))
+            UnitButton(
+                selected = mSelected,
+                onClick = {
+                    onMSelect(true)
+                },
+                text = "m"
+            )
 
-                FeatureButton(
-                    modifier = Modifier.weight(1f),
-                    color = ButtonDefaults.buttonColors(
-                        contentColor = Color.White,
-                        containerColor = Color(0xFF2A337A)
-                    ),
-                    screen = Screens.WaterRecords(backTo = Screens.Settings),
-                    text = "Water"
-                )
+            Spacer(modifier = Modifier.width(8.dp))
+
+            UnitButton(
+                selected = !mSelected,
+                onClick = {
+                    onMSelect(false)
+                },
+                text = "feet"
+            )
+        }
+
+        Divider(
+            modifier = Modifier.fillMaxWidth(),
+            color = Color.LightGray,
+            thickness = 2.dp
+        )
+
+        Spacer(modifier = Modifier.height(12.dp))
+    }
+
+    item(key = "water unit title and buttons") {
+        Row(verticalAlignment = Alignment.CenterVertically) {
+            Text(modifier = Modifier.weight(2f), text = "Water", fontSize = 16.sp)
+
+            Button(onClick = { /*TODO*/ }) {
+                Text(text = "l")
+            }
+
+            Spacer(modifier = Modifier.width(8.dp))
+
+            Button(onClick = { /*TODO*/ }) {
+                Text(text = "gallons")
             }
         }
+
+        Divider(
+            modifier = Modifier.fillMaxWidth(),
+            color = Color.LightGray,
+            thickness = 2.dp
+        )
+    }
+}
+
+fun LazyListScope.recordsSection() {
+    item(key = "records section title") {
+        SectionTitle(text = "Records", color = Color.Gray)
+
+        Spacer(modifier = Modifier.height(12.dp))
+    }
+
+    item(key = "weight, activity and water records") {
+        Row() {
+            FeatureButton(
+                modifier = Modifier.weight(1f),
+                color = ButtonDefaults.buttonColors(
+                    contentColor = Color.White,
+                    containerColor = Color(0xFF944E62)
+                ),
+                screen = Screens.WeightRecords(backTo = Screens.Settings),
+                text = "Weight"
+            )
+
+            Spacer(modifier = Modifier.width(8.dp))
+
+            FeatureButton(
+                modifier = Modifier.weight(1f),
+                color = ButtonDefaults.buttonColors(
+                    contentColor = Color.White,
+                    containerColor = Color(0xFF2CB432)
+                ),
+                screen = Screens.ActivityRecords(backTo = Screens.Settings),
+                text = "Activity"
+            )
+
+            Spacer(modifier = Modifier.width(8.dp))
+
+            FeatureButton(
+                modifier = Modifier.weight(1f),
+                color = ButtonDefaults.buttonColors(
+                    contentColor = Color.White,
+                    containerColor = Color(0xFF2A337A)
+                ),
+                screen = Screens.WaterRecords(backTo = Screens.Settings),
+                text = "Water"
+            )
+        }
+    }
+}
+
+fun LazyListScope.usefulSection() {
+    item(key = "useful section title") {
+        SectionTitle(text = "Useful", color = Color.Gray)
+
+        Spacer(modifier = Modifier.height(12.dp))
+    }
+
+    item(key = "convert units") {
+        FeatureButton(
+            modifier = Modifier.fillMaxWidth(),
+            height = 52.dp,
+            color = ButtonDefaults.buttonColors(
+                contentColor = Color.White,
+                containerColor = Color.DarkGray
+            ),
+            screen = Screens.Converter,
+            text = "Convert units"
+        )
+
+        Spacer(modifier = Modifier.height(12.dp))
+    }
+
+    item(key = "add quote") {
+        FeatureButton(
+            modifier = Modifier.fillMaxWidth(),
+            height = 52.dp,
+            color = ButtonDefaults.buttonColors(
+                contentColor = Color.White,
+                containerColor = Color.Magenta
+            ),
+            screen = Screens.Quote(backTo = Screens.Settings),
+            text = "Add a quote to home screen"
+        )
+
+        Spacer(modifier = Modifier.height(12.dp))
+    }
+
+    item(key = "weight goal") {
+        FeatureButton(
+            modifier = Modifier.fillMaxWidth(),
+            height = 52.dp,
+            color = ButtonDefaults.buttonColors(
+                contentColor = Color.White,
+                containerColor = Color(0xFFE91E63)
+            ),
+            screen = Screens.WeightGoal,
+            text = "Weight goal"
+        )
+
+        Spacer(modifier = Modifier.height(12.dp))
+    }
+
+    item(key = "articles") {
+        FeatureButton(
+            modifier = Modifier.fillMaxWidth(),
+            height = 52.dp,
+            color = ButtonDefaults.buttonColors(
+                contentColor = Color.White,
+                containerColor = Color(0xFFFF9800)
+            ),
+            screen = Screens.Articles,
+            text = "Articles"
+        )
     }
 }
 
