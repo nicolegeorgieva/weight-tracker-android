@@ -14,7 +14,7 @@ import androidx.compose.ui.graphics.Color
 import androidx.compose.ui.unit.dp
 import androidx.lifecycle.viewmodel.compose.viewModel
 import com.weighttracker.Screens
-import com.weighttracker.component.BackButton
+import com.weighttracker.component.Header
 import com.weighttracker.component.InputField
 
 @Composable
@@ -32,7 +32,7 @@ private fun UI(
     onEvent: (QuoteEvent) -> Unit,
 ) {
     Column(modifier = Modifier.padding(horizontal = 16.dp, vertical = 16.dp)) {
-        BackButton(screens = screen.backTo)
+        Header(back = screen.backTo, title = "Quote")
 
         Spacer(modifier = Modifier.height(32.dp))
 

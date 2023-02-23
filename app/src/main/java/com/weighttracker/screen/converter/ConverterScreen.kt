@@ -13,7 +13,7 @@ import androidx.compose.ui.text.font.FontWeight
 import androidx.compose.ui.unit.dp
 import androidx.lifecycle.viewmodel.compose.viewModel
 import com.weighttracker.Screens
-import com.weighttracker.component.BackButton
+import com.weighttracker.component.Header
 import com.weighttracker.component.NumberInputField
 
 @Composable
@@ -30,7 +30,7 @@ private fun UI(
     onEvent: (ConverterEvent) -> Unit,
 ) {
     Column(modifier = Modifier.padding(horizontal = 16.dp, vertical = 16.dp)) {
-        BackButton(screens = Screens.Settings)
+        Header(back = Screens.Settings, title = "Converter")
 
         Spacer(modifier = Modifier.height(32.dp))
 

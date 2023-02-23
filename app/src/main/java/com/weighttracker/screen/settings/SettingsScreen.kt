@@ -38,7 +38,7 @@ private fun UI(
         contentPadding = PaddingValues(16.dp)
     ) {
         item(key = "header") {
-            Header(screen = Screens.BMI, title = "Settings")
+            Header(back = Screens.BMI, title = "Settings")
 
             Spacer(modifier = Modifier.height(28.dp))
         }

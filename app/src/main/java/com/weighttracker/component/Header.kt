@@ -15,9 +15,9 @@ import com.weighttracker.AppTheme
 import com.weighttracker.Screens
 
 @Composable
-fun Header(screen: Screens, title: String) {
+fun Header(back: Screens, title: String) {
     Row(verticalAlignment = Alignment.CenterVertically) {
-        BackButton(screens = screen)
+        BackButton(screens = back)
         Spacer(modifier = Modifier.width(16.dp))
         Text(
             text = title,
@@ -31,6 +31,6 @@ fun Header(screen: Screens, title: String) {
 @Composable
 private fun Preview() {
     AppTheme {
-        Header(screen = Screens.BMI, title = "Settings")
+        Header(back = Screens.BMI, title = "Settings")
     }
 }

@@ -21,7 +21,7 @@ import androidx.lifecycle.viewmodel.compose.viewModel
 import coil.compose.AsyncImage
 import com.weighttracker.Screens
 import com.weighttracker.browser
-import com.weighttracker.component.BackButton
+import com.weighttracker.component.Header
 
 @Composable
 fun ArticlesScreen() {
@@ -37,7 +37,7 @@ private fun UI(
     onEvent: (ArticlesEvent) -> Unit,
 ) {
     Column(modifier = Modifier.padding(horizontal = 16.dp, vertical = 16.dp)) {
-        BackButton(screens = Screens.Settings)
+        Header(back = Screens.Settings, title = "Articles")
 
         Spacer(modifier = Modifier.height(32.dp))
 

@@ -18,7 +18,7 @@ import androidx.compose.ui.unit.dp
 import androidx.compose.ui.unit.sp
 import androidx.lifecycle.viewmodel.compose.viewModel
 import com.weighttracker.Screens
-import com.weighttracker.component.BackButton
+import com.weighttracker.component.Header
 import com.weighttracker.component.NumberInputField
 import com.weighttracker.formatNumber
 
@@ -36,7 +36,7 @@ private fun UI(
     onEvent: (WeightGoalEvent) -> Unit
 ) {
     Column(modifier = Modifier.padding(horizontal = 16.dp, vertical = 16.dp)) {
-        BackButton(screens = Screens.Settings)
+        Header(back = Screens.Settings, title = "Weight goal")
 
         Spacer(modifier = Modifier.height(32.dp))
 

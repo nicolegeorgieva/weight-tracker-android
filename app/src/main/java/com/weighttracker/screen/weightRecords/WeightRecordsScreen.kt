@@ -41,7 +41,7 @@ private fun UI(
     onEvent: (WeightRecordsEvent) -> Unit,
 ) {
     Column(modifier = Modifier.padding(horizontal = 16.dp, vertical = 16.dp)) {
-        Header(screen = screen.backTo, title = "Weight records")
+        Header(back = screen.backTo, title = "Weight records")
 
         Spacer(modifier = Modifier.height(32.dp))
 

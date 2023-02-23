@@ -43,7 +43,7 @@ private fun UI(
     onEvent: (WaterRecordsEvent) -> Unit,
 ) {
     Column(modifier = Modifier.padding(horizontal = 16.dp, vertical = 16.dp)) {
-        Header(screen = screen.backTo, title = "Water records")
+        Header(back = screen.backTo, title = "Water records")
 
         Spacer(modifier = Modifier.height(32.dp))
 

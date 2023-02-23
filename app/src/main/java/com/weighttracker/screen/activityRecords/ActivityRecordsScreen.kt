@@ -45,7 +45,7 @@ private fun UI(
     Column(
         modifier = Modifier.padding(horizontal = 16.dp, vertical = 16.dp)
     ) {
-        Header(screen = screen.backTo, title = "Activity records")
+        Header(back = screen.backTo, title = "Activity records")
 
         Spacer(modifier = Modifier.height(32.dp))
 
