@@ -20,10 +20,10 @@ import androidx.compose.ui.unit.dp
 import androidx.compose.ui.unit.sp
 import androidx.lifecycle.viewmodel.compose.viewModel
 import com.weighttracker.Screens
+import com.weighttracker.component.CustomDivider
 import com.weighttracker.component.ExpandCollapseArrow
 import com.weighttracker.component.Header
 import com.weighttracker.component.NumberInputField
-import com.weighttracker.component.customDivider
 import com.weighttracker.formatNumber
 import com.weighttracker.navigateTo
 
@@ -50,40 +50,42 @@ private fun UI(
 
         item(key = "current weight title and value") {
             Row(verticalAlignment = Alignment.CenterVertically) {
-                Text(modifier = Modifier.weight(2f), text = "Current weight")
-
-                Text(
-                    modifier = Modifier.clickable {
-                        navigateTo(Screens.BMI)
-                    },
-                    text = "${state.currentWeight} ${state.weightUnit}",
-                    fontSize = 16.sp
+                CurrentWeightTitleAndValue(
+                    currentWeight = state.currentWeight,
+                    weightUnit = state.weightUnit
                 )
             }
 
-            customDivider()
+            CustomDivider()
 
             Spacer(modifier = Modifier.height(16.dp))
         }
 
-        item(key = "goal weight title and value") {
-            Row(verticalAlignment = Alignment.Bottom) {
-                Text(modifier = Modifier.weight(2f), text = "Goal weight", fontSize = 16.sp)
+        item(key = "goal weight title and input") {
+            GoalWeightTitleAndInput(
+                goalWeight = state.goalWeight,
+                weightUnit = state.weightUnit,
+                onGoalWeightChange = {
+                    onEvent(WeightGoalEvent.WeightGoalInput(targetWeight = it))
+                }
+            )
+//            Row(verticalAlignment = Alignment.Bottom) {
+//                Text(modifier = Modifier.weight(2f), text = "Goal weight", fontSize = 16.sp)
+//
+//                NumberInputField(modifier = Modifier
+//                    .width(72.dp)
+//                    .height(52.dp),
+//                    number = state.goalWeight,
+//                    placeholder = "", onValueChange = {
+//                        onEvent(WeightGoalEvent.WeightGoalInput(targetWeight = it))
+//                    })
+//
+//                Spacer(modifier = Modifier.width(4.dp))
+//
+//                Text(text = state.weightUnit)
+//            }
 
-                NumberInputField(modifier = Modifier
-                    .width(72.dp)
-                    .height(52.dp),
-                    number = state.goalWeight,
-                    placeholder = "", onValueChange = {
-                        onEvent(WeightGoalEvent.WeightGoalInput(targetWeight = it))
-                    })
-
-                Spacer(modifier = Modifier.width(4.dp))
-
-                Text(text = state.weightUnit)
-            }
-
-            customDivider()
+            CustomDivider()
 
             Spacer(modifier = Modifier.height(24.dp))
         }
@@ -168,6 +170,45 @@ private fun UI(
             }
         }
     }
+}
+
+@Composable
+fun GoalWeightTitleAndInput(
+    goalWeight: Double?,
+    weightUnit: String,
+    onGoalWeightChange: (Double?) -> Unit
+) {
+    Row(verticalAlignment = Alignment.Bottom) {
+        Text(modifier = Modifier.weight(2f), text = "Goal weight", fontSize = 16.sp)
+
+        NumberInputField(
+            modifier = Modifier
+                .width(72.dp)
+                .height(52.dp),
+            number = goalWeight,
+            placeholder = "",
+            onValueChange = {
+                onGoalWeightChange(it)
+            }
+        )
+
+        Spacer(modifier = Modifier.width(4.dp))
+
+        Text(text = weightUnit)
+    }
+}
+
+@Composable
+fun RowScope.CurrentWeightTitleAndValue(currentWeight: Double?, weightUnit: String) {
+    Text(modifier = Modifier.weight(2f), text = "Current weight")
+
+    Text(
+        modifier = Modifier.clickable {
+            navigateTo(Screens.BMI)
+        },
+        text = "$currentWeight $weightUnit",
+        fontSize = 16.sp
+    )
 }
 
 @OptIn(ExperimentalMaterial3Api::class)

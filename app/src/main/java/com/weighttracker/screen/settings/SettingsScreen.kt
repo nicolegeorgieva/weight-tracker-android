@@ -19,9 +19,9 @@ import androidx.compose.ui.unit.dp
 import androidx.compose.ui.unit.sp
 import androidx.lifecycle.viewmodel.compose.viewModel
 import com.weighttracker.Screens
+import com.weighttracker.component.CustomDivider
 import com.weighttracker.component.Header
 import com.weighttracker.component.SectionTitle
-import com.weighttracker.component.customDivider
 import com.weighttracker.navigateTo
 
 @Composable
@@ -107,7 +107,7 @@ fun LazyListScope.unitsSection(
             )
         }
 
-        customDivider()
+        CustomDivider()
 
         Spacer(modifier = Modifier.height(12.dp))
     }
@@ -135,7 +135,7 @@ fun LazyListScope.unitsSection(
             )
         }
 
-        customDivider()
+        CustomDivider()
 
         Spacer(modifier = Modifier.height(12.dp))
     }
@@ -155,7 +155,7 @@ fun LazyListScope.unitsSection(
             }
         }
 
-        customDivider()
+        CustomDivider()
     }
 }
 

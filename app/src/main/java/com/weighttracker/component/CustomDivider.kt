@@ -8,7 +8,7 @@ import androidx.compose.ui.graphics.Color
 import androidx.compose.ui.unit.dp
 
 @Composable
-fun customDivider() {
+fun CustomDivider() {
     Divider(
         modifier = Modifier.fillMaxWidth(),
         color = Color.LightGray,
