@@ -76,85 +76,21 @@ private fun UI(
             Spacer(modifier = Modifier.height(24.dp))
         }
 
-        item(key = "message with weight loss value to goal weight") {
-            val weightToLoseOrGain = state.weightToLoseOrGain?.let {
-                formatNumber(abs(it))
-            }
-
-            if (weightToLoseOrGain != null) {
-                if (state.weightToLoseOrGain < 0) {
-                    Text(
-                        text = "You have to gain $weightToLoseOrGain ${state.weightUnit} to achieve your" +
-                                " weight goal.",
-                        fontSize = 16.sp,
-                        fontStyle = FontStyle.Italic,
-                        fontWeight = FontWeight.Bold
-                    )
-
-                } else {
-                    Text(
-                        text = "You have to lose $weightToLoseOrGain ${state.weightUnit} to achieve your" +
-                                " weight goal.",
-                        fontSize = 16.sp,
-                        fontStyle = FontStyle.Italic,
-                        fontWeight = FontWeight.Bold
-                    )
-                }
-
-                Spacer(modifier = Modifier.height(32.dp))
-            }
+        item(key = "weight loss or gain message with value") {
+            WeightLoseOrGainMessage(
+                weightToLoseOrGainValue = state.weightToLoseOrGain,
+                weightUnit = state.weightUnit
+            )
         }
 
         item(key = "ideal weight info and button with its value") {
-            var expandedState by remember {
-                mutableStateOf(false)
-            }
-
-            Row(verticalAlignment = Alignment.CenterVertically) {
-                Row(modifier = Modifier.weight(2f)) {
-                    ExpandCollapseArrow(
-                        expanded = expandedState,
-                        onExpandChange = { expanded ->
-                            expandedState = expanded
-                        }
-                    )
-
-                    Text(
-                        modifier = Modifier.clickable {
-                            expandedState = !expandedState
-                        },
-                        text = "Your ideal weight would be:", fontSize = 16.sp,
-                        textDecoration = TextDecoration.Underline
-                    )
+            IdealWeightMessageAndButton(
+                idealWeight = state.idealWeight,
+                weightUnit = state.weightUnit,
+                onClick = {
+                    onEvent(WeightGoalEvent.WeightGoalInput(targetWeight = state.idealWeight))
                 }
-
-                Spacer(modifier = Modifier.width(8.dp))
-
-                Row() {
-                    val idealWeightFormatted = state.idealWeight?.let { formatNumber(it) }
-
-                    Button(
-                        onClick = {
-                            onEvent(WeightGoalEvent.WeightGoalInput(targetWeight = state.idealWeight))
-                        },
-                        enabled = true,
-                        colors = ButtonDefaults.buttonColors(containerColor = Color(0xFFC56767))
-                    ) {
-                        Text(text = "$idealWeightFormatted ${state.weightUnit}", fontSize = 16.sp)
-                    }
-                }
-            }
-
-            if (expandedState) {
-                Spacer(modifier = Modifier.height(16.dp))
-
-                Text(
-                    text = "Your ideal weight is the arithmetic mean between your" +
-                            " minimal and maximum normal weight.",
-                    color = Color.Black,
-                    fontSize = 16.sp
-                )
-            }
+            )
 
             Spacer(modifier = Modifier.height(48.dp))
         }
@@ -169,6 +105,86 @@ private fun UI(
                 Spacer(modifier = Modifier.height(64.dp))
             }
         }
+    }
+}
+
+@Composable
+fun IdealWeightMessageAndButton(idealWeight: Double?, weightUnit: String, onClick: () -> Unit) {
+    var expandedState by remember {
+        mutableStateOf(false)
+    }
+
+    Row(verticalAlignment = Alignment.CenterVertically) {
+        Row(modifier = Modifier.weight(2f)) {
+            ExpandCollapseArrow(
+                expanded = expandedState,
+                onExpandChange = { expanded ->
+                    expandedState = expanded
+                }
+            )
+
+            Text(
+                modifier = Modifier.clickable {
+                    expandedState = !expandedState
+                },
+                text = "Your ideal weight would be:", fontSize = 16.sp,
+                textDecoration = TextDecoration.Underline
+            )
+        }
+
+        Spacer(modifier = Modifier.width(8.dp))
+
+        Row() {
+            val idealWeightFormatted = idealWeight?.let { formatNumber(it) }
+
+            Button(
+                onClick = { onClick() },
+                enabled = true,
+                colors = ButtonDefaults.buttonColors(containerColor = Color(0xFFC56767))
+            ) {
+                Text(text = "$idealWeightFormatted $weightUnit", fontSize = 16.sp)
+            }
+        }
+    }
+
+    if (expandedState) {
+        Spacer(modifier = Modifier.height(16.dp))
+
+        IdealWeightMessage()
+    }
+}
+
+@Composable
+fun IdealWeightMessage() {
+    Text(
+        text = "Your ideal weight is the arithmetic mean between your" +
+                " minimal and maximum normal weight.",
+        color = Color.Black,
+        fontSize = 16.sp
+    )
+}
+
+@Composable
+fun WeightLoseOrGainMessage(weightToLoseOrGainValue: Double?, weightUnit: String) {
+    val weightToLoseOrGain = weightToLoseOrGainValue?.let {
+        formatNumber(abs(it))
+    }
+
+    if (weightToLoseOrGain != null) {
+        Text(
+            text = if (weightToLoseOrGainValue < 0) {
+                "You have to gain $weightToLoseOrGain $weightUnit to achieve your" +
+                        " weight goal."
+            } else {
+                "You have to lose $weightToLoseOrGain $weightUnit to achieve your" +
+                        " weight goal."
+            },
+            fontSize = 16.sp,
+            fontStyle = FontStyle.Italic,
+            fontWeight = FontWeight.Bold
+        )
+
+        Spacer(modifier = Modifier.height(32.dp))
     }
 }
 
