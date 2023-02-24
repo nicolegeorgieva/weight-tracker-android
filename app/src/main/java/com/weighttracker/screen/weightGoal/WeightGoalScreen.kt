@@ -170,6 +170,131 @@ private fun UI(
     }
 }
 
+@OptIn(ExperimentalMaterial3Api::class)
+@Composable
+fun WeightLossPlanCard(plan: WeightLossPlan?, weightUnit: String) {
+    Card(
+        modifier = Modifier.fillMaxWidth(),
+        shape = RoundedCornerShape(8.dp),
+        colors = CardDefaults.cardColors(Color(color = 0xFFFFE5EB)),
+        elevation = CardDefaults.cardElevation(12.dp),
+        border = BorderStroke(4.dp, Color(0x37FCCACA))
+
+    ) {
+        WeightLossPlanCardTitle()
+
+        Spacer(modifier = Modifier.height(8.dp))
+
+        val optimisticMonths = plan?.optimistic?.let { formatNumber(it.totalMonths) }
+        val realisticMonths = plan?.realistic?.let { formatNumber(it.totalMonths) }
+        val pessimisticMonths = plan?.pessimistic?.let { formatNumber(it.totalMonths) }
+
+        Row() {
+            TickIcon(color = Color(0xFFF44336))
+
+            TickIcon(color = Color(0xFF3ECE44))
+
+            TickIcon(color = Color(0xFF575757))
+        }
+
+        Row {
+            WeightLossPlanOption(text = "OPTIMISTIC")
+
+            VerticalDivider()
+
+            WeightLossPlanOption(text = "REALISTIC")
+
+            VerticalDivider()
+
+            WeightLossPlanOption(text = "PESSIMISTIC")
+        }
+
+        HorizontalDivider()
+
+        Row {
+            WeightLossPlanCardCell(text = "$optimisticMonths mos")
+
+            VerticalDivider()
+
+            WeightLossPlanCardCell(text = "$realisticMonths mos")
+
+            VerticalDivider()
+
+            WeightLossPlanCardCell(text = "$pessimisticMonths mos")
+        }
+
+        HorizontalDivider()
+
+        Row {
+            if (plan != null) {
+                WeightLossPlanCardCell(text = "(${plan.optimistic.lossPerMonth} $weightUnit / mo.)")
+            }
+
+            VerticalDivider()
+
+            if (plan != null) {
+                WeightLossPlanCardCell(text = "(${plan.realistic.lossPerMonth} $weightUnit / mo.)")
+            }
+
+            VerticalDivider()
+
+            if (plan != null) {
+                WeightLossPlanCardCell(
+                    text = "(${plan.pessimistic.lossPerMonth} $weightUnit / mo.)"
+                )
+            }
+        }
+    }
+}
+
+@Composable
+fun RowScope.TickIcon(color: Color) {
+    Icon(
+        modifier = Modifier
+            .padding(8.dp)
+            .weight(1f),
+        imageVector = Icons.Default.Check,
+        tint = color,
+        contentDescription = ""
+    )
+}
+
+@Composable
+fun HorizontalDivider() {
+    Divider(
+        modifier = Modifier
+            .fillMaxWidth()
+            .padding(horizontal = 12.dp),
+        color = Color(0x57C56767),
+        thickness = 1.dp
+    )
+}
+
+@Composable
+fun VerticalDivider() {
+    Divider(
+        modifier = Modifier
+            .height(64.dp)
+            .width(2.dp),
+        color = Color(0x57C56767),
+        thickness = 2.dp
+    )
+}
+
+@Composable
+fun WeightLossPlanCardTitle() {
+    Text(
+        modifier = Modifier
+            .fillMaxWidth()
+            .padding(16.dp),
+        text = "W E I G H T    L O S S    P L A N",
+        fontWeight = FontWeight.Bold,
+        fontSize = 20.sp,
+        textAlign = TextAlign.Center,
+        color = Color(0xFFC56767)
+    )
+}
+
 @Composable
 fun RowScope.WeightLossPlanCardCell(text: String) {
     Text(
@@ -194,159 +319,4 @@ fun RowScope.WeightLossPlanOption(text: String) {
         textAlign = TextAlign.Center,
         fontWeight = FontWeight.Bold
     )
-}
-
-@OptIn(ExperimentalMaterial3Api::class)
-@Composable
-fun WeightLossPlanCard(plan: WeightLossPlan?, weightUnit: String) {
-    Card(
-        modifier = Modifier.fillMaxWidth(),
-        shape = RoundedCornerShape(8.dp),
-        colors = CardDefaults.cardColors(Color(color = 0xFFFFE5EB)),
-        elevation = CardDefaults.cardElevation(12.dp),
-        border = BorderStroke(4.dp, Color(0x37FCCACA))
-
-    ) {
-        Text(
-            modifier = Modifier
-                .fillMaxWidth()
-                .padding(16.dp),
-            text = "W E I G H T    L O S S    P L A N",
-            fontWeight = FontWeight.Bold,
-            fontSize = 20.sp,
-            textAlign = TextAlign.Center,
-            color = Color(0xFFC56767)
-        )
-
-        Spacer(modifier = Modifier.height(8.dp))
-
-        val optimisticMonths = plan?.optimistic?.let { formatNumber(it.totalMonths) }
-        val realisticMonths = plan?.realistic?.let { formatNumber(it.totalMonths) }
-        val pessimisticMonths = plan?.pessimistic?.let { formatNumber(it.totalMonths) }
-
-        Row() {
-            Icon(
-                modifier = Modifier
-                    .padding(8.dp)
-                    .weight(1f),
-                imageVector = Icons.Default.Check,
-                tint = Color(0xFFF44336),
-                contentDescription = ""
-            )
-
-            Icon(
-                modifier = Modifier
-                    .padding(8.dp)
-                    .weight(1f),
-                imageVector = Icons.Default.Check,
-                tint = Color(0xFF3ECE44),
-                contentDescription = ""
-            )
-
-            Icon(
-                modifier = Modifier
-                    .padding(8.dp)
-                    .weight(1f),
-                imageVector = Icons.Default.Check,
-                tint = Color(0xFF575757),
-                contentDescription = ""
-            )
-        }
-
-        Row() {
-            WeightLossPlanOption(text = "OPTIMISTIC")
-
-            Divider(
-                modifier = Modifier
-                    .height(64.dp)
-                    .width(2.dp),
-                color = Color(0x57C56767),
-                thickness = 2.dp
-            )
-
-            WeightLossPlanOption(text = "REALISTIC")
-
-            Divider(
-                modifier = Modifier
-                    .height(64.dp)
-                    .width(2.dp),
-                color = Color(0x57C56767),
-                thickness = 2.dp
-            )
-
-            WeightLossPlanOption(text = "PESSIMISTIC")
-        }
-
-        Divider(
-            modifier = Modifier
-                .fillMaxWidth()
-                .padding(horizontal = 12.dp),
-            color = Color(0x57C56767),
-            thickness = 1.dp
-        )
-
-        Row() {
-            WeightLossPlanCardCell(text = "$optimisticMonths mos")
-
-            Divider(
-                modifier = Modifier
-                    .height(64.dp)
-                    .width(2.dp),
-                color = Color(0x57C56767),
-                thickness = 2.dp
-            )
-
-            WeightLossPlanCardCell(text = "$realisticMonths mos")
-
-            Divider(
-                modifier = Modifier
-                    .height(64.dp)
-                    .width(2.dp),
-                color = Color(0x57C56767),
-                thickness = 2.dp
-            )
-
-            WeightLossPlanCardCell(text = "$pessimisticMonths mos")
-        }
-
-        Divider(
-            modifier = Modifier
-                .fillMaxWidth()
-                .padding(horizontal = 12.dp),
-            color = Color(0x57C56767),
-            thickness = 1.dp
-        )
-
-        Row() {
-            if (plan != null) {
-                WeightLossPlanCardCell(text = "(${plan.optimistic.lossPerMonth} $weightUnit / mo.)")
-            }
-
-            Divider(
-                modifier = Modifier
-                    .height(64.dp)
-                    .width(2.dp),
-                color = Color(0x57C56767),
-                thickness = 2.dp
-            )
-
-            if (plan != null) {
-                WeightLossPlanCardCell(text = "(${plan.realistic.lossPerMonth} $weightUnit / mo.)")
-            }
-
-            Divider(
-                modifier = Modifier
-                    .height(64.dp)
-                    .width(2.dp),
-                color = Color(0x57C56767),
-                thickness = 2.dp
-            )
-
-            if (plan != null) {
-                WeightLossPlanCardCell(
-                    text = "(${plan.pessimistic.lossPerMonth} $weightUnit / mo.)"
-                )
-            }
-        }
-    }
 }
