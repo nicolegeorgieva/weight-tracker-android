@@ -2,6 +2,7 @@ package com.weighttracker.screen.weightGoal
 
 import androidx.compose.foundation.clickable
 import androidx.compose.foundation.layout.*
+import androidx.compose.foundation.lazy.LazyColumn
 import androidx.compose.foundation.shape.RoundedCornerShape
 import androidx.compose.material.icons.Icons
 import androidx.compose.material.icons.filled.Check
@@ -39,117 +40,131 @@ private fun UI(
     state: WeightGoalState,
     onEvent: (WeightGoalEvent) -> Unit
 ) {
-    Column(modifier = Modifier.padding(horizontal = 16.dp, vertical = 16.dp)) {
-        Header(back = Screens.Settings, title = "Weight goal")
+    LazyColumn(modifier = Modifier.padding(horizontal = 16.dp, vertical = 16.dp)) {
+        item(key = "header") {
+            Header(back = Screens.Settings, title = "Weight goal")
 
-        Spacer(modifier = Modifier.height(32.dp))
-
-        Row(verticalAlignment = Alignment.CenterVertically) {
-            Text(modifier = Modifier.weight(2f), text = "Current weight")
-
-            Text(
-                modifier = Modifier.clickable {
-                    navigateTo(Screens.BMI)
-                },
-                text = "${state.currentWeight} ${state.weightUnit}",
-                fontSize = 16.sp
-            )
-        }
-
-        customDivider()
-
-        Spacer(modifier = Modifier.height(16.dp))
-
-        Row(verticalAlignment = Alignment.Bottom) {
-            Text(modifier = Modifier.weight(2f), text = "Goal weight", fontSize = 16.sp)
-
-            NumberInputField(modifier = Modifier
-                .width(72.dp)
-                .height(52.dp),
-                number = state.goalWeight,
-                placeholder = "", onValueChange = {
-                    onEvent(WeightGoalEvent.WeightGoalInput(targetWeight = it))
-                })
-
-            Spacer(modifier = Modifier.width(4.dp))
-
-            Text(text = state.weightUnit)
-        }
-
-        customDivider()
-
-        Spacer(modifier = Modifier.height(24.dp))
-
-        val weightToLose = state.weightToLose?.let { formatNumber(it) }
-
-        if (weightToLose != null) {
-            Text(
-                text = "You have to lose $weightToLose ${state.weightUnit} to achieve your" +
-                        " weight goal.",
-                fontSize = 16.sp,
-                fontStyle = FontStyle.Italic,
-                fontWeight = FontWeight.Bold
-            )
             Spacer(modifier = Modifier.height(32.dp))
         }
 
-        var expandedState by remember {
-            mutableStateOf(false)
-        }
-
-        Row(verticalAlignment = Alignment.CenterVertically) {
-            Row(modifier = Modifier.weight(2f)) {
-                ExpandCollapseArrow(
-                    expanded = expandedState,
-                    onExpandChange = { expanded ->
-                        expandedState = expanded
-                    }
-                )
+        item(key = "current weight title and value") {
+            Row(verticalAlignment = Alignment.CenterVertically) {
+                Text(modifier = Modifier.weight(2f), text = "Current weight")
 
                 Text(
                     modifier = Modifier.clickable {
-                        expandedState = !expandedState
+                        navigateTo(Screens.BMI)
                     },
-                    text = "Your ideal weight would be:", fontSize = 16.sp,
-                    textDecoration = TextDecoration.Underline
+                    text = "${state.currentWeight} ${state.weightUnit}",
+                    fontSize = 16.sp
                 )
             }
 
-            Spacer(modifier = Modifier.width(8.dp))
+            customDivider()
 
-            Row() {
-                val idealWeightFormatted = state.idealWeight?.let { formatNumber(it) }
+            Spacer(modifier = Modifier.height(16.dp))
+        }
 
-                Button(
-                    onClick = {
-                        onEvent(WeightGoalEvent.WeightGoalInput(targetWeight = state.idealWeight))
-                    },
-                    enabled = true,
-                    colors = ButtonDefaults.buttonColors(containerColor = Color(0xFFC56767))
-                ) {
-                    Text(text = "$idealWeightFormatted ${state.weightUnit}", fontSize = 16.sp)
-                }
+        item(key = "goal weight title and value") {
+            Row(verticalAlignment = Alignment.Bottom) {
+                Text(modifier = Modifier.weight(2f), text = "Goal weight", fontSize = 16.sp)
+
+                NumberInputField(modifier = Modifier
+                    .width(72.dp)
+                    .height(52.dp),
+                    number = state.goalWeight,
+                    placeholder = "", onValueChange = {
+                        onEvent(WeightGoalEvent.WeightGoalInput(targetWeight = it))
+                    })
+
+                Spacer(modifier = Modifier.width(4.dp))
+
+                Text(text = state.weightUnit)
+            }
+
+            customDivider()
+
+            Spacer(modifier = Modifier.height(24.dp))
+        }
+
+        item(key = "message with weight loss value to goal weight") {
+            val weightToLose = state.weightToLose?.let { formatNumber(it) }
+
+            if (weightToLose != null) {
+                Text(
+                    text = "You have to lose $weightToLose ${state.weightUnit} to achieve your" +
+                            " weight goal.",
+                    fontSize = 16.sp,
+                    fontStyle = FontStyle.Italic,
+                    fontWeight = FontWeight.Bold
+                )
+                Spacer(modifier = Modifier.height(32.dp))
             }
         }
 
-        if (expandedState) {
-            Spacer(modifier = Modifier.height(16.dp))
+        item(key = "ideal weight info and button with its value") {
+            var expandedState by remember {
+                mutableStateOf(false)
+            }
 
-            Text(
-                text = "Your ideal weight is the arithmetic mean between your" +
-                        " minimal and maximum normal weight.",
-                color = Color.Black,
-                fontSize = 16.sp
-            )
+            Row(verticalAlignment = Alignment.CenterVertically) {
+                Row(modifier = Modifier.weight(2f)) {
+                    ExpandCollapseArrow(
+                        expanded = expandedState,
+                        onExpandChange = { expanded ->
+                            expandedState = expanded
+                        }
+                    )
+
+                    Text(
+                        modifier = Modifier.clickable {
+                            expandedState = !expandedState
+                        },
+                        text = "Your ideal weight would be:", fontSize = 16.sp,
+                        textDecoration = TextDecoration.Underline
+                    )
+                }
+
+                Spacer(modifier = Modifier.width(8.dp))
+
+                Row() {
+                    val idealWeightFormatted = state.idealWeight?.let { formatNumber(it) }
+
+                    Button(
+                        onClick = {
+                            onEvent(WeightGoalEvent.WeightGoalInput(targetWeight = state.idealWeight))
+                        },
+                        enabled = true,
+                        colors = ButtonDefaults.buttonColors(containerColor = Color(0xFFC56767))
+                    ) {
+                        Text(text = "$idealWeightFormatted ${state.weightUnit}", fontSize = 16.sp)
+                    }
+                }
+            }
+
+            if (expandedState) {
+                Spacer(modifier = Modifier.height(16.dp))
+
+                Text(
+                    text = "Your ideal weight is the arithmetic mean between your" +
+                            " minimal and maximum normal weight.",
+                    color = Color.Black,
+                    fontSize = 16.sp
+                )
+            }
+
+            Spacer(modifier = Modifier.height(48.dp))
         }
 
-        Spacer(modifier = Modifier.height(48.dp))
+        item(key = "weight loss plan card") {
+            if (state.plan != null) {
+                WeightLossPlanCard(
+                    plan = state.plan,
+                    weightUnit = state.weightUnit
+                )
 
-        if (state.plan != null) {
-            WeightLossPlanCard(
-                plan = state.plan,
-                weightUnit = state.weightUnit
-            )
+                Spacer(modifier = Modifier.height(48.dp))
+            }
         }
     }
 }
