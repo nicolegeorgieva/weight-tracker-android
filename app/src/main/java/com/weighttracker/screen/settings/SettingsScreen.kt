@@ -172,7 +172,7 @@ fun LazyListScope.recordsSection() {
                 modifier = Modifier.weight(1f),
                 color = ButtonDefaults.buttonColors(
                     contentColor = Color.White,
-                    containerColor = Color(0xFF944E62)
+                    containerColor = Color(0xFFE21E45)
                 ),
                 screen = Screens.WeightRecords(backTo = Screens.Settings),
                 text = "Weight"
@@ -233,7 +233,7 @@ fun LazyListScope.usefulSection() {
             height = 52.dp,
             color = ButtonDefaults.buttonColors(
                 contentColor = Color.White,
-                containerColor = Color.Magenta
+                containerColor = Color(0xFFFF5722)
             ),
             screen = Screens.Quote(backTo = Screens.Settings),
             text = "Add a quote to home screen"

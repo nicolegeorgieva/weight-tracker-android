@@ -79,7 +79,7 @@ private fun UI(
                     },
                     color = ButtonDefaults.buttonColors(
                         contentColor = Color.White,
-                        containerColor = Color(0xFF444647)
+                        containerColor = Color(0xFFE21E45)
                     ),
                     screen = Screens.WeightRecords(backTo = Screens.BMI)
                 )
@@ -411,7 +411,7 @@ fun QuoteAndMoreMenu(quote: String?) {
                         navigateTo(Screens.Quote(backTo = Screens.BMI))
                     },
                 text = "$quote",
-                color = Color.Magenta,
+                color = Color(0xFFFF5722),
                 fontStyle = FontStyle.Italic
             )
 

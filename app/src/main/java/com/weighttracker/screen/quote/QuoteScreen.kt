@@ -53,7 +53,7 @@ private fun UI(
 
             Button(
                 colors = ButtonDefaults.buttonColors(
-                    containerColor = Color.Blue,
+                    containerColor = Color.DarkGray,
                     contentColor = Color.White
                 ),
                 onClick = {
@@ -73,7 +73,7 @@ private fun UI(
         LazyColumn {
             items(items = state.quoteList) { quoteItem ->
                 Button(colors = ButtonDefaults.buttonColors(
-                    containerColor = Color(0xFF2E8B24),
+                    containerColor = Color(0xFFFF5722),
                     contentColor = Color.White
                 ),
                     onClick = {
