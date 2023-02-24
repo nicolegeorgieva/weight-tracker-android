@@ -195,7 +195,11 @@ fun GoalWeightTitleAndInput(
     onGoalWeightChange: (Double?) -> Unit
 ) {
     Row(verticalAlignment = Alignment.Bottom) {
-        Text(modifier = Modifier.weight(2f), text = "Goal weight", fontSize = 16.sp)
+        Text(
+            modifier = Modifier.weight(2f),
+            text = "Goal weight",
+            fontSize = 16.sp
+        )
 
         NumberInputField(
             modifier = Modifier
@@ -216,7 +220,11 @@ fun GoalWeightTitleAndInput(
 
 @Composable
 fun RowScope.CurrentWeightTitleAndValue(currentWeight: Double?, weightUnit: String) {
-    Text(modifier = Modifier.weight(2f), text = "Current weight")
+    Text(
+        modifier = Modifier.weight(2f),
+        text = "Current weight",
+        fontSize = 16.sp
+    )
 
     Text(
         modifier = Modifier.clickable {
