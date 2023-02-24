@@ -69,21 +69,6 @@ private fun UI(
                     onEvent(WeightGoalEvent.WeightGoalInput(targetWeight = it))
                 }
             )
-//            Row(verticalAlignment = Alignment.Bottom) {
-//                Text(modifier = Modifier.weight(2f), text = "Goal weight", fontSize = 16.sp)
-//
-//                NumberInputField(modifier = Modifier
-//                    .width(72.dp)
-//                    .height(52.dp),
-//                    number = state.goalWeight,
-//                    placeholder = "", onValueChange = {
-//                        onEvent(WeightGoalEvent.WeightGoalInput(targetWeight = it))
-//                    })
-//
-//                Spacer(modifier = Modifier.width(4.dp))
-//
-//                Text(text = state.weightUnit)
-//            }
 
             CustomDivider()
 
