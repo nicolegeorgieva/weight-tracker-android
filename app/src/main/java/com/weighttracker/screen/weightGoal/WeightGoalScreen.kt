@@ -1,5 +1,6 @@
 package com.weighttracker.screen.weightGoal
 
+import androidx.compose.foundation.BorderStroke
 import androidx.compose.foundation.clickable
 import androidx.compose.foundation.layout.*
 import androidx.compose.foundation.lazy.LazyColumn
@@ -163,7 +164,7 @@ private fun UI(
                     weightUnit = state.weightUnit
                 )
 
-                Spacer(modifier = Modifier.height(48.dp))
+                Spacer(modifier = Modifier.height(64.dp))
             }
         }
     }
@@ -176,15 +177,19 @@ fun WeightLossPlanCard(plan: WeightLossPlan?, weightUnit: String) {
         modifier = Modifier.fillMaxWidth(),
         shape = RoundedCornerShape(8.dp),
         colors = CardDefaults.cardColors(Color(color = 0xFFFFE5EB)),
-        elevation = CardDefaults.cardElevation(8.dp)
+        elevation = CardDefaults.cardElevation(12.dp),
+        border = BorderStroke(4.dp, Color(0x37FCCACA))
 
     ) {
         Text(
-            modifier = Modifier.padding(16.dp),
-            text = "WEIGHT LOSS PLAN:",
+            modifier = Modifier
+                .fillMaxWidth()
+                .padding(16.dp),
+            text = "W E I G H T    L O S S    P L A N",
             fontWeight = FontWeight.Bold,
             fontSize = 20.sp,
-            color = Color.Gray
+            textAlign = TextAlign.Center,
+            color = Color(0xFFC56767)
         )
 
         Spacer(modifier = Modifier.height(8.dp))
@@ -237,7 +242,7 @@ fun WeightLossPlanCard(plan: WeightLossPlan?, weightUnit: String) {
                 modifier = Modifier
                     .height(64.dp)
                     .width(2.dp),
-                color = Color.LightGray,
+                color = Color(0x57C56767),
                 thickness = 2.dp
             )
 
@@ -255,7 +260,7 @@ fun WeightLossPlanCard(plan: WeightLossPlan?, weightUnit: String) {
                 modifier = Modifier
                     .height(64.dp)
                     .width(2.dp),
-                color = Color.LightGray,
+                color = Color(0x57C56767),
                 thickness = 2.dp
             )
 
@@ -274,7 +279,7 @@ fun WeightLossPlanCard(plan: WeightLossPlan?, weightUnit: String) {
             modifier = Modifier
                 .fillMaxWidth()
                 .padding(horizontal = 12.dp),
-            color = Color.LightGray,
+            color = Color(0x57C56767),
             thickness = 1.dp
         )
 
@@ -293,7 +298,7 @@ fun WeightLossPlanCard(plan: WeightLossPlan?, weightUnit: String) {
                 modifier = Modifier
                     .height(64.dp)
                     .width(2.dp),
-                color = Color.LightGray,
+                color = Color(0x57C56767),
                 thickness = 2.dp
             )
 
@@ -311,7 +316,7 @@ fun WeightLossPlanCard(plan: WeightLossPlan?, weightUnit: String) {
                 modifier = Modifier
                     .height(64.dp)
                     .width(2.dp),
-                color = Color.LightGray,
+                color = Color(0x57C56767),
                 thickness = 2.dp
             )
 
@@ -330,7 +335,7 @@ fun WeightLossPlanCard(plan: WeightLossPlan?, weightUnit: String) {
             modifier = Modifier
                 .fillMaxWidth()
                 .padding(horizontal = 12.dp),
-            color = Color.LightGray,
+            color = Color(0x57C56767),
             thickness = 1.dp
         )
 
@@ -351,7 +356,7 @@ fun WeightLossPlanCard(plan: WeightLossPlan?, weightUnit: String) {
                 modifier = Modifier
                     .height(64.dp)
                     .width(2.dp),
-                color = Color.LightGray,
+                color = Color(0x57C56767),
                 thickness = 2.dp
             )
 
@@ -371,7 +376,7 @@ fun WeightLossPlanCard(plan: WeightLossPlan?, weightUnit: String) {
                 modifier = Modifier
                     .height(64.dp)
                     .width(2.dp),
-                color = Color.LightGray,
+                color = Color(0x57C56767),
                 thickness = 2.dp
             )
 
