@@ -23,7 +23,10 @@ class WeightGoalViewModel @Inject constructor(
     private val mSelectedFlow: MSelectedFlow
 ) : SimpleFlowViewModel<WeightGoalState, WeightGoalEvent>() {
     override val initialUi = WeightGoalState(
-        currentWeight = 0.0, weightUnit = "", goalWeight = 0.0, weightToLose = 0.0,
+        currentWeight = 0.0,
+        weightUnit = "",
+        goalWeight = 0.0,
+        weightToLoseOrGain = 0.0,
         idealWeight = 0.0,
         plan = WeightLossPlan(
             optimistic = WeightLossInfo(
@@ -48,14 +51,14 @@ class WeightGoalViewModel @Inject constructor(
         heightFlow(Unit),
         mSelectedFlow(Unit)
     ) { kgSelected, currentWeight, goalWeight, height, mSelected ->
-        val weightToLose = if (currentWeight != null && goalWeight != null) {
+        val weightToLoseOrGain = if (currentWeight != null && goalWeight != null) {
             currentWeight - goalWeight
         } else 0.0
         WeightGoalState(
             weightUnit = if (kgSelected) "kg" else "lb",
             currentWeight = currentWeight,
             goalWeight = goalWeight,
-            weightToLose = weightToLose,
+            weightToLoseOrGain = weightToLoseOrGain,
             idealWeight = if (height != null) {
                 calculateIdealWeight(
                     height = height,
@@ -65,7 +68,7 @@ class WeightGoalViewModel @Inject constructor(
             } else {
                 null
             },
-            plan = weightLossPeriod(weightToLose = weightToLose, kgSelected = kgSelected)
+            plan = weightLossPeriod(weightToLose = weightToLoseOrGain, kgSelected = kgSelected)
         )
     }
 

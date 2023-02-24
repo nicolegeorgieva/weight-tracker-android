@@ -26,6 +26,7 @@ import com.weighttracker.component.Header
 import com.weighttracker.component.NumberInputField
 import com.weighttracker.formatNumber
 import com.weighttracker.navigateTo
+import kotlin.math.abs
 
 @Composable
 fun WeightGoalScreen() {
@@ -76,16 +77,30 @@ private fun UI(
         }
 
         item(key = "message with weight loss value to goal weight") {
-            val weightToLose = state.weightToLose?.let { formatNumber(it) }
+            val weightToLoseOrGain = state.weightToLoseOrGain?.let {
+                formatNumber(abs(it))
+            }
 
-            if (weightToLose != null) {
-                Text(
-                    text = "You have to lose $weightToLose ${state.weightUnit} to achieve your" +
-                            " weight goal.",
-                    fontSize = 16.sp,
-                    fontStyle = FontStyle.Italic,
-                    fontWeight = FontWeight.Bold
-                )
+            if (weightToLoseOrGain != null) {
+                if (state.weightToLoseOrGain < 0) {
+                    Text(
+                        text = "You have to gain $weightToLoseOrGain ${state.weightUnit} to achieve your" +
+                                " weight goal.",
+                        fontSize = 16.sp,
+                        fontStyle = FontStyle.Italic,
+                        fontWeight = FontWeight.Bold
+                    )
+
+                } else {
+                    Text(
+                        text = "You have to lose $weightToLoseOrGain ${state.weightUnit} to achieve your" +
+                                " weight goal.",
+                        fontSize = 16.sp,
+                        fontStyle = FontStyle.Italic,
+                        fontWeight = FontWeight.Bold
+                    )
+                }
+
                 Spacer(modifier = Modifier.height(32.dp))
             }
         }
@@ -211,9 +226,9 @@ fun WeightLossPlanCard(plan: WeightLossPlan?, weightUnit: String) {
 
         Spacer(modifier = Modifier.height(8.dp))
 
-        val optimisticMonths = plan?.optimistic?.let { formatNumber(it.totalMonths) }
-        val realisticMonths = plan?.realistic?.let { formatNumber(it.totalMonths) }
-        val pessimisticMonths = plan?.pessimistic?.let { formatNumber(it.totalMonths) }
+        val optimisticMonths = plan?.optimistic?.let { formatNumber(abs(it.totalMonths)) }
+        val realisticMonths = plan?.realistic?.let { formatNumber(abs(it.totalMonths)) }
+        val pessimisticMonths = plan?.pessimistic?.let { formatNumber(abs(it.totalMonths)) }
 
         Row() {
             TickIcon(color = Color(0xFFF44336))
