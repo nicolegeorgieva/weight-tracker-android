@@ -3,6 +3,8 @@ package com.weighttracker.screen.weightGoal
 import androidx.compose.foundation.clickable
 import androidx.compose.foundation.layout.*
 import androidx.compose.foundation.shape.RoundedCornerShape
+import androidx.compose.material.icons.Icons
+import androidx.compose.material.icons.filled.Check
 import androidx.compose.material3.*
 import androidx.compose.runtime.*
 import androidx.compose.ui.Alignment
@@ -10,6 +12,7 @@ import androidx.compose.ui.Modifier
 import androidx.compose.ui.graphics.Color
 import androidx.compose.ui.text.font.FontStyle
 import androidx.compose.ui.text.font.FontWeight
+import androidx.compose.ui.text.style.TextAlign
 import androidx.compose.ui.text.style.TextDecoration
 import androidx.compose.ui.unit.dp
 import androidx.compose.ui.unit.sp
@@ -142,7 +145,7 @@ private fun UI(
             Card(
                 modifier = Modifier.fillMaxWidth(),
                 shape = RoundedCornerShape(8.dp),
-                colors = CardDefaults.cardColors(Color(color = 0xFFFAE4EC)),
+                colors = CardDefaults.cardColors(Color(color = 0xFFFFE5EB)),
                 elevation = CardDefaults.cardElevation(8.dp)
 
             ) {
@@ -150,45 +153,205 @@ private fun UI(
                     modifier = Modifier.padding(16.dp),
                     text = "WEIGHT LOSS PLAN:",
                     fontWeight = FontWeight.Bold,
-                    fontSize = 20.sp
+                    fontSize = 20.sp,
+                    color = Color.Gray
                 )
 
-                Spacer(modifier = Modifier.height(24.dp))
+                Spacer(modifier = Modifier.height(8.dp))
 
                 val optimisticMonths = formatNumber(state.plan.optimistic.totalMonths)
                 val realisticMonths = formatNumber(state.plan.realistic.totalMonths)
                 val pessimisticMonths = formatNumber(state.plan.pessimistic.totalMonths)
 
-                Text(
-                    modifier = Modifier.padding(16.dp),
-                    text = "optimistic: $optimisticMonths months (${state.plan.optimistic.lossPerMonth}"
-                            + " ${state.weightUnit} per month)",
-                    fontSize = 16.sp,
-                    color = Color.Red,
-                    fontWeight = FontWeight.Bold
+                Row() {
+                    Icon(
+                        modifier = Modifier
+                            .padding(8.dp)
+                            .weight(1f),
+                        imageVector = Icons.Default.Check,
+                        tint = Color(0xFFF44336),
+                        contentDescription = ""
+                    )
+
+                    Icon(
+                        modifier = Modifier
+                            .padding(8.dp)
+                            .weight(1f),
+                        imageVector = Icons.Default.Check,
+                        tint = Color(0xFF3ECE44),
+                        contentDescription = ""
+                    )
+
+                    Icon(
+                        modifier = Modifier
+                            .padding(8.dp)
+                            .weight(1f),
+                        imageVector = Icons.Default.Check,
+                        tint = Color(0xFF575757),
+                        contentDescription = ""
+                    )
+                }
+
+                Row() {
+                    Text(
+                        modifier = Modifier
+                            .padding(12.dp)
+                            .weight(1f),
+                        text = "OPTIMISTIC",
+                        fontSize = 16.sp,
+                        textAlign = TextAlign.Center,
+                        fontWeight = FontWeight.Bold
+                    )
+
+                    Divider(
+                        modifier = Modifier
+                            .height(64.dp)
+                            .width(2.dp),
+                        color = Color.LightGray,
+                        thickness = 2.dp
+                    )
+
+                    Text(
+                        modifier = Modifier
+                            .padding(12.dp)
+                            .weight(1f),
+                        text = "REALISTIC",
+                        fontSize = 16.sp,
+                        textAlign = TextAlign.Center,
+                        fontWeight = FontWeight.Bold
+                    )
+
+                    Divider(
+                        modifier = Modifier
+                            .height(64.dp)
+                            .width(2.dp),
+                        color = Color.LightGray,
+                        thickness = 2.dp
+                    )
+
+                    Text(
+                        modifier = Modifier
+                            .padding(12.dp)
+                            .weight(1f),
+                        text = "PESSIMISTIC",
+                        fontSize = 16.sp,
+                        textAlign = TextAlign.Center,
+                        fontWeight = FontWeight.Bold
+                    )
+                }
+
+                Divider(
+                    modifier = Modifier
+                        .fillMaxWidth()
+                        .padding(horizontal = 12.dp),
+                    color = Color.LightGray,
+                    thickness = 1.dp
                 )
 
-                Spacer(modifier = Modifier.height(8.dp))
+                Row() {
+                    Text(
+                        modifier = Modifier
+                            .padding(12.dp)
+                            .weight(1f),
+                        text = "$optimisticMonths mos",
+                        fontSize = 12.sp,
+                        textAlign = TextAlign.Center,
+                        fontWeight = FontWeight.Bold
+                    )
 
-                Text(
-                    modifier = Modifier.padding(16.dp),
-                    text = "realistic: $realisticMonths months (${state.plan.realistic.lossPerMonth}" +
-                            " ${state.weightUnit} per month)",
-                    fontSize = 16.sp,
-                    color = Color(0xFF17701B),
-                    fontWeight = FontWeight.Bold
+                    Divider(
+                        modifier = Modifier
+                            .height(64.dp)
+                            .width(2.dp),
+                        color = Color.LightGray,
+                        thickness = 2.dp
+                    )
+
+                    Text(
+                        modifier = Modifier
+                            .padding(12.dp)
+                            .weight(1f),
+                        text = "$realisticMonths mos",
+                        fontSize = 12.sp,
+                        textAlign = TextAlign.Center,
+                        fontWeight = FontWeight.Bold
+                    )
+
+                    Divider(
+                        modifier = Modifier
+                            .height(64.dp)
+                            .width(2.dp),
+                        color = Color.LightGray,
+                        thickness = 2.dp
+                    )
+
+                    Text(
+                        modifier = Modifier
+                            .padding(12.dp)
+                            .weight(1f),
+                        text = "$pessimisticMonths mos",
+                        fontSize = 12.sp,
+                        textAlign = TextAlign.Center,
+                        fontWeight = FontWeight.Bold
+                    )
+                }
+
+                Divider(
+                    modifier = Modifier
+                        .fillMaxWidth()
+                        .padding(horizontal = 12.dp),
+                    color = Color.LightGray,
+                    thickness = 1.dp
                 )
 
-                Spacer(modifier = Modifier.height(8.dp))
+                Row() {
+                    Text(
+                        modifier = Modifier
+                            .padding(12.dp)
+                            .weight(1f),
+                        text = "(${state.plan.optimistic.lossPerMonth} ${state.weightUnit} / mo.)",
+                        fontSize = 12.sp,
+                        textAlign = TextAlign.Center,
+                        fontWeight = FontWeight.Bold
+                    )
 
-                Text(
-                    modifier = Modifier.padding(16.dp),
-                    text = "pessimistic: $pessimisticMonths months (${state.plan.pessimistic.lossPerMonth}" +
-                            " ${state.weightUnit} per month)",
-                    fontSize = 16.sp,
-                    color = Color(0xFF3C2A2A),
-                    fontWeight = FontWeight.Bold
-                )
+                    Divider(
+                        modifier = Modifier
+                            .height(64.dp)
+                            .width(2.dp),
+                        color = Color.LightGray,
+                        thickness = 2.dp
+                    )
+
+                    Text(
+                        modifier = Modifier
+                            .padding(12.dp)
+                            .weight(1f),
+                        text = "(${state.plan.realistic.lossPerMonth} ${state.weightUnit} / mo.)",
+                        fontSize = 12.sp,
+                        textAlign = TextAlign.Center,
+                        fontWeight = FontWeight.Bold
+                    )
+
+                    Divider(
+                        modifier = Modifier
+                            .height(64.dp)
+                            .width(2.dp),
+                        color = Color.LightGray,
+                        thickness = 2.dp
+                    )
+
+                    Text(
+                        modifier = Modifier
+                            .padding(12.dp)
+                            .weight(1f),
+                        text = "(${state.plan.pessimistic.lossPerMonth} ${state.weightUnit}" +
+                                " / mo.)",
+                        fontSize = 12.sp,
+                        textAlign = TextAlign.Center,
+                        fontWeight = FontWeight.Bold
+                    )
+                }
             }
         }
     }
