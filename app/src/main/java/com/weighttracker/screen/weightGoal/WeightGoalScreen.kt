@@ -285,6 +285,8 @@ fun WeightLossPlanCard(plan: WeightLossPlan?, weightUnit: String) {
                 )
             }
         }
+
+        Spacer(modifier = Modifier.height(12.dp))
     }
 }
 
@@ -327,7 +329,8 @@ fun WeightLossPlanCardTitle() {
     Text(
         modifier = Modifier
             .fillMaxWidth()
-            .padding(16.dp),
+            .padding(16.dp)
+            .padding(top = 8.dp),
         text = "W E I G H T    L O S S    P L A N",
         fontWeight = FontWeight.Bold,
         fontSize = 20.sp,
@@ -356,7 +359,7 @@ fun RowScope.WeightLossPlanOption(text: String) {
             .padding(12.dp)
             .weight(1f),
         text = text,
-        fontSize = 16.sp,
+        fontSize = 14.sp,
         textAlign = TextAlign.Center,
         fontWeight = FontWeight.Bold
     )
