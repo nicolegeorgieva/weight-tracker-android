@@ -170,6 +170,32 @@ private fun UI(
     }
 }
 
+@Composable
+fun RowScope.WeightLossPlanCardCell(text: String) {
+    Text(
+        modifier = Modifier
+            .padding(12.dp)
+            .weight(1f),
+        text = text,
+        fontSize = 12.sp,
+        textAlign = TextAlign.Center,
+        fontWeight = FontWeight.Bold
+    )
+}
+
+@Composable
+fun RowScope.WeightLossPlanOption(text: String) {
+    Text(
+        modifier = Modifier
+            .padding(12.dp)
+            .weight(1f),
+        text = text,
+        fontSize = 16.sp,
+        textAlign = TextAlign.Center,
+        fontWeight = FontWeight.Bold
+    )
+}
+
 @OptIn(ExperimentalMaterial3Api::class)
 @Composable
 fun WeightLossPlanCard(plan: WeightLossPlan?, weightUnit: String) {
@@ -228,15 +254,7 @@ fun WeightLossPlanCard(plan: WeightLossPlan?, weightUnit: String) {
         }
 
         Row() {
-            Text(
-                modifier = Modifier
-                    .padding(12.dp)
-                    .weight(1f),
-                text = "OPTIMISTIC",
-                fontSize = 16.sp,
-                textAlign = TextAlign.Center,
-                fontWeight = FontWeight.Bold
-            )
+            WeightLossPlanOption(text = "OPTIMISTIC")
 
             Divider(
                 modifier = Modifier
@@ -246,15 +264,7 @@ fun WeightLossPlanCard(plan: WeightLossPlan?, weightUnit: String) {
                 thickness = 2.dp
             )
 
-            Text(
-                modifier = Modifier
-                    .padding(12.dp)
-                    .weight(1f),
-                text = "REALISTIC",
-                fontSize = 16.sp,
-                textAlign = TextAlign.Center,
-                fontWeight = FontWeight.Bold
-            )
+            WeightLossPlanOption(text = "REALISTIC")
 
             Divider(
                 modifier = Modifier
@@ -264,15 +274,7 @@ fun WeightLossPlanCard(plan: WeightLossPlan?, weightUnit: String) {
                 thickness = 2.dp
             )
 
-            Text(
-                modifier = Modifier
-                    .padding(12.dp)
-                    .weight(1f),
-                text = "PESSIMISTIC",
-                fontSize = 16.sp,
-                textAlign = TextAlign.Center,
-                fontWeight = FontWeight.Bold
-            )
+            WeightLossPlanOption(text = "PESSIMISTIC")
         }
 
         Divider(
@@ -284,15 +286,7 @@ fun WeightLossPlanCard(plan: WeightLossPlan?, weightUnit: String) {
         )
 
         Row() {
-            Text(
-                modifier = Modifier
-                    .padding(12.dp)
-                    .weight(1f),
-                text = "$optimisticMonths mos",
-                fontSize = 12.sp,
-                textAlign = TextAlign.Center,
-                fontWeight = FontWeight.Bold
-            )
+            WeightLossPlanCardCell(text = "$optimisticMonths mos")
 
             Divider(
                 modifier = Modifier
@@ -302,15 +296,7 @@ fun WeightLossPlanCard(plan: WeightLossPlan?, weightUnit: String) {
                 thickness = 2.dp
             )
 
-            Text(
-                modifier = Modifier
-                    .padding(12.dp)
-                    .weight(1f),
-                text = "$realisticMonths mos",
-                fontSize = 12.sp,
-                textAlign = TextAlign.Center,
-                fontWeight = FontWeight.Bold
-            )
+            WeightLossPlanCardCell(text = "$realisticMonths mos")
 
             Divider(
                 modifier = Modifier
@@ -320,15 +306,7 @@ fun WeightLossPlanCard(plan: WeightLossPlan?, weightUnit: String) {
                 thickness = 2.dp
             )
 
-            Text(
-                modifier = Modifier
-                    .padding(12.dp)
-                    .weight(1f),
-                text = "$pessimisticMonths mos",
-                fontSize = 12.sp,
-                textAlign = TextAlign.Center,
-                fontWeight = FontWeight.Bold
-            )
+            WeightLossPlanCardCell(text = "$pessimisticMonths mos")
         }
 
         Divider(
@@ -341,15 +319,7 @@ fun WeightLossPlanCard(plan: WeightLossPlan?, weightUnit: String) {
 
         Row() {
             if (plan != null) {
-                Text(
-                    modifier = Modifier
-                        .padding(12.dp)
-                        .weight(1f),
-                    text = "(${plan.optimistic.lossPerMonth} $weightUnit / mo.)",
-                    fontSize = 12.sp,
-                    textAlign = TextAlign.Center,
-                    fontWeight = FontWeight.Bold
-                )
+                WeightLossPlanCardCell(text = "(${plan.optimistic.lossPerMonth} $weightUnit / mo.)")
             }
 
             Divider(
@@ -361,15 +331,7 @@ fun WeightLossPlanCard(plan: WeightLossPlan?, weightUnit: String) {
             )
 
             if (plan != null) {
-                Text(
-                    modifier = Modifier
-                        .padding(12.dp)
-                        .weight(1f),
-                    text = "(${plan.realistic.lossPerMonth} $weightUnit / mo.)",
-                    fontSize = 12.sp,
-                    textAlign = TextAlign.Center,
-                    fontWeight = FontWeight.Bold
-                )
+                WeightLossPlanCardCell(text = "(${plan.realistic.lossPerMonth} $weightUnit / mo.)")
             }
 
             Divider(
@@ -381,15 +343,8 @@ fun WeightLossPlanCard(plan: WeightLossPlan?, weightUnit: String) {
             )
 
             if (plan != null) {
-                Text(
-                    modifier = Modifier
-                        .padding(12.dp)
-                        .weight(1f),
-                    text = "(${plan.pessimistic.lossPerMonth} $weightUnit" +
-                            " / mo.)",
-                    fontSize = 12.sp,
-                    textAlign = TextAlign.Center,
-                    fontWeight = FontWeight.Bold
+                WeightLossPlanCardCell(
+                    text = "(${plan.pessimistic.lossPerMonth} $weightUnit / mo.)"
                 )
             }
         }
