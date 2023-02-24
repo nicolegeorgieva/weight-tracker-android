@@ -120,9 +120,13 @@ private fun UI(
             Row() {
                 val idealWeightFormatted = state.idealWeight?.let { formatNumber(it) }
 
-                Button(onClick = {
-                    onEvent(WeightGoalEvent.WeightGoalInput(targetWeight = state.idealWeight))
-                }, enabled = true) {
+                Button(
+                    onClick = {
+                        onEvent(WeightGoalEvent.WeightGoalInput(targetWeight = state.idealWeight))
+                    },
+                    enabled = true,
+                    colors = ButtonDefaults.buttonColors(containerColor = Color(0xFFC56767))
+                ) {
                     Text(text = "$idealWeightFormatted ${state.weightUnit}", fontSize = 16.sp)
                 }
             }

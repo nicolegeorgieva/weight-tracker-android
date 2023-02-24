@@ -248,7 +248,7 @@ fun LazyListScope.usefulSection() {
             height = 52.dp,
             color = ButtonDefaults.buttonColors(
                 contentColor = Color.White,
-                containerColor = Color(0xFFE91E63)
+                containerColor = Color(0xFFC56767)
             ),
             screen = Screens.WeightGoal,
             text = "Weight goal"
