@@ -226,11 +226,13 @@ fun RowScope.CurrentWeightTitleAndValue(currentWeight: Double?, weightUnit: Stri
         fontSize = 16.sp
     )
 
+    val currentWeightFormatted = currentWeight?.let { formatNumber(it) }
+
     Text(
         modifier = Modifier.clickable {
             navigateTo(Screens.BMI)
         },
-        text = "$currentWeight $weightUnit",
+        text = "$currentWeightFormatted $weightUnit",
         fontSize = 16.sp
     )
 }
