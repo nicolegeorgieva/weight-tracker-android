@@ -58,12 +58,14 @@ private fun UI(
 
             Spacer(modifier = Modifier.height(8.dp))
 
-            Text(
-                modifier = Modifier.fillMaxWidth(),
-                text = "Dif: ${state.difference} ${state.weightUnit}",
-                color = Color(0xFF287E2C),
-                textAlign = TextAlign.Center
-            )
+            if (state.difference != null) {
+                Text(
+                    modifier = Modifier.fillMaxWidth(),
+                    text = "Dif: ${formatNumber(state.difference)} ${state.weightUnit}",
+                    color = Color(0xFF287E2C),
+                    textAlign = TextAlign.Center
+                )
+            }
         }
 
         Spacer(modifier = Modifier.height(20.dp))
