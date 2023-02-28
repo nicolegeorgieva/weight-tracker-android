@@ -24,8 +24,10 @@ import com.weighttracker.component.CustomDivider
 import com.weighttracker.component.ExpandCollapseArrow
 import com.weighttracker.component.Header
 import com.weighttracker.component.NumberInputField
+import com.weighttracker.domain.NormalWeightRange
 import com.weighttracker.formatNumber
 import com.weighttracker.navigateTo
+import java.text.DecimalFormat
 import kotlin.math.abs
 
 @Composable
@@ -84,13 +86,16 @@ private fun UI(
         }
 
         item(key = "ideal weight info and button with its value") {
-            IdealWeightMessageAndButton(
-                idealWeight = state.idealWeight,
-                weightUnit = state.weightUnit,
-                onClick = {
-                    onEvent(WeightGoalEvent.WeightGoalInput(targetWeight = state.idealWeight))
-                }
-            )
+            state.normalWeightRange?.let {
+                IdealWeightMessageAndButton(
+                    idealWeight = state.idealWeight,
+                    weightUnit = state.weightUnit,
+                    onClick = {
+                        onEvent(WeightGoalEvent.WeightGoalInput(targetWeight = state.idealWeight))
+                    },
+                    normalWeightRange = it
+                )
+            }
 
             Spacer(modifier = Modifier.height(48.dp))
         }
@@ -109,7 +114,12 @@ private fun UI(
 }
 
 @Composable
-fun IdealWeightMessageAndButton(idealWeight: Double?, weightUnit: String, onClick: () -> Unit) {
+fun IdealWeightMessageAndButton(
+    idealWeight: Double?,
+    weightUnit: String,
+    onClick: () -> Unit,
+    normalWeightRange: NormalWeightRange
+) {
     var expandedState by remember {
         mutableStateOf(false)
     }
@@ -150,18 +160,29 @@ fun IdealWeightMessageAndButton(idealWeight: Double?, weightUnit: String, onClic
     if (expandedState) {
         Spacer(modifier = Modifier.height(16.dp))
 
-        IdealWeightMessage()
+        IdealWeightMessage(normalWeightRange = normalWeightRange, weightUnit = weightUnit)
     }
 }
 
 @Composable
-fun IdealWeightMessage() {
-    Text(
-        text = "Your ideal weight is the arithmetic mean between your" +
-                " minimal and maximum normal weight.",
-        color = Color.Black,
-        fontSize = 16.sp
-    )
+fun IdealWeightMessage(
+    normalWeightRange: NormalWeightRange,
+    weightUnit: String,
+
+    ) {
+    if (normalWeightRange.minWeight > 0 && normalWeightRange.maxWeight > 0
+    ) {
+        val minWeightFormatted = DecimalFormat("###,###.#")
+            .format(normalWeightRange.minWeight)
+        val maxWeightFormatted = DecimalFormat("###,###.#")
+            .format(normalWeightRange.maxWeight)
+
+        Text(
+            text = "Your ideal weight is the arithmetic mean between your minimal and maximum" +
+                    " normal weight ($minWeightFormatted - $maxWeightFormatted $weightUnit).",
+            fontSize = 16.sp
+        )
+    }
 }
 
 @Composable

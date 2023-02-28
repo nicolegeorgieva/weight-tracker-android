@@ -1,6 +1,7 @@
 package com.weighttracker.screen.weightGoal
 
 import com.weighttracker.base.SimpleFlowViewModel
+import com.weighttracker.domain.NormalWeightRange
 import com.weighttracker.domain.calculateNormalWeightRange
 import com.weighttracker.persistence.datastore.height.HeightFlow
 import com.weighttracker.persistence.datastore.kgselected.KgSelectedFlow
@@ -22,6 +23,7 @@ class WeightGoalViewModel @Inject constructor(
     private val heightFlow: HeightFlow,
     private val mSelectedFlow: MSelectedFlow
 ) : SimpleFlowViewModel<WeightGoalState, WeightGoalEvent>() {
+
     override val initialUi = WeightGoalState(
         currentWeight = 0.0,
         weightUnit = "",
@@ -41,6 +43,11 @@ class WeightGoalViewModel @Inject constructor(
                 totalMonths = 0.0,
                 lossPerMonth = 0.0
             )
+        ),
+
+        normalWeightRange = NormalWeightRange(
+            minWeight = 0.0,
+            maxWeight = 0.0
         )
     )
 
@@ -68,7 +75,12 @@ class WeightGoalViewModel @Inject constructor(
             } else {
                 null
             },
-            plan = weightLossPeriod(weightToLose = weightToLoseOrGain, kgSelected = kgSelected)
+            plan = weightLossPeriod(weightToLose = weightToLoseOrGain, kgSelected = kgSelected),
+            normalWeightRange = if (height != null) {
+                calculateNormalWeightRange(height, mSelected, kgSelected)
+            } else {
+                null
+            }
         )
     }
 
