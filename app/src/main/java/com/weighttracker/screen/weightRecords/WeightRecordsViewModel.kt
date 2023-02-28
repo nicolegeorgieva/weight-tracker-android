@@ -28,7 +28,10 @@ class WeightRecordsViewModel @Inject constructor(
     override val initialUi = WeightRecordsState(
         //while loading
         weightRecords = emptyList(),
-        weightUnit = "kg"
+        weightUnit = "kg",
+        minWeight = 0.0,
+        maxWeight = 0.0,
+        difference = 0.0
     )
 
     override val uiFlow: Flow<WeightRecordsState> = combine(
@@ -37,6 +40,9 @@ class WeightRecordsViewModel @Inject constructor(
         heightFlow(Unit),
         mSelectedFlow(Unit)
     ) { weightRecords, kgSelected, height, mSelected ->
+        val minWeight = weightRecords.minByOrNull { it.weightInKg }?.weightInKg
+        val maxWeight = weightRecords.maxByOrNull { it.weightInKg }?.weightInKg
+
         WeightRecordsState(
             weightRecords = weightRecords
                 .sortedByDescending { it.dateTime }
@@ -56,7 +62,12 @@ class WeightRecordsViewModel @Inject constructor(
                         } else null
                     )
                 },
-            weightUnit = if (kgSelected) "kg" else "lb"
+            weightUnit = if (kgSelected) "kg" else "lb",
+            minWeight = minWeight,
+            maxWeight = maxWeight,
+            difference = if (maxWeight != null && minWeight != null) {
+                maxWeight - minWeight
+            } else null
         )
     }
 

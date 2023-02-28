@@ -1,5 +1,6 @@
 package com.weighttracker.screen.weightRecords
 
+import androidx.compose.foundation.Canvas
 import androidx.compose.foundation.background
 import androidx.compose.foundation.clickable
 import androidx.compose.foundation.layout.*
@@ -14,6 +15,7 @@ import androidx.compose.runtime.*
 import androidx.compose.ui.Alignment
 import androidx.compose.ui.Modifier
 import androidx.compose.ui.draw.clip
+import androidx.compose.ui.geometry.Offset
 import androidx.compose.ui.graphics.Color
 import androidx.compose.ui.res.painterResource
 import androidx.compose.ui.text.font.FontWeight
@@ -43,7 +45,28 @@ private fun UI(
     Column(modifier = Modifier.padding(horizontal = 16.dp, vertical = 16.dp)) {
         Header(back = screen.backTo, title = "Weight records")
 
-        Spacer(modifier = Modifier.height(32.dp))
+        Spacer(modifier = Modifier.height(12.dp))
+
+        Column {
+            if (state.minWeight != null && state.maxWeight != null) {
+                MinMaxWeightGraph(
+                    minWeight = state.minWeight,
+                    maxWeight = state.maxWeight,
+                    weightUnit = state.weightUnit
+                )
+            }
+
+            Spacer(modifier = Modifier.height(8.dp))
+
+            Text(
+                modifier = Modifier.fillMaxWidth(),
+                text = "Dif: ${state.difference} ${state.weightUnit}",
+                color = Color(0xFF287E2C),
+                textAlign = TextAlign.Center
+            )
+        }
+
+        Spacer(modifier = Modifier.height(20.dp))
 
         LazyColumn() {
             items(items = state.weightRecords) { weightRecordItem ->
@@ -55,6 +78,43 @@ private fun UI(
             }
         }
     }
+}
+
+@Composable
+fun MinMaxWeightGraph(minWeight: Double, maxWeight: Double, weightUnit: String) {
+    Canvas(
+        modifier = Modifier
+            .fillMaxWidth()
+            .padding(16.dp),
+        onDraw = {
+            drawLine(
+                color = Color.Black,
+                start = Offset(x = 0f, y = 0f),
+                end = Offset(x = size.width, y = 0f)
+            )
+
+            drawCircle(
+                color = Color(0xFF3FB444),
+                radius = 6.dp.toPx(),
+                center = Offset(x = 32.dp.toPx(), y = 0.dp.toPx())
+            )
+
+            drawCircle(
+                color = Color(0xFFC62828),
+                radius = 6.dp.toPx(),
+                center = Offset(x = size.width - 32.dp.toPx(), y = 0.dp.toPx())
+            )
+        }
+    )
+
+    Row(modifier = Modifier.fillMaxWidth()) {
+        Spacer(modifier = Modifier.width(28.dp))
+        Text(text = "$minWeight $weightUnit")
+        Spacer(modifier = Modifier.weight(1f))
+        Text(text = "$maxWeight $weightUnit")
+        Spacer(modifier = Modifier.width(28.dp))
+    }
+
 }
 
 @Composable
