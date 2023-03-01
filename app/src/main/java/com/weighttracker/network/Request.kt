@@ -24,14 +24,14 @@ sealed interface NetworkError {
     object Generic : NetworkError
 }
 
-abstract class SimpleRequest<out R> : Request<NetworkError, R>() {
+abstract class SimpleRequest<in Input, out R> : Request<Input, NetworkError, R>() {
     override suspend fun handleError(
         response: HttpResponse?
     ): NetworkError = NetworkError.Generic
 }
 
-abstract class Request<out E, out R> {
-    protected abstract suspend fun request(): Either<HttpResponse?, R>
+abstract class Request<in Input, out E, out R> {
+    protected abstract suspend fun request(input: Input): Either<HttpResponse?, R>
     protected abstract suspend fun handleError(response: HttpResponse?): E
 
     private val requestTriggerFlow = MutableSharedFlow<Unit>(
@@ -42,11 +42,11 @@ abstract class Request<out E, out R> {
         requestTriggerFlow.tryEmit(Unit)
     }
 
-    val flow: Flow<RemoteCall<E, R>> = channelFlow {
+    fun flow(input: Input): Flow<RemoteCall<E, R>> = channelFlow {
         requestTriggerFlow.collectLatest {
             send(RemoteCall.Loading)
             send(
-                when (val response = request()) {
+                when (val response = request(input)) {
                     is Either.Left -> RemoteCall.Error(handleError(response.value))
                     is Either.Right -> RemoteCall.Ok(response.value)
                 }

@@ -7,7 +7,6 @@ import com.weighttracker.network.articles.ArticlesRequest
 import dagger.hilt.android.lifecycle.HiltViewModel
 import kotlinx.coroutines.flow.Flow
 import kotlinx.coroutines.flow.combine
-import kotlinx.coroutines.flow.flowOf
 import javax.inject.Inject
 
 @HiltViewModel
@@ -19,8 +18,8 @@ class ArticlesViewModel @Inject constructor(
     )
 
     override val uiFlow: Flow<ArticlesState> = combine(
-        articlesRequest.flow,
-        flowOf(Unit)
+        articlesRequest.flow(Unit),
+        articlesRequest.flow(Unit)
     ) { articles, _ ->
         ArticlesState(
             articles = articles

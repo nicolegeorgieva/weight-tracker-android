@@ -9,8 +9,10 @@ import io.ktor.client.statement.*
 import javax.inject.Inject
 
 class ArticlesRequest @Inject constructor(
-) : SimpleRequest<ArticlesResponse>() {
-    override suspend fun request(): Either<HttpResponse?, ArticlesResponse> = httpRequest {
+) : SimpleRequest<Unit, ArticlesResponse>() {
+    override suspend fun request(
+        input: Unit
+    ): Either<HttpResponse?, ArticlesResponse> = httpRequest {
         get("https://raw.githubusercontent.com/nicolegeorgieva/weight-tracker-android/main/articles.json")
     }
 }
