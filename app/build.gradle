@@ -88,6 +88,10 @@ dependencies {
 
     implementation 'com.google.accompanist:accompanist-webview:0.29.1-alpha'
 
+    // region Arrow (functional programming)
+    implementation platform("io.arrow-kt:arrow-stack:1.0.1")
+    implementation "io.arrow-kt:arrow-core"
+    // endregion
 
     // region Network
     var ktor = "2.0.3"

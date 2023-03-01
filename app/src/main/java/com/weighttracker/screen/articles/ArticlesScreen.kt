@@ -5,6 +5,7 @@ import androidx.compose.foundation.layout.*
 import androidx.compose.foundation.lazy.LazyColumn
 import androidx.compose.foundation.lazy.items
 import androidx.compose.foundation.shape.RoundedCornerShape
+import androidx.compose.material3.Button
 import androidx.compose.material3.Text
 import androidx.compose.runtime.Composable
 import androidx.compose.runtime.collectAsState
@@ -22,6 +23,8 @@ import coil.compose.AsyncImage
 import com.weighttracker.Screens
 import com.weighttracker.browser
 import com.weighttracker.component.Header
+import com.weighttracker.network.RemoteCall
+import com.weighttracker.network.articles.Article
 
 @Composable
 fun ArticlesScreen() {
@@ -41,11 +44,31 @@ private fun UI(
 
         Spacer(modifier = Modifier.height(32.dp))
 
-        LazyColumn() {
-            items(items = state.articles) { articleItem ->
-                ArticleCard(article = articleItem)
-                Spacer(modifier = Modifier.height(16.dp))
+        LazyColumn {
+            when (state.articles) {
+                is RemoteCall.Error -> {
+                    item {
+                        Text(text = "Error!")
+                        Button(onClick = {
+                            onEvent(ArticlesEvent.RetryArticlesRequest)
+                        }) {
+                            Text(text = "Retry")
+                        }
+                    }
+                }
+                RemoteCall.Loading -> {
+                    item {
+                        Text(text = "Loading")
+                    }
+                }
+                is RemoteCall.Ok -> {
+                    items(items = state.articles.data.articles) { articleItem ->
+                        ArticleCard(article = articleItem)
+                        Spacer(modifier = Modifier.height(16.dp))
+                    }
+                }
             }
+
         }
     }
 }

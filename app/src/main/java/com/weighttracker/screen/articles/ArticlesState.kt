@@ -1,16 +1,9 @@
 package com.weighttracker.screen.articles
 
-import com.google.gson.annotations.SerializedName
+import com.weighttracker.network.NetworkError
+import com.weighttracker.network.RemoteCall
+import com.weighttracker.network.articles.ArticlesResponse
 
 data class ArticlesState(
-    val articles: List<Article>
-)
-
-data class Article(
-    @SerializedName("image")
-    val image: String,
-    @SerializedName("title")
-    val title: String,
-    @SerializedName("articleLink")
-    val articleLink: String
+    val articles: RemoteCall<NetworkError, ArticlesResponse>
 )
