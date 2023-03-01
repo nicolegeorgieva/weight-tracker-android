@@ -1,7 +1,6 @@
 package com.weighttracker.screen.articles
 
 import com.weighttracker.base.SimpleFlowViewModel
-import com.weighttracker.network.NetworkError
 import com.weighttracker.network.RemoteCall
 import com.weighttracker.network.articles.ArticlesRequest
 import dagger.hilt.android.lifecycle.HiltViewModel
@@ -14,7 +13,7 @@ class ArticlesViewModel @Inject constructor(
     private val articlesRequest: ArticlesRequest,
 ) : SimpleFlowViewModel<ArticlesState, ArticlesEvent>() {
     override val initialUi = ArticlesState(
-        articles = RemoteCall.Error(NetworkError.Generic)
+        articles = RemoteCall.Loading
     )
 
     override val uiFlow: Flow<ArticlesState> = combine(
