@@ -96,6 +96,14 @@ private fun UI(
                 }
             }
         }
+
+        when (state.nutrientsRequest) {
+            is RemoteCall.Error -> ErrorMessage {
+
+            }
+            RemoteCall.Loading -> LoadingMessage()
+            is RemoteCall.Ok -> Text(text = "Nutrients: ${state.nutrientsRequest.data}")
+        }
     }
 }
 
