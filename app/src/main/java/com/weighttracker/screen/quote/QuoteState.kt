@@ -1,6 +1,10 @@
 package com.weighttracker.screen.quote
 
+import com.weighttracker.network.NetworkError
+import com.weighttracker.network.RemoteCall
+import com.weighttracker.network.quotes.QuotesResponse
+
 data class QuoteState(
     val quote: String?,
-    val quoteList: List<String>
+    val quotesRequest: RemoteCall<NetworkError, QuotesResponse>
 )

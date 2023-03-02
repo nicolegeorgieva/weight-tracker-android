@@ -14,8 +14,11 @@ import androidx.compose.ui.graphics.Color
 import androidx.compose.ui.unit.dp
 import androidx.lifecycle.viewmodel.compose.viewModel
 import com.weighttracker.Screens
+import com.weighttracker.component.ErrorMessage
 import com.weighttracker.component.Header
 import com.weighttracker.component.InputField
+import com.weighttracker.component.LoadingMessage
+import com.weighttracker.network.RemoteCall
 
 @Composable
 fun QuoteScreen(screen: Screens.Quote) {
@@ -71,18 +74,40 @@ private fun UI(
         Spacer(modifier = Modifier.height(8.dp))
 
         LazyColumn {
-            items(items = state.quoteList) { quoteItem ->
-                Button(colors = ButtonDefaults.buttonColors(
-                    containerColor = Color(0xFFFF5722),
-                    contentColor = Color.White
-                ),
-                    onClick = {
-                        onEvent(QuoteEvent.QuoteChange(quoteItem))
+            when (state.quotesRequest) {
+                is RemoteCall.Error -> {
+                    item(key = "error and retry") {
+                        ErrorMessage {
+                            onEvent(QuoteEvent.RetryQuotesRequest)
+                        }
                     }
-                ) {
-                    Text(text = quoteItem)
+                }
+                RemoteCall.Loading -> {
+                    item(key = "loading") {
+                        LoadingMessage()
+                    }
+                }
+                is RemoteCall.Ok -> {
+                    items(items = state.quotesRequest.data.quotes) { quoteItem ->
+                        QuoteItem(text = quoteItem) {
+                            onEvent(QuoteEvent.QuoteChange(quoteItem))
+                        }
+                    }
                 }
             }
         }
+    }
+}
+
+@Composable
+fun QuoteItem(text: String, onClick: () -> Unit) {
+    Button(
+        colors = ButtonDefaults.buttonColors(
+            containerColor = Color(0xFFFF5722),
+            contentColor = Color.White
+        ),
+        onClick = onClick
+    ) {
+        Text(text = text)
     }
 }

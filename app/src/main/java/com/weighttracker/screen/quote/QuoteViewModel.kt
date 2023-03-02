@@ -1,7 +1,8 @@
 package com.weighttracker.screen.quote
 
 import com.weighttracker.base.SimpleFlowViewModel
-import com.weighttracker.network.quotes.RemoteQuotesFlow
+import com.weighttracker.network.RemoteCall
+import com.weighttracker.network.quotes.QuotesRequest
 import com.weighttracker.persistence.datastore.quote.QuoteFlow
 import com.weighttracker.persistence.datastore.quote.WriteQuoteAct
 import dagger.hilt.android.lifecycle.HiltViewModel
@@ -13,21 +14,21 @@ import javax.inject.Inject
 class QuoteViewModel @Inject constructor(
     private val quoteFlow: QuoteFlow,
     private val writeQuoteAct: WriteQuoteAct,
-    private val remoteQuotesFlow: RemoteQuotesFlow,
+    private val quotesRequest: QuotesRequest,
 ) : SimpleFlowViewModel<QuoteState, QuoteEvent>() {
     override val initialUi = QuoteState(
         //while loading
         quote = null,
-        quoteList = emptyList()
+        quotesRequest = RemoteCall.Loading
     )
 
     override val uiFlow: Flow<QuoteState> = combine(
         quoteFlow(Unit),
-        remoteQuotesFlow(Unit),
-    ) { quote, remoteQuotes ->
+        quotesRequest.flow(Unit),
+    ) { quote, quotesRequest ->
         QuoteState(
             quote = quote,
-            quoteList = remoteQuotes
+            quotesRequest = quotesRequest
         )
     }
 
@@ -39,6 +40,7 @@ class QuoteViewModel @Inject constructor(
             QuoteEvent.Clear -> {
                 writeQuoteAct("")
             }
+            QuoteEvent.RetryQuotesRequest -> quotesRequest.retry()
         }
     }
 }
