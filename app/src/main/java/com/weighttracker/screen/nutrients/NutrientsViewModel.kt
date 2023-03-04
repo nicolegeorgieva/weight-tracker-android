@@ -19,7 +19,7 @@ class NutrientsViewModel @Inject constructor(
     private val nutrientsRequest: NutrientsRequest,
 ) : SimpleFlowViewModel<NutrientsState, NutrientsEvent>() {
     override val initialUi = NutrientsState(
-        quantity = null,
+        quantity = 1,
         foods = emptyList(),
         selectedFood = null,
         selectedSize = FoodSize.Medium,
