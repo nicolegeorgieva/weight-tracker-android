@@ -1,17 +1,15 @@
 package com.weighttracker.screen.nutrients
 
-import androidx.compose.foundation.layout.PaddingValues
-import androidx.compose.foundation.layout.Row
-import androidx.compose.foundation.layout.fillMaxSize
-import androidx.compose.foundation.layout.width
+import androidx.compose.foundation.layout.*
 import androidx.compose.foundation.lazy.LazyColumn
 import androidx.compose.material3.Button
-import androidx.compose.material3.Divider
+import androidx.compose.material3.ButtonDefaults
 import androidx.compose.material3.Text
 import androidx.compose.runtime.Composable
 import androidx.compose.runtime.collectAsState
 import androidx.compose.runtime.getValue
 import androidx.compose.ui.Modifier
+import androidx.compose.ui.graphics.Color
 import androidx.compose.ui.unit.dp
 import androidx.lifecycle.viewmodel.compose.viewModel
 import com.weighttracker.Screens
@@ -35,38 +33,84 @@ private fun UI(
     ) {
         item(key = "header") {
             Header(back = Screens.Settings, title = "Nutrients")
+
+            Spacer(modifier = Modifier.height(24.dp))
         }
 
         item(key = "food size") {
-            FoodSizeComponent { selectedSize ->
-                onEvent(NutrientsEvent.SelectSize(selectedSize))
-            }
+            FoodSizeComponent(
+                selectedSize = state.selectedSize,
+                onClick = { foodSize ->
+                    onEvent(NutrientsEvent.SelectSize(foodSize))
+                }
+            )
         }
     }
 }
 
 @Composable
-fun FoodSizeComponent(onClick: (FoodSize) -> Unit) {
+fun FoodSizeComponent(
+    selectedSize: FoodSize,
+    onClick: (FoodSize) -> Unit
+) {
+    Text(text = "Select size")
+
+    Spacer(modifier = Modifier.height(8.dp))
+
     Row {
-        Button(onClick = {
-            onClick(FoodSize.Small)
-        }) {
+        Button(
+            colors = if (selectedSize == FoodSize.Small) {
+                ButtonDefaults.buttonColors(
+                    containerColor = Color.Blue,
+                    contentColor = Color.White
+                )
+            } else {
+                ButtonDefaults.buttonColors(
+                    containerColor = Color.Gray,
+                    contentColor = Color.White
+                )
+            },
+            onClick = {
+                onClick(FoodSize.Small)
+            }) {
             Text(text = "Small")
         }
 
-        Divider(modifier = Modifier.width(8.dp))
+        Spacer(modifier = Modifier.width(8.dp))
 
-        Button(onClick = {
-            onClick(FoodSize.Medium)
-        }) {
+        Button(colors = if (selectedSize == FoodSize.Medium) {
+            ButtonDefaults.buttonColors(
+                containerColor = Color.Blue,
+                contentColor = Color.White
+            )
+        } else {
+            ButtonDefaults.buttonColors(
+                containerColor = Color.Gray,
+                contentColor = Color.White
+            )
+        },
+            onClick = {
+                onClick(FoodSize.Medium)
+            }) {
             Text(text = "Medium")
         }
 
-        Divider(modifier = Modifier.width(8.dp))
+        Spacer(modifier = Modifier.width(8.dp))
 
-        Button(onClick = {
-            onClick(FoodSize.Large)
-        }) {
+        Button(colors = if (selectedSize == FoodSize.Large) {
+            ButtonDefaults.buttonColors(
+                containerColor = Color.Blue,
+                contentColor = Color.White
+            )
+        } else {
+            ButtonDefaults.buttonColors(
+                containerColor = Color.Gray,
+                contentColor = Color.White
+            )
+        },
+            onClick = {
+                onClick(FoodSize.Large)
+            }) {
             Text(text = "Large")
         }
     }
