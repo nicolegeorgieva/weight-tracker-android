@@ -4,6 +4,7 @@ import com.weighttracker.base.SimpleFlowViewModel
 import com.weighttracker.flattenLatest
 import com.weighttracker.network.NetworkError
 import com.weighttracker.network.RemoteCall
+import com.weighttracker.network.calories.NutrientRequestInput
 import com.weighttracker.network.calories.NutrientsRequest
 import com.weighttracker.network.calories.NutrientsResponse
 import dagger.hilt.android.lifecycle.HiltViewModel
@@ -60,12 +61,12 @@ class NutrientsViewModel @Inject constructor(
             if (quantity == null || selectedFood == null) {
                 flowOf(null)
             } else {
-                val size = when (selectedSize) {
-                    FoodSize.Small -> "small"
-                    FoodSize.Medium -> "medium"
-                    FoodSize.Large -> "large"
-                }
-                nutrientsRequest.flow("$quantity $size $selectedFood")
+                val input = NutrientRequestInput(
+                    quantity = quantity,
+                    food = selectedFood,
+                    foodSize = selectedSize
+                )
+                nutrientsRequest.flow(input = input)
             }
         }.flattenLatest()
 
