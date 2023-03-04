@@ -22,18 +22,15 @@ class QuoteViewModel @Inject constructor(
         //while loading
         quote = null,
         quotesRequest = RemoteCall.Loading,
-        nutrientsRequest = RemoteCall.Loading
     )
 
     override val uiFlow: Flow<QuoteState> = combine(
         quoteFlow(Unit),
         quotesRequest.flow(Unit),
-        nutrientsRequest.flow("1 small rice")
-    ) { quote, quotesRequest, nutrientsRequest ->
+    ) { quote, quotesRequest ->
         QuoteState(
             quote = quote,
             quotesRequest = quotesRequest,
-            nutrientsRequest = nutrientsRequest
         )
     }
 
