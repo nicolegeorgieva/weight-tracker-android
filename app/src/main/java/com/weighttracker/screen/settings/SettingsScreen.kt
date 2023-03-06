@@ -298,6 +298,21 @@ fun LazyListScope.usefulSection() {
             screen = Screens.Recipe,
             text = "Recipes"
         )
+
+        Spacer(modifier = Modifier.height(12.dp))
+    }
+
+    item(key = "exercises") {
+        FeatureButton(
+            modifier = Modifier.fillMaxWidth(),
+            height = 52.dp,
+            color = ButtonDefaults.buttonColors(
+                contentColor = Color.White,
+                containerColor = Color(0xFF054740)
+            ),
+            screen = Screens.Exercise,
+            text = "Exercises"
+        )
     }
 }
 
