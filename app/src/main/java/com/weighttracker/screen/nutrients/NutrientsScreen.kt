@@ -9,14 +9,20 @@ import androidx.compose.runtime.collectAsState
 import androidx.compose.runtime.getValue
 import androidx.compose.ui.Modifier
 import androidx.compose.ui.graphics.Color
+import androidx.compose.ui.text.font.FontWeight
 import androidx.compose.ui.text.style.TextAlign
+import androidx.compose.ui.tooling.preview.Preview
 import androidx.compose.ui.unit.dp
 import androidx.lifecycle.viewmodel.compose.viewModel
+import com.weighttracker.AppTheme
 import com.weighttracker.Screens
 import com.weighttracker.component.ErrorMessage
 import com.weighttracker.component.Header
 import com.weighttracker.component.LoadingMessage
 import com.weighttracker.network.RemoteCall
+import com.weighttracker.network.calories.MacroNutrient
+import com.weighttracker.network.calories.Nutrients
+import com.weighttracker.network.calories.NutrientsResponse
 
 @Composable
 fun NutrientScreen() {
@@ -89,60 +95,102 @@ private fun UI(
                             contentColor = Color(0xFFFFFFFF)
                         )
                     ) {
+                        Spacer(modifier = Modifier.height(24.dp))
+
                         Text(
                             modifier = Modifier
                                 .fillMaxWidth()
-                                .padding(12.dp),
+                                .padding(horizontal = 12.dp),
                             text = "N U T R I T I O N A L  I N F O",
-                            textAlign = TextAlign.Center
+                            textAlign = TextAlign.Center,
+                            fontWeight = FontWeight.Bold
                         )
 
                         Spacer(modifier = Modifier.height(24.dp))
 
                         Column(
-                            modifier = Modifier.padding(12.dp)
+                            modifier = Modifier.padding(horizontal = 12.dp)
                         ) {
-                            Text(text = "Total calories: ${state.nutrientsRequest.data.calories} kcal")
+                            Row() {
+                                Text(
+                                    text = "Total calories: ",
+                                    fontWeight = FontWeight.Bold
+                                )
+
+                                Text(text = "${state.nutrientsRequest.data.calories} kcal")
+                            }
 
                             Spacer(modifier = Modifier.height(8.dp))
 
-                            Text(
-                                text = "Total weight: " +
-                                        "${state.nutrientsRequest.data.totalWeight} g"
-                            )
+                            Row() {
+                                Text(
+                                    text = "Total weight: ",
+                                    fontWeight = FontWeight.Bold
+                                )
+
+                                Text(text = "${state.nutrientsRequest.data.totalWeight} g")
+                            }
 
                             Spacer(modifier = Modifier.height(8.dp))
 
-                            Text(
-                                text = "Carbs: " +
-                                        "${state.nutrientsRequest.data.nutrients.carbs.quantity} " +
-                                        state.nutrientsRequest.data.nutrients.carbs.unit
-                            )
+                            Row() {
+                                Text(
+                                    text = "Carbs: ",
+                                    fontWeight = FontWeight.Bold
+                                )
+
+                                Text(
+                                    text = "${state.nutrientsRequest.data.nutrients.carbs.quantity} " +
+                                            state.nutrientsRequest.data.nutrients.carbs.unit
+                                )
+                            }
 
                             Spacer(modifier = Modifier.height(8.dp))
 
-                            Text(
-                                text = "Fiber: " +
-                                        "${state.nutrientsRequest.data.nutrients.fiber.quantity} " +
-                                        state.nutrientsRequest.data.nutrients.fiber.unit
-                            )
+                            Row() {
+                                Text(
+                                    text = "Fiber: ",
+                                    fontWeight = FontWeight.Bold
+                                )
+
+                                Text(
+                                    text = "${state.nutrientsRequest.data.nutrients.fiber.quantity} " +
+                                            state.nutrientsRequest.data.nutrients.fiber.unit
+                                )
+                            }
 
                             Spacer(modifier = Modifier.height(8.dp))
 
-                            Text(
-                                text = "Fat: " +
-                                        "${state.nutrientsRequest.data.nutrients.fat.quantity} " +
-                                        state.nutrientsRequest.data.nutrients.fat.unit
-                            )
+                            Row() {
+                                Text(
+                                    text = "Fat: ",
+                                    fontWeight = FontWeight.Bold
+
+                                )
+
+                                Text(
+                                    text = "${state.nutrientsRequest.data.nutrients.fat.quantity} " +
+                                            state.nutrientsRequest.data.nutrients.fat.unit
+                                )
+                            }
 
                             Spacer(modifier = Modifier.height(8.dp))
 
-                            Text(
-                                text = "Protein: " +
-                                        "${state.nutrientsRequest.data.nutrients.protein.quantity} " +
-                                        state.nutrientsRequest.data.nutrients.protein.unit
-                            )
+                            Row() {
+                                Text(
+                                    text = "Protein: ",
+                                    fontWeight = FontWeight.Bold
+
+                                )
+
+                                Text(
+                                    text = "${state.nutrientsRequest.data.nutrients.protein.quantity} " +
+                                            state.nutrientsRequest.data.nutrients.protein.unit
+                                )
+                            }
                         }
+
+                        Spacer(modifier = Modifier.height(24.dp))
                     }
                 }
                 null -> {}
@@ -247,5 +295,30 @@ fun FoodSizeComponent(
             }) {
             Text(text = "Large")
         }
+    }
+}
+
+@Preview
+@Composable
+private fun Preview() {
+    AppTheme {
+        UI(state = NutrientsState(
+            quantity = 1,
+            foods = listOf("rice", "bread", "chicken"),
+            selectedFood = "rice",
+            selectedSize = FoodSize.Medium,
+            nutrientsRequest = RemoteCall.Ok(
+                NutrientsResponse(
+                    calories = 190,
+                    nutrients = Nutrients(
+                        fat = MacroNutrient(20.0, "g"),
+                        protein = MacroNutrient(15.0, "g"),
+                        carbs = MacroNutrient(40.0, "g"),
+                        fiber = MacroNutrient(5.0, "g")
+                    ),
+                    totalWeight = 300
+                )
+            )
+        ), onEvent = {})
     }
 }
