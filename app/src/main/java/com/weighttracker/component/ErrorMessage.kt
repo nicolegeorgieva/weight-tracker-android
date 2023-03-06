@@ -14,9 +14,9 @@ import androidx.compose.ui.unit.dp
 import androidx.compose.ui.unit.sp
 
 @Composable
-fun ErrorMessage(onClick: () -> Unit) {
+fun ErrorMessage(modifier: Modifier = Modifier, onClick: () -> Unit) {
     Column(
-        modifier = Modifier.fillMaxWidth(),
+        modifier = modifier.fillMaxWidth(),
         horizontalAlignment = Alignment.CenterHorizontally
     ) {
         Text(

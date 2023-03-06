@@ -15,8 +15,11 @@ import com.weighttracker.AppTheme
 import com.weighttracker.Screens
 
 @Composable
-fun Header(back: Screens, title: String) {
-    Row(verticalAlignment = Alignment.CenterVertically) {
+fun Header(modifier: Modifier = Modifier, back: Screens, title: String) {
+    Row(
+        modifier = modifier,
+        verticalAlignment = Alignment.CenterVertically
+    ) {
         BackButton(screens = back)
         Spacer(modifier = Modifier.width(16.dp))
         Text(

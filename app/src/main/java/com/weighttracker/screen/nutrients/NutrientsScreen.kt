@@ -19,6 +19,7 @@ import com.weighttracker.Screens
 import com.weighttracker.component.ErrorMessage
 import com.weighttracker.component.Header
 import com.weighttracker.component.LoadingMessage
+import com.weighttracker.network.NetworkError
 import com.weighttracker.network.RemoteCall
 import com.weighttracker.network.calories.MacroNutrient
 import com.weighttracker.network.calories.Nutrients
@@ -39,21 +40,30 @@ private fun UI(
 ) {
     LazyColumn(
         modifier = Modifier.fillMaxSize(),
-        contentPadding = PaddingValues(16.dp),
     ) {
         item(key = "header") {
-            Header(back = Screens.Settings, title = "Nutrients")
+            Header(
+                modifier = Modifier.padding(16.dp),
+                back = Screens.Settings,
+                title = "Nutrients"
+            )
 
-            Spacer(modifier = Modifier.height(24.dp))
+            Spacer(modifier = Modifier.height(32.dp))
         }
 
         item(key = "food section title") {
-            Text(text = "Select one of the following foods to get nutritional info about it")
+            Text(
+                modifier = Modifier.padding(horizontal = 16.dp),
+                text = "Select one of the following foods to get nutritional info about it"
+            )
+            Spacer(modifier = Modifier.height(8.dp))
         }
 
         item(key = "foods grid") {
             FlowRow(
-                modifier = Modifier.fillMaxWidth(),
+                modifier = Modifier
+                    .fillMaxWidth()
+                    .padding(horizontal = 14.dp),
             ) {
                 state.foods.forEach { it ->
                     FoodItem(
@@ -81,15 +91,17 @@ private fun UI(
 
         item(key = "request info") {
             when (state.nutrientsRequest) {
-                is RemoteCall.Error -> ErrorMessage {
+                is RemoteCall.Error -> ErrorMessage(modifier = Modifier.padding(horizontal = 16.dp)) {
                     onEvent(NutrientsEvent.RetryNutrientsRequest)
                 }
                 RemoteCall.Loading -> LoadingMessage()
                 is RemoteCall.Ok -> {
                     Card(
-                        modifier = Modifier.fillMaxWidth(),
+                        modifier = Modifier
+                            .fillMaxWidth()
+                            .padding(horizontal = 16.dp),
                         shape = RoundedCornerShape(12.dp),
-                        elevation = CardDefaults.cardElevation(24.dp),
+                        elevation = CardDefaults.cardElevation(48.dp),
                         colors = CardDefaults.cardColors(
                             containerColor = Color(0xFF0091EA),
                             contentColor = Color(0xFFFFFFFF)
@@ -206,10 +218,11 @@ fun FoodItem(
     onClick: () -> Unit
 ) {
     Button(
+        modifier = Modifier.padding(horizontal = 2.dp),
         onClick = onClick,
         colors = if (selected) {
             ButtonDefaults.buttonColors(
-                containerColor = Color.Green,
+                containerColor = Color(0xFFFF6D00),
                 contentColor = Color.White
             )
         } else {
@@ -221,8 +234,6 @@ fun FoodItem(
     ) {
         Text(text = foodInput)
     }
-
-    Spacer(modifier = Modifier.width(8.dp))
 }
 
 @Composable
@@ -230,11 +241,11 @@ fun FoodSizeComponent(
     selectedSize: FoodSize,
     onClick: (FoodSize) -> Unit
 ) {
-    Text(text = "Select size")
+    Text(modifier = Modifier.padding(horizontal = 16.dp), text = "Select size")
 
     Spacer(modifier = Modifier.height(8.dp))
 
-    Row {
+    Row(modifier = Modifier.padding(horizontal = 16.dp)) {
         Button(
             modifier = Modifier.weight(1f),
             colors = if (selectedSize == FoodSize.Small) {
@@ -304,7 +315,10 @@ private fun Preview() {
     AppTheme {
         UI(state = NutrientsState(
             quantity = 1,
-            foods = listOf("rice", "bread", "chicken"),
+            foods = listOf(
+                "rice", "bread", "chicken", "pizza", "apple", "milk", "biscuit",
+                "egg", "banana", "joghurt", "potato", "pork", "turkey", "beef"
+            ),
             selectedFood = "rice",
             selectedSize = FoodSize.Medium,
             nutrientsRequest = RemoteCall.Ok(
@@ -319,6 +333,40 @@ private fun Preview() {
                     totalWeight = 300
                 )
             )
+        ), onEvent = {})
+    }
+}
+
+@Preview
+@Composable
+private fun PreviewLoading() {
+    AppTheme {
+        UI(state = NutrientsState(
+            quantity = 1,
+            foods = listOf(
+                "rice", "bread", "chicken", "pizza", "apple", "milk", "biscuit",
+                "egg", "banana", "joghurt", "potato", "pork", "turkey", "beef"
+            ),
+            selectedFood = "rice",
+            selectedSize = FoodSize.Medium,
+            nutrientsRequest = RemoteCall.Loading
+        ), onEvent = {})
+    }
+}
+
+@Preview
+@Composable
+private fun PreviewError() {
+    AppTheme {
+        UI(state = NutrientsState(
+            quantity = 1,
+            foods = listOf(
+                "rice", "bread", "chicken", "pizza", "apple", "milk", "biscuit",
+                "egg", "banana", "joghurt", "potato", "pork", "turkey", "beef"
+            ),
+            selectedFood = "rice",
+            selectedSize = FoodSize.Medium,
+            nutrientsRequest = RemoteCall.Error(NetworkError.Generic)
         ), onEvent = {})
     }
 }
