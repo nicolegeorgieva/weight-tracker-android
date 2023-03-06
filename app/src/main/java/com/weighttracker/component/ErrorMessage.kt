@@ -20,7 +20,10 @@ fun ErrorMessage(modifier: Modifier = Modifier, onClick: () -> Unit) {
         horizontalAlignment = Alignment.CenterHorizontally
     ) {
         Text(
-            modifier = Modifier.padding(vertical = 24.dp),
+            modifier = Modifier.padding(
+                top = 24.dp,
+                bottom = 8.dp
+            ),
             text = "Error!",
             color = Color.Red,
             fontSize = 24.sp
@@ -28,7 +31,8 @@ fun ErrorMessage(modifier: Modifier = Modifier, onClick: () -> Unit) {
         Button(
             onClick = onClick,
             colors = ButtonDefaults.buttonColors(
-                containerColor = Color.DarkGray, contentColor = Color.White
+                containerColor = Color(0xFF0E3C5F),
+                contentColor = Color.White
             )
         ) {
             Text(text = "Retry")

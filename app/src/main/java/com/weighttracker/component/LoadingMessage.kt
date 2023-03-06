@@ -8,6 +8,7 @@ import androidx.compose.material3.Text
 import androidx.compose.runtime.Composable
 import androidx.compose.ui.Alignment
 import androidx.compose.ui.Modifier
+import androidx.compose.ui.graphics.Color
 import androidx.compose.ui.unit.dp
 import androidx.compose.ui.unit.sp
 
@@ -23,6 +24,6 @@ fun LoadingMessage() {
             fontSize = 24.sp
         )
 
-        CircularProgressIndicator()
+        CircularProgressIndicator(color = Color(0xFF0E3C5F))
     }
 }
