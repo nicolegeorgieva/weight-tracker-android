@@ -32,7 +32,7 @@ fun NutrientScreen() {
     UI(state = state, onEvent = viewModel::onEvent)
 }
 
-@OptIn(ExperimentalLayoutApi::class, ExperimentalMaterial3Api::class)
+@OptIn(ExperimentalLayoutApi::class)
 @Composable
 private fun UI(
     state: NutrientsState,
@@ -78,6 +78,12 @@ private fun UI(
             Spacer(modifier = Modifier.height(24.dp))
         }
 
+        item(key = "food size section title") {
+            Text(modifier = Modifier.padding(horizontal = 16.dp), text = "Select size")
+
+            Spacer(modifier = Modifier.height(8.dp))
+        }
+
         item(key = "food size") {
             FoodSizeComponent(
                 selectedSize = state.selectedSize,
@@ -96,118 +102,126 @@ private fun UI(
                 }
                 RemoteCall.Loading -> LoadingMessage()
                 is RemoteCall.Ok -> {
-                    Card(
-                        modifier = Modifier
-                            .fillMaxWidth()
-                            .padding(horizontal = 16.dp),
-                        shape = RoundedCornerShape(12.dp),
-                        elevation = CardDefaults.cardElevation(48.dp),
-                        colors = CardDefaults.cardColors(
-                            containerColor = Color(0xFF0091EA),
-                            contentColor = Color(0xFFFFFFFF)
-                        )
-                    ) {
-                        Spacer(modifier = Modifier.height(24.dp))
-
-                        Text(
-                            modifier = Modifier
-                                .fillMaxWidth()
-                                .padding(horizontal = 12.dp),
-                            text = "N U T R I T I O N A L  I N F O",
-                            textAlign = TextAlign.Center,
-                            fontWeight = FontWeight.Bold
-                        )
-
-                        Spacer(modifier = Modifier.height(24.dp))
-
-                        Column(
-                            modifier = Modifier.padding(horizontal = 12.dp)
-                        ) {
-                            Row() {
-                                Text(
-                                    text = "Total calories: ",
-                                    fontWeight = FontWeight.Bold
-                                )
-
-                                Text(text = "${state.nutrientsRequest.data.calories} kcal")
-                            }
-
-                            Spacer(modifier = Modifier.height(8.dp))
-
-                            Row() {
-                                Text(
-                                    text = "Total weight: ",
-                                    fontWeight = FontWeight.Bold
-                                )
-
-                                Text(text = "${state.nutrientsRequest.data.totalWeight} g")
-                            }
-
-                            Spacer(modifier = Modifier.height(8.dp))
-
-                            Row() {
-                                Text(
-                                    text = "Carbs: ",
-                                    fontWeight = FontWeight.Bold
-                                )
-
-                                Text(
-                                    text = "${state.nutrientsRequest.data.nutrients.carbs.quantity} " +
-                                            state.nutrientsRequest.data.nutrients.carbs.unit
-                                )
-                            }
-
-                            Spacer(modifier = Modifier.height(8.dp))
-
-                            Row() {
-                                Text(
-                                    text = "Fiber: ",
-                                    fontWeight = FontWeight.Bold
-                                )
-
-                                Text(
-                                    text = "${state.nutrientsRequest.data.nutrients.fiber.quantity} " +
-                                            state.nutrientsRequest.data.nutrients.fiber.unit
-                                )
-                            }
-
-                            Spacer(modifier = Modifier.height(8.dp))
-
-                            Row() {
-                                Text(
-                                    text = "Fat: ",
-                                    fontWeight = FontWeight.Bold
-
-                                )
-
-                                Text(
-                                    text = "${state.nutrientsRequest.data.nutrients.fat.quantity} " +
-                                            state.nutrientsRequest.data.nutrients.fat.unit
-                                )
-                            }
-
-                            Spacer(modifier = Modifier.height(8.dp))
-
-                            Row() {
-                                Text(
-                                    text = "Protein: ",
-                                    fontWeight = FontWeight.Bold
-
-                                )
-
-                                Text(
-                                    text = "${state.nutrientsRequest.data.nutrients.protein.quantity} " +
-                                            state.nutrientsRequest.data.nutrients.protein.unit
-                                )
-                            }
-                        }
-
-                        Spacer(modifier = Modifier.height(24.dp))
-                    }
+                    NutritionalInfoCard(
+                        data = state.nutrientsRequest.data
+                    )
                 }
                 null -> {}
             }
         }
+    }
+}
+
+@OptIn(ExperimentalMaterial3Api::class)
+@Composable
+fun NutritionalInfoCard(data: NutrientsResponse) {
+    Card(
+        modifier = Modifier
+            .fillMaxWidth()
+            .padding(horizontal = 16.dp),
+        shape = RoundedCornerShape(12.dp),
+        elevation = CardDefaults.cardElevation(48.dp),
+        colors = CardDefaults.cardColors(
+            containerColor = Color(0xFF0091EA),
+            contentColor = Color(0xFFFFFFFF)
+        )
+    ) {
+        Spacer(modifier = Modifier.height(24.dp))
+
+        Text(
+            modifier = Modifier
+                .fillMaxWidth()
+                .padding(horizontal = 12.dp),
+            text = "N U T R I T I O N A L  I N F O",
+            textAlign = TextAlign.Center,
+            fontWeight = FontWeight.Bold
+        )
+
+        Spacer(modifier = Modifier.height(24.dp))
+
+        Column(
+            modifier = Modifier.padding(horizontal = 12.dp)
+        ) {
+            Row() {
+                Text(
+                    text = "Total calories: ",
+                    fontWeight = FontWeight.Bold
+                )
+
+                Text(text = "${data.calories} kcal")
+            }
+
+            Spacer(modifier = Modifier.height(8.dp))
+
+            Row() {
+                Text(
+                    text = "Total weight: ",
+                    fontWeight = FontWeight.Bold
+                )
+
+                Text(text = "${data.totalWeight} g")
+            }
+
+            Spacer(modifier = Modifier.height(8.dp))
+
+            Row() {
+                Text(
+                    text = "Carbs: ",
+                    fontWeight = FontWeight.Bold
+                )
+
+                Text(
+                    text = "${data.nutrients.carbs.quantity} " +
+                            data.nutrients.carbs.unit
+                )
+            }
+
+            Spacer(modifier = Modifier.height(8.dp))
+
+            Row() {
+                Text(
+                    text = "Fiber: ",
+                    fontWeight = FontWeight.Bold
+                )
+
+                Text(
+                    text = "${data.nutrients.fiber.quantity} " +
+                            data.nutrients.fiber.unit
+                )
+            }
+
+            Spacer(modifier = Modifier.height(8.dp))
+
+            Row() {
+                Text(
+                    text = "Fat: ",
+                    fontWeight = FontWeight.Bold
+
+                )
+
+                Text(
+                    text = "${data.nutrients.fat.quantity} " +
+                            data.nutrients.fat.unit
+                )
+            }
+
+            Spacer(modifier = Modifier.height(8.dp))
+
+            Row() {
+                Text(
+                    text = "Protein: ",
+                    fontWeight = FontWeight.Bold
+
+                )
+
+                Text(
+                    text = "${data.nutrients.protein.quantity} " +
+                            data.nutrients.protein.unit
+                )
+            }
+        }
+
+        Spacer(modifier = Modifier.height(24.dp))
     }
 }
 
@@ -241,10 +255,6 @@ fun FoodSizeComponent(
     selectedSize: FoodSize,
     onClick: (FoodSize) -> Unit
 ) {
-    Text(modifier = Modifier.padding(horizontal = 16.dp), text = "Select size")
-
-    Spacer(modifier = Modifier.height(8.dp))
-
     Row(modifier = Modifier.padding(horizontal = 16.dp)) {
         Button(
             modifier = Modifier.weight(1f),
