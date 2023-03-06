@@ -246,7 +246,7 @@ fun FoodSizeComponent(
             modifier = Modifier.weight(1f),
             colors = if (selectedSize == FoodSize.Small) {
                 ButtonDefaults.buttonColors(
-                    containerColor = Color.Blue,
+                    containerColor = Color(0xFFFF6D00),
                     contentColor = Color.White
                 )
             } else {
@@ -288,7 +288,7 @@ fun FoodSizeComponent(
             modifier = Modifier.weight(1f),
             colors = if (selectedSize == FoodSize.Large) {
                 ButtonDefaults.buttonColors(
-                    containerColor = Color.Blue,
+                    containerColor = Color(0xFFFF6D00),
                     contentColor = Color.White
                 )
             } else {
