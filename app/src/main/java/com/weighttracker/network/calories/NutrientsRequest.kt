@@ -45,7 +45,9 @@ data class NutrientsResponse(
     @SerializedName("calories")
     val calories: Int,
     @SerializedName("totalNutrients")
-    val nutrients: Nutrients
+    val nutrients: Nutrients,
+    @SerializedName("totalWeight")
+    val totalWeight: Int
 )
 
 data class Nutrients(

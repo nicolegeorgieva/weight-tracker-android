@@ -2,14 +2,14 @@ package com.weighttracker.screen.nutrients
 
 import androidx.compose.foundation.layout.*
 import androidx.compose.foundation.lazy.LazyColumn
-import androidx.compose.material3.Button
-import androidx.compose.material3.ButtonDefaults
-import androidx.compose.material3.Text
+import androidx.compose.foundation.shape.RoundedCornerShape
+import androidx.compose.material3.*
 import androidx.compose.runtime.Composable
 import androidx.compose.runtime.collectAsState
 import androidx.compose.runtime.getValue
 import androidx.compose.ui.Modifier
 import androidx.compose.ui.graphics.Color
+import androidx.compose.ui.text.style.TextAlign
 import androidx.compose.ui.unit.dp
 import androidx.lifecycle.viewmodel.compose.viewModel
 import com.weighttracker.Screens
@@ -25,7 +25,7 @@ fun NutrientScreen() {
     UI(state = state, onEvent = viewModel::onEvent)
 }
 
-@OptIn(ExperimentalLayoutApi::class)
+@OptIn(ExperimentalLayoutApi::class, ExperimentalMaterial3Api::class)
 @Composable
 private fun UI(
     state: NutrientsState,
@@ -58,6 +58,8 @@ private fun UI(
                     }
                 }
             }
+
+            Spacer(modifier = Modifier.height(24.dp))
         }
 
         item(key = "food size") {
@@ -67,6 +69,8 @@ private fun UI(
                     onEvent(NutrientsEvent.SelectSize(foodSize))
                 }
             )
+
+            Spacer(modifier = Modifier.height(24.dp))
         }
 
         item(key = "request info") {
@@ -76,7 +80,70 @@ private fun UI(
                 }
                 RemoteCall.Loading -> LoadingMessage()
                 is RemoteCall.Ok -> {
-                    Text(text = state.nutrientsRequest.data.toString())
+                    Card(
+                        modifier = Modifier.fillMaxWidth(),
+                        shape = RoundedCornerShape(12.dp),
+                        elevation = CardDefaults.cardElevation(24.dp),
+                        colors = CardDefaults.cardColors(
+                            containerColor = Color(0xFF0091EA),
+                            contentColor = Color(0xFFFFFFFF)
+                        )
+                    ) {
+                        Text(
+                            modifier = Modifier
+                                .fillMaxWidth()
+                                .padding(12.dp),
+                            text = "N U T R I T I O N A L  I N F O",
+                            textAlign = TextAlign.Center
+                        )
+
+                        Spacer(modifier = Modifier.height(24.dp))
+
+                        Column(
+                            modifier = Modifier.padding(12.dp)
+                        ) {
+                            Text(text = "Total calories: ${state.nutrientsRequest.data.calories} kcal")
+
+                            Spacer(modifier = Modifier.height(8.dp))
+
+                            Text(
+                                text = "Total weight: " +
+                                        "${state.nutrientsRequest.data.totalWeight} g"
+                            )
+
+                            Spacer(modifier = Modifier.height(8.dp))
+
+                            Text(
+                                text = "Carbs: " +
+                                        "${state.nutrientsRequest.data.nutrients.carbs.quantity} " +
+                                        state.nutrientsRequest.data.nutrients.carbs.unit
+                            )
+
+                            Spacer(modifier = Modifier.height(8.dp))
+
+                            Text(
+                                text = "Fiber: " +
+                                        "${state.nutrientsRequest.data.nutrients.fiber.quantity} " +
+                                        state.nutrientsRequest.data.nutrients.fiber.unit
+                            )
+
+                            Spacer(modifier = Modifier.height(8.dp))
+
+                            Text(
+                                text = "Fat: " +
+                                        "${state.nutrientsRequest.data.nutrients.fat.quantity} " +
+                                        state.nutrientsRequest.data.nutrients.fat.unit
+                            )
+
+                            Spacer(modifier = Modifier.height(8.dp))
+
+                            Text(
+                                text = "Protein: " +
+                                        "${state.nutrientsRequest.data.nutrients.protein.quantity} " +
+                                        state.nutrientsRequest.data.nutrients.protein.unit
+                            )
+                        }
+                    }
                 }
                 null -> {}
             }
@@ -106,6 +173,8 @@ fun FoodItem(
     ) {
         Text(text = foodInput)
     }
+
+    Spacer(modifier = Modifier.width(8.dp))
 }
 
 @Composable
@@ -119,6 +188,7 @@ fun FoodSizeComponent(
 
     Row {
         Button(
+            modifier = Modifier.weight(1f),
             colors = if (selectedSize == FoodSize.Small) {
                 ButtonDefaults.buttonColors(
                     containerColor = Color.Blue,
@@ -138,17 +208,19 @@ fun FoodSizeComponent(
 
         Spacer(modifier = Modifier.width(8.dp))
 
-        Button(colors = if (selectedSize == FoodSize.Medium) {
-            ButtonDefaults.buttonColors(
-                containerColor = Color.Blue,
-                contentColor = Color.White
-            )
-        } else {
-            ButtonDefaults.buttonColors(
-                containerColor = Color.Gray,
-                contentColor = Color.White
-            )
-        },
+        Button(
+            modifier = Modifier.weight(1f),
+            colors = if (selectedSize == FoodSize.Medium) {
+                ButtonDefaults.buttonColors(
+                    containerColor = Color.Blue,
+                    contentColor = Color.White
+                )
+            } else {
+                ButtonDefaults.buttonColors(
+                    containerColor = Color.Gray,
+                    contentColor = Color.White
+                )
+            },
             onClick = {
                 onClick(FoodSize.Medium)
             }) {
@@ -157,17 +229,19 @@ fun FoodSizeComponent(
 
         Spacer(modifier = Modifier.width(8.dp))
 
-        Button(colors = if (selectedSize == FoodSize.Large) {
-            ButtonDefaults.buttonColors(
-                containerColor = Color.Blue,
-                contentColor = Color.White
-            )
-        } else {
-            ButtonDefaults.buttonColors(
-                containerColor = Color.Gray,
-                contentColor = Color.White
-            )
-        },
+        Button(
+            modifier = Modifier.weight(1f),
+            colors = if (selectedSize == FoodSize.Large) {
+                ButtonDefaults.buttonColors(
+                    containerColor = Color.Blue,
+                    contentColor = Color.White
+                )
+            } else {
+                ButtonDefaults.buttonColors(
+                    containerColor = Color.Gray,
+                    contentColor = Color.White
+                )
+            },
             onClick = {
                 onClick(FoodSize.Large)
             }) {
