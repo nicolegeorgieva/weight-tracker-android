@@ -1,4 +1,4 @@
-package com.weighttracker.screen.articles
+package com.weighttracker.screen.recipe
 
 import androidx.compose.foundation.clickable
 import androidx.compose.foundation.layout.*
@@ -25,11 +25,11 @@ import com.weighttracker.component.ErrorMessage
 import com.weighttracker.component.Header
 import com.weighttracker.component.LoadingMessage
 import com.weighttracker.network.RemoteCall
-import com.weighttracker.network.articles.Article
+import com.weighttracker.network.recipe.FeedItem
 
 @Composable
-fun ArticlesScreen() {
-    val viewModel: ArticlesViewModel = viewModel()
+fun RecipeScreen() {
+    val viewModel: RecipeViewModel = viewModel()
     val state by viewModel.uiState.collectAsState()
 
     UI(state = state, onEvent = viewModel::onEvent)
@@ -37,20 +37,20 @@ fun ArticlesScreen() {
 
 @Composable
 private fun UI(
-    state: ArticlesState,
-    onEvent: (ArticlesEvent) -> Unit,
+    state: RecipeState,
+    onEvent: (RecipeEvent) -> Unit,
 ) {
     Column(modifier = Modifier.padding(horizontal = 16.dp, vertical = 16.dp)) {
-        Header(back = Screens.Settings, title = "Articles")
+        Header(back = Screens.Settings, title = "Recipes")
 
         Spacer(modifier = Modifier.height(32.dp))
 
         LazyColumn {
-            when (state.articles) {
+            when (state.recipe) {
                 is RemoteCall.Error -> {
                     item {
                         ErrorMessage {
-                            onEvent(ArticlesEvent.RetryArticlesRequest)
+                            onEvent(RecipeEvent.RetryRecipeRequest)
                         }
                     }
                 }
@@ -60,8 +60,8 @@ private fun UI(
                     }
                 }
                 is RemoteCall.Ok -> {
-                    items(items = state.articles.data.articles) { articleItem ->
-                        ArticleCard(article = articleItem)
+                    items(items = state.recipe.data.feed) { recipeItem ->
+                        RecipeCard(recipe = recipeItem)
                         Spacer(modifier = Modifier.height(16.dp))
                     }
                 }
@@ -71,12 +71,12 @@ private fun UI(
 }
 
 @Composable
-private fun ArticleCard(article: Article) {
+private fun RecipeCard(recipe: FeedItem) {
     val browser = browser()
     Column(
         modifier = Modifier
             .clickable {
-                browser.openUri(article.articleLink)
+                browser.openUri(recipe.display?.source?.sourceRecipeUrl ?: "")
             }
             .fillMaxWidth()
             .padding(horizontal = 12.dp),
@@ -87,12 +87,14 @@ private fun ArticleCard(article: Article) {
                 .fillMaxWidth()
                 .height(200.dp)
                 .clip(RoundedCornerShape(8.dp)),
-            model = article.image, contentDescription = "",
+            model = recipe.display?.images?.firstOrNull() ?: "", contentDescription = "",
             contentScale = ContentScale.Crop
         )
         Spacer(modifier = Modifier.height(8.dp))
         Text(
-            text = article.title, fontSize = 16.sp, fontWeight = FontWeight.Bold,
+            text = recipe.display?.displayName ?: "",
+            fontSize = 16.sp,
+            fontWeight = FontWeight.Bold,
             textDecoration = TextDecoration.Underline
         )
     }

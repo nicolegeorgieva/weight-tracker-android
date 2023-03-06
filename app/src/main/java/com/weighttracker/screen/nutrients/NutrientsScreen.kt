@@ -22,9 +22,9 @@ import com.weighttracker.component.LoadingMessage
 import com.weighttracker.formatNumber
 import com.weighttracker.network.NetworkError
 import com.weighttracker.network.RemoteCall
-import com.weighttracker.network.calories.MacroNutrient
-import com.weighttracker.network.calories.Nutrients
-import com.weighttracker.network.calories.NutrientsResponse
+import com.weighttracker.network.nutrients.MacroNutrient
+import com.weighttracker.network.nutrients.Nutrients
+import com.weighttracker.network.nutrients.NutrientsResponse
 
 @Composable
 fun NutrientScreen() {

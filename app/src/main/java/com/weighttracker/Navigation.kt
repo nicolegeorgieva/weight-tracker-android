@@ -15,6 +15,7 @@ sealed interface Screens {
     data class ActivityRecords(val backTo: Screens) : Screens
     data class WaterRecords(val backTo: Screens) : Screens
     object Nutrients : Screens
+    object Recipe : Screens
 }
 
 fun navigateTo(screens: Screens) {

@@ -1,4 +1,4 @@
-package com.weighttracker.network.calories
+package com.weighttracker.network.nutrients
 
 import arrow.core.Either
 import com.google.gson.annotations.SerializedName

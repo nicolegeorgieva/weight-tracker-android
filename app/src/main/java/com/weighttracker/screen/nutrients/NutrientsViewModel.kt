@@ -4,9 +4,9 @@ import com.weighttracker.base.SimpleFlowViewModel
 import com.weighttracker.flattenLatest
 import com.weighttracker.network.NetworkError
 import com.weighttracker.network.RemoteCall
-import com.weighttracker.network.calories.NutrientRequestInput
-import com.weighttracker.network.calories.NutrientsRequest
-import com.weighttracker.network.calories.NutrientsResponse
+import com.weighttracker.network.nutrients.NutrientRequestInput
+import com.weighttracker.network.nutrients.NutrientsRequest
+import com.weighttracker.network.nutrients.NutrientsResponse
 import dagger.hilt.android.lifecycle.HiltViewModel
 import kotlinx.coroutines.flow.Flow
 import kotlinx.coroutines.flow.MutableStateFlow

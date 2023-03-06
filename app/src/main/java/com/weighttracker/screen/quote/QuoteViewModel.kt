@@ -2,7 +2,7 @@ package com.weighttracker.screen.quote
 
 import com.weighttracker.base.SimpleFlowViewModel
 import com.weighttracker.network.RemoteCall
-import com.weighttracker.network.calories.NutrientsRequest
+import com.weighttracker.network.nutrients.NutrientsRequest
 import com.weighttracker.network.quotes.QuotesRequest
 import com.weighttracker.persistence.datastore.quote.QuoteFlow
 import com.weighttracker.persistence.datastore.quote.WriteQuoteAct

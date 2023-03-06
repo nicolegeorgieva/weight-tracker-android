@@ -9,6 +9,7 @@ import com.weighttracker.screen.bmi.BmiScreen
 import com.weighttracker.screen.converter.ConverterScreen
 import com.weighttracker.screen.nutrients.NutrientScreen
 import com.weighttracker.screen.quote.QuoteScreen
+import com.weighttracker.screen.recipe.RecipeScreen
 import com.weighttracker.screen.settings.SettingsScreen
 import com.weighttracker.screen.waterRecords.WaterRecordsScreen
 import com.weighttracker.screen.weightGoal.WeightGoalScreen
@@ -32,6 +33,7 @@ class MainActivity : ComponentActivity() {
                     is Screens.WaterRecords -> WaterRecordsScreen(screen = screen)
                     is Screens.Quote -> QuoteScreen(screen = screen)
                     Screens.Nutrients -> NutrientScreen()
+                    Screens.Recipe -> RecipeScreen()
                 }
             }
         }

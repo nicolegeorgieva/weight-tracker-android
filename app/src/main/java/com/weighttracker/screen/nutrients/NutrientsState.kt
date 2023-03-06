@@ -2,7 +2,7 @@ package com.weighttracker.screen.nutrients
 
 import com.weighttracker.network.NetworkError
 import com.weighttracker.network.RemoteCall
-import com.weighttracker.network.calories.NutrientsResponse
+import com.weighttracker.network.nutrients.NutrientsResponse
 
 data class NutrientsState(
     val quantity: Int?,
