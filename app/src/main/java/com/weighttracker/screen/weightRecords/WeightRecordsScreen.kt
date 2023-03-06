@@ -48,9 +48,9 @@ private fun UI(
         Spacer(modifier = Modifier.height(12.dp))
 
         Column {
-            if (state.minWeight != null && state.maxWeight != null) {
+            if (state.latestWeight != null && state.maxWeight != null) {
                 MinMaxWeightGraph(
-                    minWeight = state.minWeight,
+                    minWeight = state.latestWeight,
                     maxWeight = state.maxWeight,
                     weightUnit = state.weightUnit
                 )
