@@ -19,6 +19,7 @@ import com.weighttracker.Screens
 import com.weighttracker.component.ErrorMessage
 import com.weighttracker.component.Header
 import com.weighttracker.component.LoadingMessage
+import com.weighttracker.formatNumber
 import com.weighttracker.network.NetworkError
 import com.weighttracker.network.RemoteCall
 import com.weighttracker.network.calories.MacroNutrient
@@ -128,100 +129,85 @@ fun NutritionalInfoCard(data: NutrientsResponse) {
     ) {
         Spacer(modifier = Modifier.height(24.dp))
 
-        Text(
-            modifier = Modifier
-                .fillMaxWidth()
-                .padding(horizontal = 12.dp),
-            text = "N U T R I T I O N A L  I N F O",
-            textAlign = TextAlign.Center,
-            fontWeight = FontWeight.Bold
-        )
+        NutritionalInfoTitle()
 
         Spacer(modifier = Modifier.height(24.dp))
 
         Column(
             modifier = Modifier.padding(horizontal = 12.dp)
         ) {
-            Row() {
-                Text(
-                    text = "Total calories: ",
-                    fontWeight = FontWeight.Bold
-                )
-
-                Text(text = "${data.calories} kcal")
-            }
+            NutritionalLabelValue(
+                text = "Total calories: ",
+                value = data.calories.toDouble(),
+                unit = "kcal"
+            )
 
             Spacer(modifier = Modifier.height(8.dp))
 
-            Row() {
-                Text(
-                    text = "Total weight: ",
-                    fontWeight = FontWeight.Bold
-                )
-
-                Text(text = "${data.totalWeight} g")
-            }
+            NutritionalLabelValue(
+                text = "Total weight: ",
+                value = data.totalWeight.toDouble(),
+                unit = "g"
+            )
 
             Spacer(modifier = Modifier.height(8.dp))
 
-            Row() {
-                Text(
-                    text = "Carbs: ",
-                    fontWeight = FontWeight.Bold
-                )
-
-                Text(
-                    text = "${data.nutrients.carbs.quantity} " +
-                            data.nutrients.carbs.unit
-                )
-            }
+            NutritionalLabelValue(
+                text = "Carbs: ",
+                value = data.nutrients.carbs.quantity,
+                unit = data.nutrients.carbs.unit
+            )
 
             Spacer(modifier = Modifier.height(8.dp))
 
-            Row() {
-                Text(
-                    text = "Fiber: ",
-                    fontWeight = FontWeight.Bold
-                )
-
-                Text(
-                    text = "${data.nutrients.fiber.quantity} " +
-                            data.nutrients.fiber.unit
-                )
-            }
+            NutritionalLabelValue(
+                text = "Fiber: ",
+                value = data.nutrients.fiber.quantity,
+                unit = data.nutrients.fiber.unit
+            )
 
             Spacer(modifier = Modifier.height(8.dp))
 
-            Row() {
-                Text(
-                    text = "Fat: ",
-                    fontWeight = FontWeight.Bold
-
-                )
-
-                Text(
-                    text = "${data.nutrients.fat.quantity} " +
-                            data.nutrients.fat.unit
-                )
-            }
+            NutritionalLabelValue(
+                text = "Fat: ",
+                value = data.nutrients.fat.quantity,
+                unit = data.nutrients.fat.unit
+            )
 
             Spacer(modifier = Modifier.height(8.dp))
 
-            Row() {
-                Text(
-                    text = "Protein: ",
-                    fontWeight = FontWeight.Bold
-
-                )
-
-                Text(
-                    text = "${data.nutrients.protein.quantity} " +
-                            data.nutrients.protein.unit
-                )
-            }
+            NutritionalLabelValue(
+                text = "Protein: ",
+                value = data.nutrients.protein.quantity,
+                unit = data.nutrients.protein.unit
+            )
         }
 
         Spacer(modifier = Modifier.height(24.dp))
+    }
+}
+
+@Composable
+fun NutritionalInfoTitle() {
+    Text(
+        modifier = Modifier
+            .fillMaxWidth()
+            .padding(horizontal = 12.dp),
+        text = "N U T R I T I O N A L  I N F O",
+        textAlign = TextAlign.Center,
+        fontWeight = FontWeight.Bold
+    )
+}
+
+@Composable
+fun NutritionalLabelValue(text: String, value: Double, unit: String) {
+    Row() {
+        Text(
+            text = text,
+            fontWeight = FontWeight.Bold
+        )
+
+        Text(text = "${formatNumber(value)} $unit")
     }
 }
 
