@@ -48,7 +48,7 @@ private fun UI(
                 title = "Nutrients"
             )
 
-            Spacer(modifier = Modifier.height(32.dp))
+            Spacer(modifier = Modifier.height(16.dp))
         }
 
         item(key = "food section title") {
