@@ -24,8 +24,8 @@ import com.weighttracker.browser
 import com.weighttracker.component.ErrorMessage
 import com.weighttracker.component.Header
 import com.weighttracker.component.LoadingMessage
+import com.weighttracker.domain.data.Exercise
 import com.weighttracker.network.RemoteCall
-import com.weighttracker.network.exercise.ExerciseResponse
 
 @Composable
 fun ExerciseScreen() {
@@ -90,7 +90,7 @@ private fun UI(
             is RemoteCall.Ok -> {
                 itemsIndexed(items = state.exerciseRequest.data) { index,
                                                                    exerciseItem ->
-                    ExerciseInfoCard(index = index, data = exerciseItem)
+                    ExerciseInfoCard(index = index, exercise = exerciseItem)
                     Spacer(modifier = Modifier.height(16.dp))
                 }
 
@@ -112,7 +112,7 @@ private fun UI(
 
 @OptIn(ExperimentalMaterial3Api::class)
 @Composable
-fun ExerciseInfoCard(index: Int, data: ExerciseResponse) {
+fun ExerciseInfoCard(index: Int, exercise: Exercise) {
     val browser = browser()
 
     Card(
@@ -137,9 +137,11 @@ fun ExerciseInfoCard(index: Int, data: ExerciseResponse) {
         ) {
             Text(
                 modifier = Modifier.clickable {
-                    browser.openUri(data.youtubeLink)
+                    if (exercise.youtubeLink != null) {
+                        browser.openUri(exercise.youtubeLink)
+                    }
                 },
-                text = data.name ?: "",
+                text = exercise.name ?: "",
                 fontSize = 16.sp,
                 textDecoration = TextDecoration.Underline,
                 fontWeight = FontWeight.Bold
@@ -147,7 +149,7 @@ fun ExerciseInfoCard(index: Int, data: ExerciseResponse) {
 
             Spacer(modifier = Modifier.height(8.dp))
 
-            data.primaryMuscles?.let {
+            exercise.primaryMuscles?.let {
                 Text(
                     text = "Primary muscles: ${it.joinToString(", ")}"
                 )
@@ -155,7 +157,7 @@ fun ExerciseInfoCard(index: Int, data: ExerciseResponse) {
 
             Spacer(modifier = Modifier.height(8.dp))
 
-            data.secondaryMuscles?.let {
+            exercise.secondaryMuscles?.let {
                 Text(
                     text = "Secondary muscles: ${it.joinToString(", ")}"
                 )
@@ -235,14 +237,13 @@ private fun Preview() {
                 selectedMuscle = "biceps",
                 exerciseRequest = RemoteCall.Ok(
                     listOf(
-                        ExerciseResponse(
+                        Exercise(
                             name = "Dumbbell Bicep Curl",
                             primaryMuscles = listOf("biceps"),
                             secondaryMuscles = listOf("deltoid", "trapezius"),
                             youtubeLink = "https://www.youtube.com/watch?v=ykJmrZ5v0Oo&ab_channel=Howcast"
                         ),
-
-                        ExerciseResponse(
+                        Exercise(
                             name = "Dumbbell Bicep Curl",
                             primaryMuscles = listOf("biceps"),
                             secondaryMuscles = listOf("deltoid", "trapezius"),

@@ -1,12 +1,14 @@
 package com.weighttracker.screen.exercise
 
 import com.weighttracker.base.SimpleFlowViewModel
+import com.weighttracker.domain.network.mapExerciseResponse
 import com.weighttracker.flattenLatest
 import com.weighttracker.network.NetworkError
 import com.weighttracker.network.RemoteCall
 import com.weighttracker.network.exercise.ExerciseRequest
 import com.weighttracker.network.exercise.ExerciseRequestInput
 import com.weighttracker.network.exercise.ExerciseResponse
+import com.weighttracker.network.mapSuccess
 import dagger.hilt.android.lifecycle.HiltViewModel
 import kotlinx.coroutines.flow.Flow
 import kotlinx.coroutines.flow.MutableStateFlow
@@ -60,7 +62,9 @@ class ExerciseViewModel @Inject constructor(
         ExerciseState(
             muscle = muscle,
             selectedMuscle = selectedMuscle,
-            exerciseRequest = request
+            exerciseRequest = request?.mapSuccess {
+                mapExerciseResponse(it)
+            }
         )
     }
 
