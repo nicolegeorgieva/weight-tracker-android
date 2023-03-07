@@ -24,8 +24,8 @@ import com.weighttracker.browser
 import com.weighttracker.component.ErrorMessage
 import com.weighttracker.component.Header
 import com.weighttracker.component.LoadingMessage
+import com.weighttracker.domain.data.Recipe
 import com.weighttracker.network.RemoteCall
-import com.weighttracker.network.recipe.FeedItem
 
 @Composable
 fun RecipeScreen() {
@@ -60,7 +60,7 @@ private fun UI(
                     }
                 }
                 is RemoteCall.Ok -> {
-                    items(items = state.recipe.data.feed) { recipeItem ->
+                    items(items = state.recipe.data) { recipeItem ->
                         RecipeCard(recipe = recipeItem)
                         Spacer(modifier = Modifier.height(16.dp))
                     }
@@ -71,12 +71,12 @@ private fun UI(
 }
 
 @Composable
-private fun RecipeCard(recipe: FeedItem) {
+private fun RecipeCard(recipe: Recipe) {
     val browser = browser()
     Column(
         modifier = Modifier
             .clickable {
-                browser.openUri(recipe.display?.source?.sourceRecipeUrl ?: "")
+                browser.openUri(recipe.link)
             }
             .fillMaxWidth()
             .padding(horizontal = 12.dp),
@@ -87,12 +87,15 @@ private fun RecipeCard(recipe: FeedItem) {
                 .fillMaxWidth()
                 .height(200.dp)
                 .clip(RoundedCornerShape(8.dp)),
-            model = recipe.display?.images?.firstOrNull() ?: "", contentDescription = "",
-            contentScale = ContentScale.Crop
+            model = recipe.image,
+            contentScale = ContentScale.Crop,
+            contentDescription = ""
         )
+
         Spacer(modifier = Modifier.height(8.dp))
+
         Text(
-            text = recipe.display?.displayName ?: "",
+            text = recipe.title,
             fontSize = 16.sp,
             fontWeight = FontWeight.Bold,
             textDecoration = TextDecoration.Underline
