@@ -34,5 +34,7 @@ data class ExerciseResponse(
     @SerializedName("Primary Muscles")
     val primaryMuscles: List<String>?,
     @SerializedName("SecondaryMuscles")
-    val secondaryMuscles: List<String>?
+    val secondaryMuscles: List<String>?,
+    @SerializedName("Youtube link")
+    val youtubeLink: String
 )

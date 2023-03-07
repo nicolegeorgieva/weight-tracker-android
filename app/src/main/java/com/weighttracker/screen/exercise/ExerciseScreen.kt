@@ -1,5 +1,6 @@
 package com.weighttracker.screen.exercise
 
+import androidx.compose.foundation.clickable
 import androidx.compose.foundation.layout.*
 import androidx.compose.foundation.lazy.LazyColumn
 import androidx.compose.foundation.lazy.itemsIndexed
@@ -12,10 +13,14 @@ import androidx.compose.ui.Modifier
 import androidx.compose.ui.graphics.Color
 import androidx.compose.ui.text.font.FontWeight
 import androidx.compose.ui.text.style.TextAlign
+import androidx.compose.ui.text.style.TextDecoration
+import androidx.compose.ui.tooling.preview.Preview
 import androidx.compose.ui.unit.dp
 import androidx.compose.ui.unit.sp
 import androidx.lifecycle.viewmodel.compose.viewModel
+import com.weighttracker.AppTheme
 import com.weighttracker.Screens
+import com.weighttracker.browser
 import com.weighttracker.component.ErrorMessage
 import com.weighttracker.component.Header
 import com.weighttracker.component.LoadingMessage
@@ -83,7 +88,8 @@ private fun UI(
             }
             RemoteCall.Loading -> item { LoadingMessage() }
             is RemoteCall.Ok -> {
-                itemsIndexed(items = state.exerciseRequest.data) { index, exerciseItem ->
+                itemsIndexed(items = state.exerciseRequest.data) { index,
+                                                                   exerciseItem ->
                     ExerciseInfoCard(index = index, data = exerciseItem)
                     Spacer(modifier = Modifier.height(16.dp))
                 }
@@ -107,6 +113,8 @@ private fun UI(
 @OptIn(ExperimentalMaterial3Api::class)
 @Composable
 fun ExerciseInfoCard(index: Int, data: ExerciseResponse) {
+    val browser = browser()
+
     Card(
         modifier = Modifier
             .fillMaxWidth()
@@ -128,8 +136,12 @@ fun ExerciseInfoCard(index: Int, data: ExerciseResponse) {
             modifier = Modifier.padding(horizontal = 12.dp)
         ) {
             Text(
+                modifier = Modifier.clickable {
+                    browser.openUri(data.youtubeLink)
+                },
                 text = data.name ?: "",
                 fontSize = 16.sp,
+                textDecoration = TextDecoration.Underline,
                 fontWeight = FontWeight.Bold
             )
 
@@ -137,9 +149,7 @@ fun ExerciseInfoCard(index: Int, data: ExerciseResponse) {
 
             data.primaryMuscles?.let {
                 Text(
-                    text = it.joinToString(", "),
-                    fontSize = 16.sp,
-                    fontWeight = FontWeight.Bold
+                    text = "Primary muscles: ${it.joinToString(", ")}"
                 )
             }
 
@@ -147,9 +157,7 @@ fun ExerciseInfoCard(index: Int, data: ExerciseResponse) {
 
             data.secondaryMuscles?.let {
                 Text(
-                    text = it.joinToString(", "),
-                    fontSize = 16.sp,
-                    fontWeight = FontWeight.Bold
+                    text = "Secondary muscles: ${it.joinToString(", ")}"
                 )
             }
         }
@@ -181,7 +189,7 @@ fun MuscleItem(
         onClick = onClick,
         colors = if (selected) {
             ButtonDefaults.buttonColors(
-                containerColor = Color(0xFF07554C),
+                containerColor = Color(0xFF033E44),
                 contentColor = Color.White
             )
         } else {
@@ -192,5 +200,56 @@ fun MuscleItem(
         }
     ) {
         Text(text = muscleInput)
+    }
+}
+
+@Preview
+@Composable
+private fun Preview() {
+    AppTheme {
+        UI(
+            state = ExerciseState(
+                muscle = listOf(
+                    "trapezius",
+                    "deltoid",
+                    "pectoralis major",
+                    "triceps",
+                    "biceps",
+                    "abdominal",
+                    "serratus anterior",
+                    "latissimus dorsi",
+                    "external oblique",
+                    "brachioradialis",
+                    "finger extensors",
+                    "finger flexors",
+                    "quadriceps",
+                    "hamstrings",
+                    "sartorius",
+                    "abductors",
+                    "gastrocnemius",
+                    "tibialis anterior",
+                    "soleus",
+                    "gluteus medius",
+                    "gluteus maximus"
+                ),
+                selectedMuscle = "biceps",
+                exerciseRequest = RemoteCall.Ok(
+                    listOf(
+                        ExerciseResponse(
+                            name = "Dumbbell Bicep Curl",
+                            primaryMuscles = listOf("biceps"),
+                            secondaryMuscles = listOf("deltoid", "trapezius"),
+                            youtubeLink = "https://www.youtube.com/watch?v=ykJmrZ5v0Oo&ab_channel=Howcast"
+                        ),
+
+                        ExerciseResponse(
+                            name = "Dumbbell Bicep Curl",
+                            primaryMuscles = listOf("biceps"),
+                            secondaryMuscles = listOf("deltoid", "trapezius"),
+                            youtubeLink = "https://www.youtube.com/watch?v=ykJmrZ5v0Oo&ab_channel=Howcast"
+                        )
+                    )
+                )
+            ), onEvent = {})
     }
 }

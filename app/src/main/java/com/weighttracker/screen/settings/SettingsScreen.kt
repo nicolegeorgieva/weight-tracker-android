@@ -308,7 +308,7 @@ fun LazyListScope.usefulSection() {
             height = 52.dp,
             color = ButtonDefaults.buttonColors(
                 contentColor = Color.White,
-                containerColor = Color(0xFF054740)
+                containerColor = Color(0xFF033E44)
             ),
             screen = Screens.Exercise,
             text = "Exercises"
