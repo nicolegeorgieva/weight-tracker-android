@@ -1,9 +1,11 @@
 package com.weighttracker.screen.nutrients
 
 import com.weighttracker.base.SimpleFlowViewModel
+import com.weighttracker.domain.network.mapNutrientsResponse
 import com.weighttracker.flattenLatest
 import com.weighttracker.network.NetworkError
 import com.weighttracker.network.RemoteCall
+import com.weighttracker.network.mapSuccess
 import com.weighttracker.network.nutrients.NutrientRequestInput
 import com.weighttracker.network.nutrients.NutrientsRequest
 import com.weighttracker.network.nutrients.NutrientsResponse
@@ -50,7 +52,9 @@ class NutrientsViewModel @Inject constructor(
             foods = foods,
             selectedFood = selectedFood,
             selectedSize = selectedSize,
-            nutrientsRequest = request
+            nutrientsRequest = request?.mapSuccess {
+                mapNutrientsResponse(it)
+            }
         )
     }
 

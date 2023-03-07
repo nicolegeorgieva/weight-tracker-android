@@ -19,12 +19,11 @@ import com.weighttracker.Screens
 import com.weighttracker.component.ErrorMessage
 import com.weighttracker.component.Header
 import com.weighttracker.component.LoadingMessage
+import com.weighttracker.domain.data.Nutrients
 import com.weighttracker.formatNumber
 import com.weighttracker.network.NetworkError
 import com.weighttracker.network.RemoteCall
 import com.weighttracker.network.nutrients.MacroNutrient
-import com.weighttracker.network.nutrients.Nutrients
-import com.weighttracker.network.nutrients.NutrientsResponse
 
 @Composable
 fun NutrientScreen() {
@@ -115,7 +114,7 @@ private fun UI(
 
 @OptIn(ExperimentalMaterial3Api::class)
 @Composable
-fun NutritionalInfoCard(data: NutrientsResponse) {
+fun NutritionalInfoCard(data: Nutrients) {
     Card(
         modifier = Modifier
             .fillMaxWidth()
@@ -154,32 +153,32 @@ fun NutritionalInfoCard(data: NutrientsResponse) {
 
             NutritionalLabelValue(
                 text = "Carbs: ",
-                value = data.nutrients.carbs.quantity,
-                unit = data.nutrients.carbs.unit
+                value = data.carbs.quantity,
+                unit = data.carbs.unit
             )
 
             Spacer(modifier = Modifier.height(8.dp))
 
             NutritionalLabelValue(
                 text = "Fiber: ",
-                value = data.nutrients.fiber.quantity,
-                unit = data.nutrients.fiber.unit
+                value = data.fiber.quantity,
+                unit = data.fiber.unit
             )
 
             Spacer(modifier = Modifier.height(8.dp))
 
             NutritionalLabelValue(
                 text = "Fat: ",
-                value = data.nutrients.fat.quantity,
-                unit = data.nutrients.fat.unit
+                value = data.fat.quantity,
+                unit = data.fat.unit
             )
 
             Spacer(modifier = Modifier.height(8.dp))
 
             NutritionalLabelValue(
                 text = "Protein: ",
-                value = data.nutrients.protein.quantity,
-                unit = data.nutrients.protein.unit
+                value = data.protein.quantity,
+                unit = data.protein.unit
             )
         }
 
@@ -318,14 +317,12 @@ private fun Preview() {
             selectedFood = "rice",
             selectedSize = FoodSize.Medium,
             nutrientsRequest = RemoteCall.Ok(
-                NutrientsResponse(
+                Nutrients(
                     calories = 190,
-                    nutrients = Nutrients(
-                        fat = MacroNutrient(20.0, "g"),
-                        protein = MacroNutrient(15.0, "g"),
-                        carbs = MacroNutrient(40.0, "g"),
-                        fiber = MacroNutrient(5.0, "g")
-                    ),
+                    fat = MacroNutrient(20.0, "g"),
+                    protein = MacroNutrient(15.0, "g"),
+                    carbs = MacroNutrient(40.0, "g"),
+                    fiber = MacroNutrient(5.0, "g"),
                     totalWeight = 300
                 )
             )

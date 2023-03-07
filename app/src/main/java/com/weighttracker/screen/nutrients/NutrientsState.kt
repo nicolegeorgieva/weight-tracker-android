@@ -1,15 +1,15 @@
 package com.weighttracker.screen.nutrients
 
+import com.weighttracker.domain.data.Nutrients
 import com.weighttracker.network.NetworkError
 import com.weighttracker.network.RemoteCall
-import com.weighttracker.network.nutrients.NutrientsResponse
 
 data class NutrientsState(
     val quantity: Int?,
     val foods: List<String>,
     val selectedFood: String?,
     val selectedSize: FoodSize,
-    val nutrientsRequest: RemoteCall<NetworkError, NutrientsResponse>?
+    val nutrientsRequest: RemoteCall<NetworkError, Nutrients>?
 )
 
 enum class FoodSize {
