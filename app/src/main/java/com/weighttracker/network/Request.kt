@@ -14,10 +14,30 @@ import kotlinx.coroutines.flow.channelFlow
 import kotlinx.coroutines.flow.collectLatest
 import kotlinx.coroutines.withContext
 
-sealed interface RemoteCall<out E, out T> {
+sealed interface RemoteCall<out E, out D> {
     object Loading : RemoteCall<Nothing, Nothing>
     data class Error<out E>(val error: E) : RemoteCall<E, Nothing>
-    data class Ok<out T>(val data: T) : RemoteCall<Nothing, T>
+    data class Ok<out D>(val data: D) : RemoteCall<Nothing, D>
+}
+
+fun <E, D1, D2> RemoteCall<E, D1>.mapSuccess(
+    transform: (D1) -> D2
+): RemoteCall<E, D2> = when (this) {
+    is RemoteCall.Error -> this
+    is RemoteCall.Loading -> this
+    is RemoteCall.Ok -> RemoteCall.Ok(
+        data = transform(this.data)
+    )
+}
+
+fun <E, E2, D> RemoteCall<E, D>.mapError(
+    transform: (E) -> E2
+): RemoteCall<E2, D> = when (this) {
+    is RemoteCall.Error -> RemoteCall.Error(
+        error = transform(this.error)
+    )
+    is RemoteCall.Loading -> this
+    is RemoteCall.Ok -> this
 }
 
 sealed interface NetworkError {
