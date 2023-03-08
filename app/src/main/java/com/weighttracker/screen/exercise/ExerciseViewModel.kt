@@ -54,21 +54,7 @@ class ExerciseViewModel @Inject constructor(
 
     private val selectedMuscleFlow = MutableStateFlow<String?>(initialUi.selectedMuscle)
 
-    override val uiFlow: Flow<ExerciseState> = combine(
-        muscleFlow,
-        selectedMuscleFlow,
-        exerciseRequestFlow()
-    ) { muscle, selectedMuscle, request ->
-        ExerciseState(
-            muscle = muscle,
-            selectedMuscle = selectedMuscle,
-            exerciseRequest = request?.mapSuccess {
-                mapExerciseResponse(it)
-            }
-        )
-    }
-
-    private fun exerciseRequestFlow(): Flow<RemoteCall<NetworkError, List<ExerciseResponse>>?> =
+    private val exerciseRequestFlow: Flow<RemoteCall<NetworkError, List<ExerciseResponse>>?> =
         combine(
             selectedMuscleFlow, selectedMuscleFlow
         ) { selectedMuscle, _ ->
@@ -82,11 +68,25 @@ class ExerciseViewModel @Inject constructor(
             }
         }.flattenLatest()
 
+    override val uiFlow: Flow<ExerciseState> = combine(
+        muscleFlow,
+        selectedMuscleFlow,
+        exerciseRequestFlow
+    ) { muscle, selectedMuscle, request ->
+        ExerciseState(
+            muscle = muscle,
+            selectedMuscle = selectedMuscle,
+            exerciseRequest = request?.mapSuccess {
+                mapExerciseResponse(it)
+            }
+        )
+    }
 
     override suspend fun handleEvent(event: ExerciseEvent) {
         when (event) {
             ExerciseEvent.RetryExerciseRequest -> exerciseRequest.retry()
             is ExerciseEvent.SelectMuscle -> selectedMuscleFlow.value = event.muscle
+            else -> {}
         }
     }
 }

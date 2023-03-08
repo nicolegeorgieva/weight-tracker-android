@@ -40,25 +40,7 @@ class NutrientsViewModel @Inject constructor(
     private val selectedFoodFlow = MutableStateFlow<String?>(initialUi.selectedFood)
     private val selectedSizeFlow = MutableStateFlow(initialUi.selectedSize)
 
-    override val uiFlow: Flow<NutrientsState> = combine(
-        quantityFlow,
-        foodsFlow,
-        selectedFoodFlow,
-        selectedSizeFlow,
-        nutrientsRequestFlow(),
-    ) { quantity, foods, selectedFood, selectedSize, request ->
-        NutrientsState(
-            quantity = quantity,
-            foods = foods,
-            selectedFood = selectedFood,
-            selectedSize = selectedSize,
-            nutrientsRequest = request?.mapSuccess {
-                mapNutrientsResponse(it)
-            }
-        )
-    }
-
-    private fun nutrientsRequestFlow(): Flow<RemoteCall<NetworkError, NutrientsResponse>?> =
+    private val nutrientsRequestFlow: Flow<RemoteCall<NetworkError, NutrientsResponse>?> =
         combine(
             quantityFlow, selectedFoodFlow, selectedSizeFlow
         ) { quantity, selectedFood, selectedSize ->
@@ -74,6 +56,23 @@ class NutrientsViewModel @Inject constructor(
             }
         }.flattenLatest()
 
+    override val uiFlow: Flow<NutrientsState> = combine(
+        quantityFlow,
+        foodsFlow,
+        selectedFoodFlow,
+        selectedSizeFlow,
+        nutrientsRequestFlow,
+    ) { quantity, foods, selectedFood, selectedSize, request ->
+        NutrientsState(
+            quantity = quantity,
+            foods = foods,
+            selectedFood = selectedFood,
+            selectedSize = selectedSize,
+            nutrientsRequest = request?.mapSuccess {
+                mapNutrientsResponse(it)
+            }
+        )
+    }
 
     override suspend fun handleEvent(event: NutrientsEvent) {
         when (event) {

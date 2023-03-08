@@ -26,8 +26,15 @@ class RecipeViewModel @Inject constructor(
 
     private val selectedPageFlow = MutableStateFlow<Int>(initialUi.page)
 
+    private val recipeRequestFlow: Flow<RemoteCall<NetworkError, RecipeResponse>> =
+        combine(
+            selectedPageFlow, selectedPageFlow
+        ) { selectedPage, _ ->
+            recipeRequest.flow(input = Page(pageNumber = selectedPage))
+        }.flattenLatest()
+
     override val uiFlow: Flow<RecipeState> = combine(
-        recipeRequestFlow(),
+        recipeRequestFlow,
         selectedPageFlow
     ) { recipeRemoteCall, selectedPage ->
         RecipeState(
@@ -37,13 +44,6 @@ class RecipeViewModel @Inject constructor(
             page = selectedPage
         )
     }
-
-    private fun recipeRequestFlow(): Flow<RemoteCall<NetworkError, RecipeResponse>> =
-        combine(
-            selectedPageFlow, selectedPageFlow
-        ) { selectedPage, _ ->
-            recipeRequest.flow(input = Page(pageNumber = selectedPage))
-        }.flattenLatest()
 
     override suspend fun handleEvent(event: RecipeEvent) {
         when (event) {
