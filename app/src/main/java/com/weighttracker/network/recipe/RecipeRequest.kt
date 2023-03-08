@@ -8,14 +8,19 @@ import io.ktor.client.request.*
 import io.ktor.client.statement.*
 import javax.inject.Inject
 
+data class Page(
+    val pageNumber: Int
+)
+
 class RecipeRequest @Inject constructor(
-) : SimpleRequest<Unit, RecipeResponse>() {
+) : SimpleRequest<Page, RecipeResponse>() {
+
     override suspend fun request(
-        input: Unit
+        input: Page
     ): Either<HttpResponse?, RecipeResponse> = httpRequest {
         get("https://yummly2.p.rapidapi.com/feeds/list") {
             parameter("limit", 24)
-            parameter("start", 0)
+            parameter("start", calculateResultsStart(pageNumber = input.pageNumber))
 
             headers {
                 set("X-RapidAPI-Key", "eb65cf4deemsh320bcefb59863fcp184ca1jsn13214a644d91")
@@ -24,6 +29,13 @@ class RecipeRequest @Inject constructor(
         }
     }
 }
+
+//page number 1 -> start 0
+//page number 2 -> start 24
+//page number 3 -> start 48
+//page number 4 -> start 72
+
+private fun calculateResultsStart(pageNumber: Int): Int = (pageNumber - 1) * 24
 
 data class RecipeResponse(
     @SerializedName("feed")

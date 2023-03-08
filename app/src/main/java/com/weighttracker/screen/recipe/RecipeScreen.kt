@@ -23,8 +23,10 @@ import androidx.compose.ui.unit.dp
 import androidx.compose.ui.unit.sp
 import androidx.lifecycle.viewmodel.compose.viewModel
 import coil.compose.AsyncImage
-import com.weighttracker.*
+import com.weighttracker.AppTheme
 import com.weighttracker.R
+import com.weighttracker.Screens
+import com.weighttracker.browser
 import com.weighttracker.component.ErrorMessage
 import com.weighttracker.component.Header
 import com.weighttracker.component.LoadingMessage
@@ -56,7 +58,11 @@ private fun UI(
             Icon(
                 modifier = Modifier
                     .size(16.dp)
-                    .clickable { navigateTo(Screens.Settings) },
+                    .clickable {
+                        if (state.page != 1) {
+                            onEvent(RecipeEvent.ChangePageBack)
+                        }
+                    },
                 painter = painterResource(id = R.drawable.baseline_keyboard_arrow_left_24),
                 contentDescription = "",
                 tint = Color.Black
@@ -64,14 +70,14 @@ private fun UI(
 
             Spacer(modifier = Modifier.width(8.dp))
 
-            Text(text = "1")
+            Text(text = "${state.page}")
 
             Spacer(modifier = Modifier.width(8.dp))
 
             Icon(
                 modifier = Modifier
                     .size(16.dp)
-                    .clickable { navigateTo(Screens.Settings) },
+                    .clickable { onEvent(RecipeEvent.ChangePageNext) },
                 painter = painterResource(id = R.drawable.baseline_keyboard_arrow_right_24),
                 contentDescription = "",
                 tint = Color.Black
@@ -143,6 +149,7 @@ private fun RecipeCard(recipe: Recipe) {
 private fun Preview() {
     AppTheme {
         UI(state = RecipeState(
+            page = 1,
             recipe = RemoteCall.Ok(
                 data = listOf(
                     Recipe(
