@@ -48,8 +48,8 @@ class RecipeViewModel @Inject constructor(
     override suspend fun handleEvent(event: RecipeEvent) {
         when (event) {
             RecipeEvent.RetryRecipeRequest -> recipeRequest.retry()
-            RecipeEvent.ChangePageBack -> selectedPageFlow.value = selectedPageFlow.value - 1
-            RecipeEvent.ChangePageNext -> selectedPageFlow.value = selectedPageFlow.value + 1
+            RecipeEvent.ChangePageBack -> selectedPageFlow.value = uiState.value.page - 1
+            RecipeEvent.ChangePageNext -> selectedPageFlow.value = uiState.value.page + 1
         }
     }
 }
