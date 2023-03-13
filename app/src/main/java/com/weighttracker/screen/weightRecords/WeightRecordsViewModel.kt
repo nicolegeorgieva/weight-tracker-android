@@ -30,7 +30,7 @@ class WeightRecordsViewModel @Inject constructor(
         weightRecords = emptyList(),
         weightUnit = "kg",
         latestWeight = 0.0,
-        maxWeight = 0.0,
+        startWeight = 0.0,
         difference = 0.0
     )
 
@@ -41,7 +41,7 @@ class WeightRecordsViewModel @Inject constructor(
         mSelectedFlow(Unit)
     ) { weightRecords, kgSelected, height, mSelected ->
         val latestWeight = weightRecords.maxByOrNull { it.dateTime }?.weightInKg
-        val maxWeight = weightRecords.maxByOrNull { it.weightInKg }?.weightInKg
+        val startWeight = weightRecords.minByOrNull { it.dateTime }?.weightInKg
 
         WeightRecordsState(
             weightRecords = weightRecords
@@ -63,10 +63,14 @@ class WeightRecordsViewModel @Inject constructor(
                     )
                 },
             weightUnit = if (kgSelected) "kg" else "lb",
-            latestWeight = latestWeight,
-            maxWeight = maxWeight,
-            difference = if (maxWeight != null && latestWeight != null) {
-                maxWeight - latestWeight
+            latestWeight = startWeight,
+            startWeight = startWeight,
+            difference = if (startWeight != null && latestWeight != null) {
+                if ((startWeight - latestWeight) < 0) {
+                    latestWeight - startWeight
+                } else {
+                    startWeight - latestWeight
+                }
             } else null
         )
     }

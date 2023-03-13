@@ -11,8 +11,8 @@ data class WeightRecordWithBmi(
 )
 
 data class WeightRecordsState(
+    val startWeight: Double?,
     val latestWeight: Double?,
-    val maxWeight: Double?,
     val difference: Double?,
     val weightRecords: List<WeightRecordWithBmi>,
     val weightUnit: String
