@@ -20,13 +20,11 @@ import androidx.compose.ui.text.font.FontWeight
 import androidx.compose.ui.text.style.TextAlign
 import androidx.compose.ui.unit.dp
 import androidx.lifecycle.viewmodel.compose.viewModel
+import com.weighttracker.*
 import com.weighttracker.R
-import com.weighttracker.Screens
 import com.weighttracker.component.Header
 import com.weighttracker.component.NumberInputField
-import com.weighttracker.format
 import com.weighttracker.persistence.database.waterrecords.WaterRecordEntity
-import com.weighttracker.toLocal
 
 @Composable
 fun WaterRecordsScreen(screen: Screens.WaterRecords) {
@@ -52,7 +50,7 @@ private fun UI(
                 WaterRecordCard(
                     waterRecord = waterRecordItem,
                     onEvent = onEvent,
-                    state = state
+                    waterUnit = state.waterUnit
                 )
                 Spacer(modifier = Modifier.height(16.dp))
             }
@@ -64,7 +62,7 @@ private fun UI(
 private fun WaterRecordCard(
     waterRecord: WaterRecordEntity,
     onEvent: (WaterRecordsEvent) -> Unit,
-    state: WaterRecordsState
+    waterUnit: String
 ) {
     var editCard by remember {
         mutableStateOf(false)
@@ -85,7 +83,7 @@ private fun WaterRecordCard(
                     Text(text = waterRecord.dateTime.toLocal().format("dd. MMM yyyy   HH:mm"))
                     Spacer(modifier = Modifier.height(12.dp))
                     Text(
-                        text = waterRecord.water.toString(),
+                        text = "${formatNumber(waterRecord.water)} $waterUnit",
                         textAlign = TextAlign.Center,
                         fontWeight = FontWeight.Bold
                     )
