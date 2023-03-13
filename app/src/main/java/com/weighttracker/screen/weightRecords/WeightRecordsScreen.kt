@@ -76,6 +76,7 @@ private fun UI(
                     modifier = Modifier.fillMaxWidth(),
                     text = differenceMessage,
                     color = Color(0xFF287E2C),
+                    fontWeight = FontWeight.Bold,
                     textAlign = TextAlign.Center
                 )
             }
@@ -131,11 +132,17 @@ fun MinMaxWeightBmiGraph(
     Row(modifier = Modifier.fillMaxWidth()) {
         Spacer(modifier = Modifier.width(28.dp))
 
-        Text(text = "$latestWeight $weightUnit")
+        Text(
+            text = "$latestWeight $weightUnit",
+            fontWeight = FontWeight.Bold
+        )
 
         Spacer(modifier = Modifier.weight(1f))
 
-        Text(text = "$startWeight $weightUnit")
+        Text(
+            text = "$startWeight $weightUnit",
+            fontWeight = FontWeight.Bold
+        )
 
         Spacer(modifier = Modifier.width(28.dp))
     }
@@ -150,8 +157,8 @@ fun MinMaxWeightBmiGraph(
 
         Text(
             text = "BMI: $latestBmiFormatted",
-            color = Color.Gray,
-            fontSize = 10.sp,
+            color = Color.DarkGray,
+            fontSize = 12.sp,
             fontWeight = FontWeight.Light
         )
 
@@ -159,8 +166,8 @@ fun MinMaxWeightBmiGraph(
 
         Text(
             text = "BMI: $startBmiFormatted",
-            color = Color.Gray,
-            fontSize = 10.sp,
+            color = Color.DarkGray,
+            fontSize = 12.sp,
             fontWeight = FontWeight.Light
         )
 
@@ -181,7 +188,7 @@ private fun WeightRecordBmiCard(
         modifier = Modifier
             .fillMaxWidth()
             .clip(CircleShape)
-            .background(color = Color(0xFFBE94A0))
+            .background(color = Color(0xFFFCE7ED))
             .clickable { editCard = true }
             .padding(horizontal = 12.dp, vertical = 12.dp)
             .padding(start = 12.dp),
@@ -207,7 +214,7 @@ private fun WeightRecordBmiCard(
                         text = "BMI: $formattedBmi",
                         color = if (weightRecord.bmi != null) {
                             when (weightRecord.bmi) {
-                                in 0.0..18.49 -> Color(0xFFA7C7E7)
+                                in 0.0..18.5 -> Color(0xFFA7C7E7)
                                 in 18.5..25.0 -> Color(0xFF008006)
                                 in 25.0..30.0 -> Color(0xFFE2D02B)
                                 in 30.0..35.0 -> Color(0xFFFFA500)
