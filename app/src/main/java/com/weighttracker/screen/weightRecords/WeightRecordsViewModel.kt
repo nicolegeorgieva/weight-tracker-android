@@ -63,14 +63,10 @@ class WeightRecordsViewModel @Inject constructor(
                     )
                 },
             weightUnit = if (kgSelected) "kg" else "lb",
-            latestWeight = startWeight,
+            latestWeight = latestWeight,
             startWeight = startWeight,
             difference = if (startWeight != null && latestWeight != null) {
-                if ((startWeight - latestWeight) < 0) {
-                    latestWeight - startWeight
-                } else {
-                    startWeight - latestWeight
-                }
+                startWeight - latestWeight
             } else null
         )
     }

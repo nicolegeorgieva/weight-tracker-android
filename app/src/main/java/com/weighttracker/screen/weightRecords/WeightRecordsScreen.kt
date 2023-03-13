@@ -27,6 +27,7 @@ import com.weighttracker.R
 import com.weighttracker.component.Header
 import com.weighttracker.component.NumberInputField
 import com.weighttracker.domain.formatBmi
+import kotlin.math.abs
 
 @Composable
 fun WeightRecordsScreen(screen: Screens.WeightRecords) {
@@ -50,8 +51,8 @@ private fun UI(
         Column {
             if (state.latestWeight != null && state.startWeight != null) {
                 MinMaxWeightGraph(
-                    minWeight = state.latestWeight,
-                    maxWeight = state.startWeight,
+                    latestWeight = state.latestWeight,
+                    startWeight = state.startWeight,
                     weightUnit = state.weightUnit
                 )
             }
@@ -59,9 +60,16 @@ private fun UI(
             Spacer(modifier = Modifier.height(8.dp))
 
             if (state.difference != null) {
+                val differenceFormatted = formatNumber(abs(state.difference))
+                val differenceMessage = if (state.difference < 0) {
+                    "+$differenceFormatted ${state.weightUnit} (Weight Gain)"
+                } else {
+                    "-$differenceFormatted ${state.weightUnit} (Weight Loss)"
+                }
+
                 Text(
                     modifier = Modifier.fillMaxWidth(),
-                    text = "Dif: ${formatNumber(state.difference)} ${state.weightUnit}",
+                    text = differenceMessage,
                     color = Color(0xFF287E2C),
                     textAlign = TextAlign.Center
                 )
@@ -83,7 +91,7 @@ private fun UI(
 }
 
 @Composable
-fun MinMaxWeightGraph(minWeight: Double, maxWeight: Double, weightUnit: String) {
+fun MinMaxWeightGraph(latestWeight: Double, startWeight: Double, weightUnit: String) {
     Canvas(
         modifier = Modifier
             .fillMaxWidth()
@@ -111,9 +119,9 @@ fun MinMaxWeightGraph(minWeight: Double, maxWeight: Double, weightUnit: String) 
 
     Row(modifier = Modifier.fillMaxWidth()) {
         Spacer(modifier = Modifier.width(28.dp))
-        Text(text = "$minWeight $weightUnit")
+        Text(text = "$latestWeight $weightUnit")
         Spacer(modifier = Modifier.weight(1f))
-        Text(text = "$maxWeight $weightUnit")
+        Text(text = "$startWeight $weightUnit")
         Spacer(modifier = Modifier.width(28.dp))
     }
 
