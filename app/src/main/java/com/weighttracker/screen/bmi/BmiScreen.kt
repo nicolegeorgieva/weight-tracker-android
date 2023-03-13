@@ -469,7 +469,7 @@ private fun bmiInfo(bmi: Double): BmiInfo {
         BmiInfo(
             type = "Overweight",
             link = "https://www.hioscar.com/blog/how-to-maintain-a-healthy-body-mass-index-bmi",
-            color = Color(0xFFE2D02B),
+            color = Color(0xFFD6C209),
             message = "Being overweight might be a sign that your food supply are plentiful and" +
                     " your lifestyle is sedentary. You should probably consider developing a healthier," +
                     " more balanced diet and move more everyday."
