@@ -448,7 +448,7 @@ data class BmiInfo(
 )
 
 private fun bmiInfo(bmi: Double): BmiInfo {
-    return if (bmi < 18.5) {
+    return if (bmi < 18.49) {
         BmiInfo(
             type = "Underweight",
             link = "https://www.healthdirect.gov.au/what-to-do-if-you-are-underweight",
@@ -458,7 +458,7 @@ private fun bmiInfo(bmi: Double): BmiInfo {
                     " You should probably visit a nutritionist to prepare a better diet plan," +
                     " with caloric surplus."
         )
-    } else if (bmi in 18.5..25.0) {
+    } else if (bmi in 18.49..25.0) {
         BmiInfo(
             type = "Normal",
             link = "https://www.hioscar.com/blog/how-to-maintain-a-healthy-body-mass-index-bmi",

@@ -188,7 +188,7 @@ private fun WeightRecordBmiCard(
         modifier = Modifier
             .fillMaxWidth()
             .clip(CircleShape)
-            .background(color = Color(0xFFFCE7ED))
+            .background(color = Color(0xFFFAEAEF))
             .clickable { editCard = true }
             .padding(horizontal = 12.dp, vertical = 12.dp)
             .padding(start = 12.dp),
@@ -214,8 +214,8 @@ private fun WeightRecordBmiCard(
                         text = "BMI: $formattedBmi",
                         color = if (weightRecord.bmi != null) {
                             when (weightRecord.bmi) {
-                                in 0.0..18.5 -> Color(0xFFA7C7E7)
-                                in 18.5..25.0 -> Color(0xFF008006)
+                                in 0.0..18.49 -> Color(0xFFA7C7E7)
+                                in 18.49..25.0 -> Color(0xFF008006)
                                 in 25.0..30.0 -> Color(0xFFE2D02B)
                                 in 30.0..35.0 -> Color(0xFFFFA500)
                                 in 35.0..40.0 -> Color.Red

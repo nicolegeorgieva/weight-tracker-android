@@ -6,7 +6,7 @@ import io.kotest.core.spec.style.FreeSpec
 import io.kotest.matchers.shouldBe
 
 class BmiTest : FreeSpec({
-    "bmi calculation" - {
+    "bmi calculation with formatting" - {
         "bmi with kg and m" {
             formatBmi(
                 calculateBmi(57.4, 1.58, kgSelected = true, mSelected = true)

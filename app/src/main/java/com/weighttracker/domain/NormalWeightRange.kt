@@ -12,7 +12,7 @@ fun calculateNormalWeightRange(
 ): NormalWeightRange {
     val heightInM = convertToM(height, mSelected)
     val minWeightInKg = 18.5 * (heightInM * heightInM)
-    val maxWeightInKg = 24.9 * (heightInM * heightInM)
+    val maxWeightInKg = 25 * (heightInM * heightInM)
 
     return if (kgSelected) {
         NormalWeightRange(minWeightInKg, maxWeightInKg)
