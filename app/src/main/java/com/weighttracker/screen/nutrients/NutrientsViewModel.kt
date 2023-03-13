@@ -52,6 +52,7 @@ class NutrientsViewModel @Inject constructor(
                     food = selectedFood,
                     foodSize = selectedSize
                 )
+                //a request is sent with the input
                 nutrientsRequest.flow(input = input)
             }
         }.flattenLatest()
