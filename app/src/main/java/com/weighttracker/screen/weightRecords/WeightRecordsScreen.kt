@@ -21,6 +21,7 @@ import androidx.compose.ui.res.painterResource
 import androidx.compose.ui.text.font.FontWeight
 import androidx.compose.ui.text.style.TextAlign
 import androidx.compose.ui.unit.dp
+import androidx.compose.ui.unit.sp
 import androidx.lifecycle.viewmodel.compose.viewModel
 import com.weighttracker.*
 import com.weighttracker.R
@@ -49,11 +50,15 @@ private fun UI(
         Spacer(modifier = Modifier.height(12.dp))
 
         Column {
-            if (state.latestWeight != null && state.startWeight != null) {
-                MinMaxWeightGraph(
+            if (state.latestWeight != null && state.startWeight != null &&
+                state.latestBmi != null && state.startBmi != null
+            ) {
+                MinMaxWeightBmiGraph(
                     latestWeight = state.latestWeight,
                     startWeight = state.startWeight,
-                    weightUnit = state.weightUnit
+                    weightUnit = state.weightUnit,
+                    latestBmi = state.latestBmi,
+                    startBmi = state.startBmi
                 )
             }
 
@@ -80,7 +85,7 @@ private fun UI(
 
         LazyColumn() {
             items(items = state.weightRecords) { weightRecordItem ->
-                WeightRecordCard(
+                WeightRecordBmiCard(
                     weightRecord = weightRecordItem, onEvent = onEvent,
                     state = state
                 )
@@ -91,7 +96,13 @@ private fun UI(
 }
 
 @Composable
-fun MinMaxWeightGraph(latestWeight: Double, startWeight: Double, weightUnit: String) {
+fun MinMaxWeightBmiGraph(
+    latestWeight: Double,
+    startWeight: Double,
+    weightUnit: String,
+    latestBmi: Double,
+    startBmi: Double
+) {
     Canvas(
         modifier = Modifier
             .fillMaxWidth()
@@ -119,16 +130,46 @@ fun MinMaxWeightGraph(latestWeight: Double, startWeight: Double, weightUnit: Str
 
     Row(modifier = Modifier.fillMaxWidth()) {
         Spacer(modifier = Modifier.width(28.dp))
+
         Text(text = "$latestWeight $weightUnit")
+
         Spacer(modifier = Modifier.weight(1f))
+
         Text(text = "$startWeight $weightUnit")
+
         Spacer(modifier = Modifier.width(28.dp))
     }
 
+    Spacer(modifier = Modifier.height(4.dp))
+
+    val latestBmiFormatted = formatBmi(latestBmi)
+    val startBmiFormatted = formatBmi(startBmi)
+
+    Row(modifier = Modifier.fillMaxWidth()) {
+        Spacer(modifier = Modifier.width(28.dp))
+
+        Text(
+            text = "BMI: $latestBmiFormatted",
+            color = Color.Gray,
+            fontSize = 10.sp,
+            fontWeight = FontWeight.Light
+        )
+
+        Spacer(modifier = Modifier.weight(1f))
+
+        Text(
+            text = "BMI: $startBmiFormatted",
+            color = Color.Gray,
+            fontSize = 10.sp,
+            fontWeight = FontWeight.Light
+        )
+
+        Spacer(modifier = Modifier.width(28.dp))
+    }
 }
 
 @Composable
-private fun WeightRecordCard(
+private fun WeightRecordBmiCard(
     weightRecord: WeightRecordWithBmi,
     onEvent: (WeightRecordsEvent) -> Unit,
     state: WeightRecordsState

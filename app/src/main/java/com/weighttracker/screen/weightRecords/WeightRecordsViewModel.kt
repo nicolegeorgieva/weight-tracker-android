@@ -31,7 +31,9 @@ class WeightRecordsViewModel @Inject constructor(
         weightUnit = "kg",
         latestWeight = 0.0,
         startWeight = 0.0,
-        difference = 0.0
+        difference = 0.0,
+        latestBmi = 0.0,
+        startBmi = 0.0
     )
 
     override val uiFlow: Flow<WeightRecordsState> = combine(
@@ -40,34 +42,40 @@ class WeightRecordsViewModel @Inject constructor(
         heightFlow(Unit),
         mSelectedFlow(Unit)
     ) { weightRecords, kgSelected, height, mSelected ->
+        val weightRecordsWithBmi = weightRecords
+            .sortedByDescending { it.dateTime }
+            .map { record ->
+                WeightRecordWithBmi(
+                    id = record.id,
+                    date = record.dateTime,
+                    weightInKg = convertToKg(
+                        weight = record.weightInKg,
+                        kgSelected = kgSelected
+                    ),
+                    bmi = if (height != null) {
+                        calculateBmi(
+                            weight = record.weightInKg, height = height,
+                            kgSelected = kgSelected, mSelected = mSelected
+                        )
+                    } else null
+                )
+            }
+
         val latestWeight = weightRecords.maxByOrNull { it.dateTime }?.weightInKg
         val startWeight = weightRecords.minByOrNull { it.dateTime }?.weightInKg
+        val latestBmi = weightRecordsWithBmi.maxByOrNull { it.date }?.bmi
+        val startBmi = weightRecordsWithBmi.minByOrNull { it.date }?.bmi
 
         WeightRecordsState(
-            weightRecords = weightRecords
-                .sortedByDescending { it.dateTime }
-                .map { record ->
-                    WeightRecordWithBmi(
-                        id = record.id,
-                        date = record.dateTime,
-                        weightInKg = convertToKg(
-                            weight = record.weightInKg,
-                            kgSelected = kgSelected
-                        ),
-                        bmi = if (height != null) {
-                            calculateBmi(
-                                weight = record.weightInKg, height = height,
-                                kgSelected = kgSelected, mSelected = mSelected
-                            )
-                        } else null
-                    )
-                },
+            weightRecords = weightRecordsWithBmi,
             weightUnit = if (kgSelected) "kg" else "lb",
             latestWeight = latestWeight,
             startWeight = startWeight,
             difference = if (startWeight != null && latestWeight != null) {
                 startWeight - latestWeight
-            } else null
+            } else null,
+            latestBmi = latestBmi,
+            startBmi = startBmi
         )
     }
 
