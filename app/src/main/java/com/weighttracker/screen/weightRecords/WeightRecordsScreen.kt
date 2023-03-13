@@ -67,9 +67,9 @@ private fun UI(
             if (state.difference != null) {
                 val differenceFormatted = formatNumber(abs(state.difference))
                 val differenceMessage = if (state.difference < 0) {
-                    "+$differenceFormatted ${state.weightUnit} (Weight Gain)"
+                    "+$differenceFormatted ${state.weightUnit} (weight gain)"
                 } else {
-                    "-$differenceFormatted ${state.weightUnit} (Weight Loss)"
+                    "-$differenceFormatted ${state.weightUnit} (weight loss)"
                 }
 
                 Text(
