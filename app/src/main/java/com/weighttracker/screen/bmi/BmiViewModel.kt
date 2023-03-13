@@ -16,6 +16,7 @@ import com.weighttracker.persistence.datastore.activity.WriteActivityAct
 import com.weighttracker.persistence.datastore.height.HeightFlow
 import com.weighttracker.persistence.datastore.height.WriteHeightAct
 import com.weighttracker.persistence.datastore.kgselected.KgSelectedFlow
+import com.weighttracker.persistence.datastore.lselected.LSelectedFlow
 import com.weighttracker.persistence.datastore.mselected.MSelectedFlow
 import com.weighttracker.persistence.datastore.quote.QuoteFlow
 import com.weighttracker.persistence.datastore.water.WaterFlow
@@ -44,7 +45,8 @@ class BmiViewModel @Inject constructor(
     private val writeActivityRecordAct: WriteActivityRecordAct,
     private val waterFlow: WaterFlow,
     private val writeWaterAct: WriteWaterAct,
-    private val writeWaterRecordAct: WriteWaterRecordAct
+    private val writeWaterRecordAct: WriteWaterRecordAct,
+    private val lSelectedFlow: LSelectedFlow
 ) : SimpleFlowViewModel<BmiState, BmiEvent>() {
     override val initialUi = BmiState(
         weight = 0.0,
@@ -56,6 +58,7 @@ class BmiViewModel @Inject constructor(
         normalWeightRange = null,
         activity = "",
         water = 0.0,
+        l = true,
         glasses = emptyList()
     )
 
@@ -66,8 +69,9 @@ class BmiViewModel @Inject constructor(
         mSelectedFlow(Unit),
         quoteFlow(Unit),
         activityFlow(Unit),
-        waterFlow(Unit)
-    ) { weight, height, kgSelected, mSelected, quote, activity, water ->
+        waterFlow(Unit),
+        lSelectedFlow(Unit)
+    ) { weight, height, kgSelected, mSelected, quote, activity, water, lSelected ->
         BmiState(
             weight = weight,
             height = height,
@@ -84,6 +88,7 @@ class BmiViewModel @Inject constructor(
             } else {
                 null
             },
+            l = lSelected,
             glasses = glasses(water ?: 0.0)
         )
     }

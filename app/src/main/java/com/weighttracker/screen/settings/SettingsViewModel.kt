@@ -5,8 +5,12 @@ import com.weighttracker.persistence.datastore.height.HeightFlow
 import com.weighttracker.persistence.datastore.height.WriteHeightAct
 import com.weighttracker.persistence.datastore.kgselected.KgSelectedFlow
 import com.weighttracker.persistence.datastore.kgselected.WriteKgSelectedAct
+import com.weighttracker.persistence.datastore.lselected.LSelectedFlow
+import com.weighttracker.persistence.datastore.lselected.WriteLSelectedAct
 import com.weighttracker.persistence.datastore.mselected.MSelectedFlow
 import com.weighttracker.persistence.datastore.mselected.WriteMSelectedAct
+import com.weighttracker.persistence.datastore.water.WaterFlow
+import com.weighttracker.persistence.datastore.water.WriteWaterAct
 import com.weighttracker.persistence.datastore.weight.WeightFlow
 import com.weighttracker.persistence.datastore.weight.WriteWeightAct
 import dagger.hilt.android.lifecycle.HiltViewModel
@@ -24,19 +28,25 @@ class SettingsViewModel @Inject constructor(
     private val weightFlow: WeightFlow,
     private val writeWeightAct: WriteWeightAct,
     private val heightFlow: HeightFlow,
-    private val writeHeightAct: WriteHeightAct
+    private val writeHeightAct: WriteHeightAct,
+    private val lSelectedFlow: LSelectedFlow,
+    private val writeLSelectedAct: WriteLSelectedAct,
+    private val waterFlow: WaterFlow,
+    private val writeWaterAct: WriteWaterAct
 ) : SimpleFlowViewModel<SettingsState, SettingsEvent>() {
     override val initialUi = SettingsState(
-        kg = true, m = true
+        kg = true, m = true, l = true
     )
 
     override val uiFlow: Flow<SettingsState> = combine(
         kgSelectedFlow(Unit),
         mSelectedFlow(Unit),
-    ) { kg, m ->
+        lSelectedFlow(Unit)
+    ) { kg, m, l ->
         SettingsState(
             kg = kg,
-            m = m
+            m = m,
+            l = l
         )
     }
 
@@ -72,6 +82,22 @@ class SettingsViewModel @Inject constructor(
                         currentHeight
                     }
                     writeHeightAct(convertedHeight)
+                }
+            }
+            is SettingsEvent.LSelect -> {
+                val lAlreadySelected = uiState.value.l
+                val currentWaterValue = waterFlow(Unit).first()
+
+                writeLSelectedAct(event.l)
+                if (currentWaterValue != null) {
+                    val convertedWaterUnit = if (lAlreadySelected && !event.l) {
+                        currentWaterValue * 0.264172 //l to gallons
+                    } else if (!lAlreadySelected && event.l) {
+                        currentWaterValue * 3.785412 //gallons to l
+                    } else {
+                        currentWaterValue
+                    }
+                    writeWaterAct(convertedWaterUnit)
                 }
             }
         }

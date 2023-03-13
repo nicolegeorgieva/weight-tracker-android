@@ -12,5 +12,6 @@ data class BmiState(
     val normalWeightRange: NormalWeightRange?,
     val activity: String?,
     val water: Double,
+    val l: Boolean,
     val glasses: List<Boolean>
 )

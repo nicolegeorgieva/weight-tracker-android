@@ -55,6 +55,11 @@ private fun UI(
             mSelected = state.m,
             onMSelect = { mSelected ->
                 onEvent(SettingsEvent.MSelect(m = mSelected))
+            },
+            lSelected = state.l,
+            onLSelect = { lSelected ->
+                onEvent(SettingsEvent.LSelect(l = lSelected))
+
             }
         )
 
@@ -76,7 +81,9 @@ fun LazyListScope.unitsSection(
     kgSelected: Boolean,
     onKgSelect: (Boolean) -> Unit,
     mSelected: Boolean,
-    onMSelect: (Boolean) -> Unit
+    onMSelect: (Boolean) -> Unit,
+    lSelected: Boolean,
+    onLSelect: (Boolean) -> Unit
 ) {
     item(key = "units section title") {
         SectionTitle(text = "Units", color = Color.Gray)
@@ -144,15 +151,23 @@ fun LazyListScope.unitsSection(
         Row(verticalAlignment = Alignment.CenterVertically) {
             Text(modifier = Modifier.weight(2f), text = "Water", fontSize = 16.sp)
 
-            Button(onClick = { /*TODO*/ }) {
-                Text(text = "l")
-            }
+            UnitButton(
+                selected = lSelected,
+                onClick = {
+                    onLSelect(true)
+                },
+                text = "l"
+            )
 
             Spacer(modifier = Modifier.width(8.dp))
 
-            Button(onClick = { /*TODO*/ }) {
-                Text(text = "gallons")
-            }
+            UnitButton(
+                selected = !lSelected,
+                onClick = {
+                    onLSelect(false)
+                },
+                text = "gal"
+            )
         }
 
         CustomDivider()

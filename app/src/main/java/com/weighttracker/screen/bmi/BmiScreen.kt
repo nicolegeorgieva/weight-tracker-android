@@ -150,7 +150,8 @@ private fun UI(
                     water = state.water,
                     onWaterChange = {
                         onEvent(BmiEvent.WaterChange(newWaterRec = it))
-                    }
+                    },
+                    lSelected = state.l
                 )
 
                 Spacer(modifier = Modifier.width(16.dp))
@@ -295,7 +296,8 @@ fun BmiResult(bmi: Double?) {
 @Composable
 fun WaterInput(
     water: Double?,
-    onWaterChange: (Double) -> Unit
+    onWaterChange: (Double) -> Unit,
+    lSelected: Boolean
 ) {
     Row(verticalAlignment = Alignment.CenterVertically) {
         NumberInputField(
@@ -310,7 +312,7 @@ fun WaterInput(
         Spacer(modifier = Modifier.width(8.dp))
 
         Text(
-            text = "liters",
+            text = if (lSelected) "l" else "gal",
             fontWeight = FontWeight.Bold
         )
     }
@@ -563,6 +565,7 @@ private fun Preview() {
                 normalWeightRange = null,
                 activity = "",
                 water = 0.0,
+                l = true,
                 glasses = emptyList()
             ),
             onEvent = {}
