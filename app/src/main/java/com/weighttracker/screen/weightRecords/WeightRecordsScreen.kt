@@ -130,7 +130,9 @@ fun MinMaxWeightBmiGraph(
         }
     )
 
-    val latestWeightFormatted = formatNumber(latestWeight)
+    val latestWeightFormatted = if (weightUnit == "lb") formatNumber(latestWeight)
+    else TODO()
+
     val startWeightFormatted = formatNumber(startWeight)
 
     Row(modifier = Modifier.fillMaxWidth()) {
@@ -200,7 +202,10 @@ private fun WeightRecordBmiCard(
     ) {
         if (!editCard) {
             Row(verticalAlignment = Alignment.CenterVertically) {
-                val formattedWeight = formatNumber(weightRecord.weightInKg)
+                val formattedWeight = if (state.weightUnit == "lb")
+                    formatNumber(weightRecord.weightInKg * 2.2046)
+                else formatNumber(weightRecord.weightInKg)
+
                 val formattedBmi = if (weightRecord.bmi != null) {
                     formatBmi(weightRecord.bmi)
                 } else null

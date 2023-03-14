@@ -3,8 +3,10 @@ package com.weighttracker.domain
 import java.text.DecimalFormat
 
 fun calculateBmi(
-    weight: Double, height: Double,
-    kgSelected: Boolean, mSelected: Boolean
+    weight: Double,
+    height: Double,
+    kgSelected: Boolean,
+    mSelected: Boolean
 ): Double {
     val kg = convertToKg(weight, kgSelected)
     val m = convertToM(height, mSelected)
