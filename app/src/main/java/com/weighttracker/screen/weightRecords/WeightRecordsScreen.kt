@@ -87,7 +87,8 @@ private fun UI(
         LazyColumn() {
             items(items = state.weightRecords) { weightRecordItem ->
                 WeightRecordBmiCard(
-                    weightRecord = weightRecordItem, onEvent = onEvent,
+                    weightRecord = weightRecordItem,
+                    onEvent = onEvent,
                     state = state
                 )
                 Spacer(modifier = Modifier.height(16.dp))
@@ -129,18 +130,21 @@ fun MinMaxWeightBmiGraph(
         }
     )
 
+    val latestWeightFormatted = formatNumber(latestWeight)
+    val startWeightFormatted = formatNumber(startWeight)
+
     Row(modifier = Modifier.fillMaxWidth()) {
         Spacer(modifier = Modifier.width(28.dp))
 
         Text(
-            text = "$latestWeight $weightUnit",
+            text = "$latestWeightFormatted $weightUnit",
             fontWeight = FontWeight.Bold
         )
 
         Spacer(modifier = Modifier.weight(1f))
 
         Text(
-            text = "$startWeight $weightUnit",
+            text = "$startWeightFormatted $weightUnit",
             fontWeight = FontWeight.Bold
         )
 
