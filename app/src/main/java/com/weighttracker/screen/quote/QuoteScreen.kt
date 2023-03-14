@@ -111,4 +111,6 @@ fun QuoteItem(quote: Quote, onClick: () -> Unit) {
     ) {
         Text(text = quote.quote)
     }
+
+    Spacer(modifier = Modifier.height(8.dp))
 }
