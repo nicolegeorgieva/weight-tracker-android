@@ -145,7 +145,9 @@ fun IdealWeightMessageAndButton(
         Spacer(modifier = Modifier.width(8.dp))
 
         Row() {
-            val idealWeightFormatted = idealWeight?.let { formatNumber(it) }
+            val idealWeightFormatted = idealWeight?.let {
+                formatNumber(it)
+            }
 
             Button(
                 onClick = { onClick() },
@@ -224,7 +226,7 @@ fun GoalWeightTitleAndInput(
 
         NumberInputField(
             modifier = Modifier
-                .width(72.dp)
+                .width(80.dp)
                 .height(52.dp),
             number = goalWeight,
             placeholder = "",

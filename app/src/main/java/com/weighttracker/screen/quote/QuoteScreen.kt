@@ -18,6 +18,7 @@ import com.weighttracker.component.ErrorMessage
 import com.weighttracker.component.Header
 import com.weighttracker.component.InputField
 import com.weighttracker.component.LoadingMessage
+import com.weighttracker.domain.data.Quote
 import com.weighttracker.network.RemoteCall
 
 @Composable
@@ -88,9 +89,9 @@ private fun UI(
                     }
                 }
                 is RemoteCall.Ok -> {
-                    items(items = state.quotesRequest.data.quotes) { quoteItem ->
-                        QuoteItem(text = quoteItem) {
-                            onEvent(QuoteEvent.QuoteChange(quoteItem))
+                    items(items = state.quotesRequest.data) { quoteItem ->
+                        QuoteItem(quote = quoteItem) {
+                            onEvent(QuoteEvent.QuoteChange(quoteItem.quote))
                         }
                     }
                 }
@@ -100,7 +101,7 @@ private fun UI(
 }
 
 @Composable
-fun QuoteItem(text: String, onClick: () -> Unit) {
+fun QuoteItem(quote: Quote, onClick: () -> Unit) {
     Button(
         colors = ButtonDefaults.buttonColors(
             containerColor = Color(0xFFFF5722),
@@ -108,6 +109,6 @@ fun QuoteItem(text: String, onClick: () -> Unit) {
         ),
         onClick = onClick
     ) {
-        Text(text = text)
+        Text(text = quote.quote)
     }
 }

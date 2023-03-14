@@ -1,7 +1,9 @@
 package com.weighttracker.screen.quote
 
 import com.weighttracker.base.SimpleFlowViewModel
+import com.weighttracker.domain.network.mapQuoteResponse
 import com.weighttracker.network.RemoteCall
+import com.weighttracker.network.mapSuccess
 import com.weighttracker.network.nutrients.NutrientsRequest
 import com.weighttracker.network.quotes.QuotesRequest
 import com.weighttracker.persistence.datastore.quote.QuoteFlow
@@ -30,7 +32,7 @@ class QuoteViewModel @Inject constructor(
     ) { quote, quotesRequest ->
         QuoteState(
             quote = quote,
-            quotesRequest = quotesRequest,
+            quotesRequest = quotesRequest.mapSuccess { mapQuoteResponse(it) },
         )
     }
 
