@@ -1,6 +1,8 @@
 package com.weighttracker
 
 import com.weighttracker.domain.calculateBmi
+import com.weighttracker.domain.data.Weight
+import com.weighttracker.domain.data.WeightUnit
 import com.weighttracker.domain.formatBmi
 import io.kotest.core.spec.style.FreeSpec
 import io.kotest.matchers.shouldBe
@@ -9,25 +11,25 @@ class BmiTest : FreeSpec({
     "bmi calculation with formatting" - {
         "bmi with kg and m" {
             formatBmi(
-                calculateBmi(57.4, 1.58, kgSelected = true, mSelected = true)
+                calculateBmi(Weight(57.4, WeightUnit.Kg), 1.58, mSelected = true)
             ) shouldBe "23"
         }
 
         "bmi with kg and feet" {
             formatBmi(
-                calculateBmi(57.4, 6.0, kgSelected = true, mSelected = false)
+                calculateBmi(Weight(57.4, WeightUnit.Kg), 6.0, mSelected = false)
             ) shouldBe "17.2"
         }
 
         "bmi with lb and m" {
             formatBmi(
-                calculateBmi(160.0, 1.58, kgSelected = false, mSelected = true)
+                calculateBmi(Weight(160.0, WeightUnit.Lb), 1.58, mSelected = true)
             ) shouldBe "29.1"
         }
 
         "bmi with lb and feet" {
             formatBmi(
-                calculateBmi(160.0, 5.0, kgSelected = false, mSelected = false)
+                calculateBmi(Weight(160.0, WeightUnit.Lb), 5.0, mSelected = false)
             ) shouldBe "31.2"
         }
     }

@@ -4,6 +4,8 @@ import com.weighttracker.base.SimpleFlowViewModel
 import com.weighttracker.combine
 import com.weighttracker.domain.calculateBmi
 import com.weighttracker.domain.calculateNormalWeightRange
+import com.weighttracker.domain.data.Weight
+import com.weighttracker.domain.data.WeightUnit
 import com.weighttracker.domain.glasses
 import com.weighttracker.persistence.database.activityrecords.ActivityRecordEntity
 import com.weighttracker.persistence.database.activityrecords.WriteActivityRecordAct
@@ -76,7 +78,11 @@ class BmiViewModel @Inject constructor(
             weight = weight,
             height = height,
             bmi = if (weight != null && height != null && weight > 0 && height > 0) {
-                calculateBmi(weight, height, kgSelected, mSelected)
+                calculateBmi(
+                    Weight(weight, if (kgSelected) WeightUnit.Kg else WeightUnit.Lb),
+                    height,
+                    mSelected
+                )
             } else null,
             kg = kgSelected,
             m = mSelected,

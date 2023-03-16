@@ -1,17 +1,18 @@
 package com.weighttracker.domain
 
+import com.weighttracker.domain.data.Weight
+import com.weighttracker.domain.data.WeightUnit
 import java.text.DecimalFormat
 
 fun calculateBmi(
-    weight: Double,
+    weight: Weight,
     height: Double,
-    kgSelected: Boolean,
     mSelected: Boolean
 ): Double {
-    val kg = convertToKg(weight, kgSelected)
+    val kg = convert(weight, WeightUnit.Kg)
     val m = convertToM(height, mSelected)
 
-    return kg / (m * m)
+    return kg.value / (m * m)
 }
 
 fun formatBmi(bmi: Double): String {

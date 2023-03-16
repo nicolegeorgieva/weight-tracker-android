@@ -3,6 +3,7 @@ package com.weighttracker.screen.weightRecords
 import com.weighttracker.base.SimpleFlowViewModel
 import com.weighttracker.domain.calculateBmi
 import com.weighttracker.domain.convert
+import com.weighttracker.domain.data.Weight
 import com.weighttracker.domain.data.WeightUnit
 import com.weighttracker.persistence.database.weightrecords.DeleteWeightRecordAct
 import com.weighttracker.persistence.database.weightrecords.WeightRecordEntity
@@ -55,9 +56,8 @@ class WeightRecordsViewModel @Inject constructor(
                     ),
                     bmi = if (height != null) {
                         calculateBmi(
-                            weight = record.weightInKg,
+                            weight = Weight(record.weightInKg, WeightUnit.Kg),
                             height = height,
-                            kgSelected = kgSelected,
                             mSelected = mSelected
                         )
                     } else null
