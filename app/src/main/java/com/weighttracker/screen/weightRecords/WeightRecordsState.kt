@@ -5,7 +5,7 @@ import java.util.*
 
 data class WeightRecordWithBmi(
     val id: UUID,
-    val weightInKg: Double,
+    val weight: Double,
     val date: Instant,
     val bmi: Double?
 )

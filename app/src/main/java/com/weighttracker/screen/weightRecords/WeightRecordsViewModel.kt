@@ -2,6 +2,8 @@ package com.weighttracker.screen.weightRecords
 
 import com.weighttracker.base.SimpleFlowViewModel
 import com.weighttracker.domain.calculateBmi
+import com.weighttracker.domain.convert
+import com.weighttracker.domain.data.WeightUnit
 import com.weighttracker.persistence.database.weightrecords.DeleteWeightRecordAct
 import com.weighttracker.persistence.database.weightrecords.WeightRecordEntity
 import com.weighttracker.persistence.database.weightrecords.WeightRecordsFlow
@@ -47,7 +49,10 @@ class WeightRecordsViewModel @Inject constructor(
                 WeightRecordWithBmi(
                     id = record.id,
                     date = record.dateTime,
-                    weightInKg = record.weightInKg,
+                    weight = convert(
+                        record.weightInKg,
+                        if (kgSelected) WeightUnit.Kg else WeightUnit.Lb
+                    ),
                     bmi = if (height != null) {
                         calculateBmi(
                             weight = record.weightInKg,
@@ -60,8 +65,17 @@ class WeightRecordsViewModel @Inject constructor(
             }
 
         val latestWeight = weightRecords.maxByOrNull { it.dateTime }?.weightInKg
+            ?.let {
+                convert(it, if (kgSelected) WeightUnit.Kg else WeightUnit.Lb)
+            }
+
         val startWeight = weightRecords.minByOrNull { it.dateTime }?.weightInKg
+            ?.let {
+                convert(it, if (kgSelected) WeightUnit.Kg else WeightUnit.Lb)
+            }
+
         val latestBmi = weightRecordsWithBmi.maxByOrNull { it.date }?.bmi
+
         val startBmi = weightRecordsWithBmi.minByOrNull { it.date }?.bmi
 
         WeightRecordsState(
@@ -86,7 +100,7 @@ class WeightRecordsViewModel @Inject constructor(
                 val entity = WeightRecordEntity(
                     id = event.newRecord.id,
                     dateTime = event.newRecord.date,
-                    weightInKg = event.newRecord.weightInKg
+                    weightInKg = event.newRecord.weight
                 )
                 writeWeightRecordAct(entity)
             }

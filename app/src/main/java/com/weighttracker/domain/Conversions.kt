@@ -1,5 +1,14 @@
 package com.weighttracker.domain
 
+import com.weighttracker.domain.data.WeightUnit
+
+fun convert(weightInKg: Double, unit: WeightUnit): Double {
+    return when (unit) {
+        WeightUnit.Kg -> weightInKg
+        WeightUnit.Lb -> weightInKg * 2.2046
+    }
+}
+
 fun convertToKg(weight: Double, kgSelected: Boolean): Double {
     return if (kgSelected) {
         weight
