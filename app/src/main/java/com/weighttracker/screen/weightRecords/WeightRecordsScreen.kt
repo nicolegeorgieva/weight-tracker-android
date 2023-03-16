@@ -27,6 +27,8 @@ import com.weighttracker.*
 import com.weighttracker.R
 import com.weighttracker.component.Header
 import com.weighttracker.component.NumberInputField
+import com.weighttracker.domain.data.Weight
+import com.weighttracker.domain.data.WeightUnit
 import com.weighttracker.domain.formatBmi
 import kotlin.math.abs
 
@@ -201,7 +203,7 @@ private fun WeightRecordBmiCard(
     ) {
         if (!editCard) {
             Row(verticalAlignment = Alignment.CenterVertically) {
-                val formattedWeight = formatNumber(weightRecord.weight)
+                val formattedWeight = formatNumber(weightRecord.weight.value)
 
                 val formattedBmi = if (weightRecord.bmi != null) {
                     formatBmi(weightRecord.bmi)
@@ -253,7 +255,7 @@ private fun WeightRecordBmiCard(
         } else {
             Row() {
                 var weightInput by remember {
-                    mutableStateOf(weightRecord.weight)
+                    mutableStateOf(weightRecord.weight.value)
                 }
 
                 Column(modifier = Modifier.weight(1f)) {
@@ -274,7 +276,10 @@ private fun WeightRecordBmiCard(
                                 newRecord = WeightRecordWithBmi(
                                     id = weightRecord.id,
                                     date = weightRecord.date,
-                                    weight = weightInput,
+                                    weight = Weight(
+                                        weightInput,
+                                        if (state.weightUnit == "kg") WeightUnit.Kg else WeightUnit.Lb
+                                    ),
                                     bmi = weightRecord.bmi
                                 )
                             )

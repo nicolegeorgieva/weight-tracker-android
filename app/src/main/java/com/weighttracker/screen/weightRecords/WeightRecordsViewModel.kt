@@ -51,7 +51,7 @@ class WeightRecordsViewModel @Inject constructor(
                     id = record.id,
                     date = record.dateTime,
                     weight = convert(
-                        record.weightInKg,
+                        Weight(record.weightInKg, WeightUnit.Kg),
                         if (kgSelected) WeightUnit.Kg else WeightUnit.Lb
                     ),
                     bmi = if (height != null) {
@@ -66,12 +66,18 @@ class WeightRecordsViewModel @Inject constructor(
 
         val latestWeight = weightRecords.maxByOrNull { it.dateTime }?.weightInKg
             ?.let {
-                convert(it, if (kgSelected) WeightUnit.Kg else WeightUnit.Lb)
+                convert(
+                    Weight(it, WeightUnit.Kg),
+                    if (kgSelected) WeightUnit.Kg else WeightUnit.Lb
+                )
             }
 
         val startWeight = weightRecords.minByOrNull { it.dateTime }?.weightInKg
             ?.let {
-                convert(it, if (kgSelected) WeightUnit.Kg else WeightUnit.Lb)
+                convert(
+                    Weight(it, WeightUnit.Kg),
+                    if (kgSelected) WeightUnit.Kg else WeightUnit.Lb
+                )
             }
 
         val latestBmi = weightRecordsWithBmi.maxByOrNull { it.date }?.bmi
@@ -81,11 +87,9 @@ class WeightRecordsViewModel @Inject constructor(
         WeightRecordsState(
             weightRecords = weightRecordsWithBmi,
             weightUnit = if (kgSelected) "kg" else "lb",
-            latestWeight = latestWeight,
-            startWeight = startWeight,
-            difference = if (startWeight != null && latestWeight != null) {
-                startWeight - latestWeight
-            } else null,
+            latestWeight = latestWeight?.value,
+            startWeight = startWeight?.value,
+            difference = startWeight?.value?.minus((latestWeight?.value!!)),
             latestBmi = latestBmi,
             startBmi = startBmi
         )
@@ -100,7 +104,7 @@ class WeightRecordsViewModel @Inject constructor(
                 val entity = WeightRecordEntity(
                     id = event.newRecord.id,
                     dateTime = event.newRecord.date,
-                    weightInKg = event.newRecord.weight
+                    weightInKg = convert(event.newRecord.weight, WeightUnit.Kg).value
                 )
                 writeWeightRecordAct(entity)
             }

@@ -1,11 +1,12 @@
 package com.weighttracker.screen.weightRecords
 
+import com.weighttracker.domain.data.Weight
 import java.time.Instant
 import java.util.*
 
 data class WeightRecordWithBmi(
     val id: UUID,
-    val weight: Double,
+    val weight: Weight,
     val date: Instant,
     val bmi: Double?
 )
