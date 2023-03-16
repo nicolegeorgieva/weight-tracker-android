@@ -14,13 +14,13 @@ fun convert(weightInKg: Double, unit: WeightUnit): Double {
 fun convert(weight: Weight, toUnit: WeightUnit): Weight {
     return when (weight.unit) {
         WeightUnit.Kg -> if (toUnit == WeightUnit.Kg) {
-            Weight(weight.value, weight.unit)
+            weight
         } else {
             Weight(weight.value * 2.2046, WeightUnit.Lb)
         }
 
         WeightUnit.Lb -> if (toUnit == WeightUnit.Lb) {
-            Weight(weight.value, weight.unit)
+            weight
         } else {
             Weight(weight.value * 0.45359237, WeightUnit.Kg)
         }
