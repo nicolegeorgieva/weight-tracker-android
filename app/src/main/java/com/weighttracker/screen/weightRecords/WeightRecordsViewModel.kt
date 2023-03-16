@@ -89,7 +89,9 @@ class WeightRecordsViewModel @Inject constructor(
             weightUnit = if (kgSelected) "kg" else "lb",
             latestWeight = latestWeight?.value,
             startWeight = startWeight?.value,
-            difference = startWeight?.value?.minus((latestWeight?.value!!)),
+            difference = if (startWeight != null && latestWeight != null)
+                startWeight.value - latestWeight.value
+            else null,
             latestBmi = latestBmi,
             startBmi = startBmi
         )
