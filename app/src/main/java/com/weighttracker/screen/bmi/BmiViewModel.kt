@@ -2,14 +2,8 @@ package com.weighttracker.screen.bmi
 
 import com.weighttracker.base.SimpleFlowViewModel
 import com.weighttracker.combine
-import com.weighttracker.domain.calculateBmi
-import com.weighttracker.domain.calculateNormalWeightRange
-import com.weighttracker.domain.convertWeight
-import com.weighttracker.domain.data.Height
-import com.weighttracker.domain.data.HeightUnit
-import com.weighttracker.domain.data.Weight
-import com.weighttracker.domain.data.WeightUnit
-import com.weighttracker.domain.glasses
+import com.weighttracker.domain.*
+import com.weighttracker.domain.data.*
 import com.weighttracker.persistence.database.activityrecords.ActivityRecordEntity
 import com.weighttracker.persistence.database.activityrecords.WriteActivityRecordAct
 import com.weighttracker.persistence.database.waterrecords.WaterRecordEntity
@@ -157,7 +151,13 @@ class BmiViewModel @Inject constructor(
                     WaterRecordEntity(
                         id = UUID.randomUUID(),
                         dateTime = LocalDateTime.now().toUtc(),
-                        water = water
+                        water = convertWater(
+                            Water(
+                                water,
+                                if (uiState.value.l) WaterUnit.L else WaterUnit.Gal
+                            ),
+                            toUnit = WaterUnit.L
+                        ).value
                     )
                 )
             }

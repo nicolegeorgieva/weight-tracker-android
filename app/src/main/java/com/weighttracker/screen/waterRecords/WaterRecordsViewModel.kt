@@ -1,6 +1,9 @@
 package com.weighttracker.screen.waterRecords
 
 import com.weighttracker.base.SimpleFlowViewModel
+import com.weighttracker.domain.convertWater
+import com.weighttracker.domain.data.Water
+import com.weighttracker.domain.data.WaterUnit
 import com.weighttracker.persistence.database.waterrecords.DeleteWaterRecordAct
 import com.weighttracker.persistence.database.waterrecords.WaterRecordsFlow
 import com.weighttracker.persistence.database.waterrecords.WriteWaterRecordAct
@@ -30,6 +33,15 @@ class WaterRecordsViewModel @Inject constructor(
         WaterRecordsState(
             waterRecords = waterRecords.sortedByDescending {
                 it.dateTime
+            }.map {
+                it.copy(
+                    water = convertWater(
+                        Water(
+                            it.water, WaterUnit.L
+                        ),
+                        toUnit = if (lSelected) WaterUnit.L else WaterUnit.Gal
+                    ).value
+                )
             },
             waterUnit = if (lSelected) "l" else "gal"
         )
