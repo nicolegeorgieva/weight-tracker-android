@@ -1,6 +1,9 @@
 package com.weighttracker.screen.settings
 
 import com.weighttracker.base.SimpleFlowViewModel
+import com.weighttracker.domain.convertWeight
+import com.weighttracker.domain.data.Weight
+import com.weighttracker.domain.data.WeightUnit
 import com.weighttracker.persistence.datastore.height.HeightFlow
 import com.weighttracker.persistence.datastore.height.WriteHeightAct
 import com.weighttracker.persistence.datastore.kgselected.KgSelectedFlow
@@ -57,11 +60,14 @@ class SettingsViewModel @Inject constructor(
                 val currentWeight = weightFlow(Unit).first()
 
                 writeKgSelectedAct(event.kg) //it saves kg/lb on the phone
+
                 if (currentWeight != null) {
                     val convertedWeight = if (kgAlreadySelected && !event.kg) {
-                        currentWeight * 2.205 // to lbs
+                        // kg to lbs
+                        convertWeight(Weight(currentWeight, WeightUnit.Kg), WeightUnit.Lb).value
                     } else if (!kgAlreadySelected && event.kg) {
-                        currentWeight * 0.45359237
+                        // lb to kg
+                        convertWeight(Weight(currentWeight, WeightUnit.Lb), WeightUnit.Kg).value
                     } else {
                         currentWeight
                     }
