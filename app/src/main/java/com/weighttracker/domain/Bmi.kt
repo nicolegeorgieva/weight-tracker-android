@@ -9,7 +9,7 @@ fun calculateBmi(
     height: Double,
     mSelected: Boolean
 ): Double {
-    val kg = convert(weight, WeightUnit.Kg)
+    val kg = convertWeight(weight, WeightUnit.Kg)
     val m = convertToM(height, mSelected)
 
     return kg.value / (m * m)

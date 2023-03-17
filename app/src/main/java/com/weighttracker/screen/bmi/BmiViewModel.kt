@@ -4,7 +4,7 @@ import com.weighttracker.base.SimpleFlowViewModel
 import com.weighttracker.combine
 import com.weighttracker.domain.calculateBmi
 import com.weighttracker.domain.calculateNormalWeightRange
-import com.weighttracker.domain.convert
+import com.weighttracker.domain.convertWeight
 import com.weighttracker.domain.data.Weight
 import com.weighttracker.domain.data.WeightUnit
 import com.weighttracker.domain.glasses
@@ -115,7 +115,7 @@ class BmiViewModel @Inject constructor(
                         WeightRecordEntity(
                             id = UUID.randomUUID(),
                             dateTime = LocalDateTime.now().toUtc(),
-                            weightInKg = convert(
+                            weightInKg = convertWeight(
                                 weight = Weight(
                                     weight,
                                     if (uiState.value.kg) WeightUnit.Kg else WeightUnit.Lb

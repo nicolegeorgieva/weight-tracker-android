@@ -2,7 +2,7 @@ package com.weighttracker.screen.weightRecords
 
 import com.weighttracker.base.SimpleFlowViewModel
 import com.weighttracker.domain.calculateBmi
-import com.weighttracker.domain.convert
+import com.weighttracker.domain.convertWeight
 import com.weighttracker.domain.data.Weight
 import com.weighttracker.domain.data.WeightUnit
 import com.weighttracker.persistence.database.weightrecords.DeleteWeightRecordAct
@@ -50,7 +50,7 @@ class WeightRecordsViewModel @Inject constructor(
                 WeightRecordWithBmi(
                     id = record.id,
                     date = record.dateTime,
-                    weight = convert(
+                    weight = convertWeight(
                         Weight(record.weightInKg, WeightUnit.Kg),
                         if (kgSelected) WeightUnit.Kg else WeightUnit.Lb
                     ),
@@ -66,7 +66,7 @@ class WeightRecordsViewModel @Inject constructor(
 
         val latestWeight = weightRecords.maxByOrNull { it.dateTime }?.weightInKg
             ?.let {
-                convert(
+                convertWeight(
                     Weight(it, WeightUnit.Kg),
                     if (kgSelected) WeightUnit.Kg else WeightUnit.Lb
                 )
@@ -74,7 +74,7 @@ class WeightRecordsViewModel @Inject constructor(
 
         val startWeight = weightRecords.minByOrNull { it.dateTime }?.weightInKg
             ?.let {
-                convert(
+                convertWeight(
                     Weight(it, WeightUnit.Kg),
                     if (kgSelected) WeightUnit.Kg else WeightUnit.Lb
                 )
@@ -106,7 +106,7 @@ class WeightRecordsViewModel @Inject constructor(
                 val entity = WeightRecordEntity(
                     id = event.newRecord.id,
                     dateTime = event.newRecord.date,
-                    weightInKg = convert(event.newRecord.weight, WeightUnit.Kg).value
+                    weightInKg = convertWeight(event.newRecord.weight, WeightUnit.Kg).value
                 )
                 writeWeightRecordAct(entity)
             }
