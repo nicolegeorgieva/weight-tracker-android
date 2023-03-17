@@ -109,9 +109,11 @@ class BmiViewModel @Inject constructor(
             is BmiEvent.WeightChange -> {
                 writeWeightAct(event.newWeightRec)
             }
+
             is BmiEvent.HeightChange -> {
                 writeHeightAct(event.newHeightRec)
             }
+
             BmiEvent.SaveWeightRecord -> {
                 val weight = uiState.value.weight
                 if (weight != null) {
@@ -130,6 +132,7 @@ class BmiViewModel @Inject constructor(
                     )
                 }
             }
+
             is BmiEvent.ActivityChange -> {
                 writeActivityAct(event.newActivityRec)
             }
@@ -146,24 +149,27 @@ class BmiViewModel @Inject constructor(
                     )
                 }
             }
+
             BmiEvent.SaveWaterRecord -> {
                 val water = uiState.value.water
-                if (water != null) {
-                    writeWaterRecordAct(
-                        WaterRecordEntity(
-                            id = UUID.randomUUID(),
-                            dateTime = LocalDateTime.now().toUtc(),
-                            water = water
-                        )
+
+                writeWaterRecordAct(
+                    WaterRecordEntity(
+                        id = UUID.randomUUID(),
+                        dateTime = LocalDateTime.now().toUtc(),
+                        water = water
                     )
-                }
+                )
             }
+
             is BmiEvent.WaterChange -> {
                 writeWaterAct(event.newWaterRec)
             }
+
             is BmiEvent.GlassClick -> {
                 val water = uiState.value.water
-                if (event.filled) { //a full glass is clicked so it becomes empty
+                if (event.filled) {
+                    // a full glass is clicked so it becomes empty
                     writeWaterAct(water - 0.25)
                 } else {
                     writeWaterAct(water + 0.25)

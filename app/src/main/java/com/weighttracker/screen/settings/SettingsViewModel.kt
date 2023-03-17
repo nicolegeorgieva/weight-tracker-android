@@ -2,11 +2,9 @@ package com.weighttracker.screen.settings
 
 import com.weighttracker.base.SimpleFlowViewModel
 import com.weighttracker.domain.convertHeight
+import com.weighttracker.domain.convertWater
 import com.weighttracker.domain.convertWeight
-import com.weighttracker.domain.data.Height
-import com.weighttracker.domain.data.HeightUnit
-import com.weighttracker.domain.data.Weight
-import com.weighttracker.domain.data.WeightUnit
+import com.weighttracker.domain.data.*
 import com.weighttracker.persistence.datastore.height.HeightFlow
 import com.weighttracker.persistence.datastore.height.WriteHeightAct
 import com.weighttracker.persistence.datastore.kgselected.KgSelectedFlow
@@ -98,19 +96,24 @@ class SettingsViewModel @Inject constructor(
                     writeHeightAct(convertedHeight)
                 }
             }
+
             is SettingsEvent.LSelect -> {
                 val lAlreadySelected = uiState.value.l
                 val currentWaterValue = waterFlow(Unit).first()
 
                 writeLSelectedAct(event.l)
+
                 if (currentWaterValue != null) {
                     val convertedWaterUnit = if (lAlreadySelected && !event.l) {
-                        currentWaterValue * 0.264172 //l to gallons
+                        // l to gal
+                        convertWater(Water(currentWaterValue, WaterUnit.L), WaterUnit.Gal).value
                     } else if (!lAlreadySelected && event.l) {
-                        currentWaterValue * 3.785412 //gallons to l
+                        // gal to l
+                        convertWater(Water(currentWaterValue, WaterUnit.Gal), WaterUnit.L).value
                     } else {
                         currentWaterValue
                     }
+
                     writeWaterAct(convertedWaterUnit)
                 }
             }
