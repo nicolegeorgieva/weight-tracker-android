@@ -1,7 +1,10 @@
 package com.weighttracker.screen.settings
 
 import com.weighttracker.base.SimpleFlowViewModel
+import com.weighttracker.domain.convertHeight
 import com.weighttracker.domain.convertWeight
+import com.weighttracker.domain.data.Height
+import com.weighttracker.domain.data.HeightUnit
 import com.weighttracker.domain.data.Weight
 import com.weighttracker.domain.data.WeightUnit
 import com.weighttracker.persistence.datastore.height.HeightFlow
@@ -71,6 +74,7 @@ class SettingsViewModel @Inject constructor(
                     } else {
                         currentWeight
                     }
+
                     writeWeightAct(convertedWeight)
                 }
             }
@@ -79,14 +83,18 @@ class SettingsViewModel @Inject constructor(
                 val currentHeight = heightFlow(Unit).first()
 
                 writeMSelectedAct(event.m)
+
                 if (currentHeight != null) {
                     val convertedHeight = if (mAlreadySelected && !event.m) {
-                        currentHeight * 3.28084
+                        // m to ft
+                        convertHeight(Height(currentHeight, HeightUnit.M), HeightUnit.Ft).value
                     } else if (!mAlreadySelected && event.m) {
-                        currentHeight * 0.3048
+                        // ft to m
+                        convertHeight(Height(currentHeight, HeightUnit.Ft), HeightUnit.M).value
                     } else {
                         currentHeight
                     }
+
                     writeHeightAct(convertedHeight)
                 }
             }
