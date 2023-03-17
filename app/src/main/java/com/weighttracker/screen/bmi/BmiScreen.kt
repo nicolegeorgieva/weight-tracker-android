@@ -356,7 +356,7 @@ fun HeightInputAndSave(
                 navigateTo(Screens.Settings)
             },
             fontWeight = FontWeight.Bold,
-            text = if (mSelected) "m" else "foot"
+            text = if (mSelected) "m" else "ft"
         )
     }
 }

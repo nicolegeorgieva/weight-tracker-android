@@ -1,7 +1,10 @@
 package com.weighttracker
 
+import com.weighttracker.domain.convertHeight
 import com.weighttracker.domain.convertToM
 import com.weighttracker.domain.convertWeight
+import com.weighttracker.domain.data.Height
+import com.weighttracker.domain.data.HeightUnit
 import com.weighttracker.domain.data.Weight
 import com.weighttracker.domain.data.WeightUnit
 import io.kotest.core.spec.style.FreeSpec
@@ -19,33 +22,63 @@ class ConversionsTest : FreeSpec({
     }
 
     //Convert weight function
-
-    "convert value and unit to other unit" - {
+    "convert weight value and unit to other unit" - {
         "kg to kg" {
-            val converted = convertWeight(Weight(50.0, WeightUnit.Kg), WeightUnit.Kg)
+            val res = convertWeight(Weight(50.0, WeightUnit.Kg), WeightUnit.Kg)
 
-            formatNumber(converted.value) shouldBe "50"
-            converted.unit shouldBe WeightUnit.Kg
+            formatNumber(res.value) shouldBe "50"
+            res.unit shouldBe WeightUnit.Kg
         }
 
         "lb to kg" {
-            val converted = convertWeight(Weight(100.0, WeightUnit.Lb), WeightUnit.Kg)
+            val res = convertWeight(Weight(100.0, WeightUnit.Lb), WeightUnit.Kg)
 
-            formatNumber(converted.value) shouldBe "45.36"
+            formatNumber(res.value) shouldBe "45.36"
         }
 
         "lb to lb" {
-            val converted = convertWeight(Weight(100.0, WeightUnit.Lb), WeightUnit.Lb)
+            val res = convertWeight(Weight(100.0, WeightUnit.Lb), WeightUnit.Lb)
 
-            formatNumber(converted.value) shouldBe "100"
-            converted.unit shouldBe WeightUnit.Lb
+            formatNumber(res.value) shouldBe "100"
+            res.unit shouldBe WeightUnit.Lb
         }
 
         "kg to lb" {
-            val converted = convertWeight(Weight(50.0, WeightUnit.Kg), WeightUnit.Lb)
+            val res = convertWeight(Weight(50.0, WeightUnit.Kg), WeightUnit.Lb)
 
-            formatNumber(converted.value) shouldBe "110.23"
-            converted.unit shouldBe WeightUnit.Lb
+            formatNumber(res.value) shouldBe "110.23"
+            res.unit shouldBe WeightUnit.Lb
+        }
+    }
+
+    //Convert height function
+    "convert height value and unit to other unit" - {
+        "m to m" {
+            val res = convertHeight(Height(1.8, HeightUnit.M), HeightUnit.M)
+
+            formatNumber(res.value) shouldBe "1.8"
+            res.unit shouldBe HeightUnit.M
+        }
+
+        "m to ft" {
+            val res = convertHeight(Height(1.8, HeightUnit.M), HeightUnit.Ft)
+
+            formatNumber(res.value) shouldBe "5.91"
+            res.unit shouldBe HeightUnit.Ft
+        }
+
+        "ft to ft" {
+            val res = convertHeight(Height(5.91, HeightUnit.Ft), HeightUnit.Ft)
+
+            formatNumber(res.value) shouldBe "5.91"
+            res.unit shouldBe HeightUnit.Ft
+        }
+
+        "ft to m" {
+            val res = convertHeight(Height(5.91, HeightUnit.Ft), HeightUnit.M)
+
+            formatNumber(res.value) shouldBe "1.8"
+            res.unit shouldBe HeightUnit.M
         }
     }
 })

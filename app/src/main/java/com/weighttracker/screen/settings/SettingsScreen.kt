@@ -138,7 +138,7 @@ fun LazyListScope.unitsSection(
                 onClick = {
                     onMSelect(false)
                 },
-                text = "feet"
+                text = "ft"
             )
         }
 
