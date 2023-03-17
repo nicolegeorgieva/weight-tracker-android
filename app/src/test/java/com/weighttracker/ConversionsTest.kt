@@ -1,7 +1,6 @@
 package com.weighttracker
 
 import com.weighttracker.domain.convertHeight
-import com.weighttracker.domain.convertToM
 import com.weighttracker.domain.convertWeight
 import com.weighttracker.domain.data.Height
 import com.weighttracker.domain.data.HeightUnit
@@ -11,16 +10,6 @@ import io.kotest.core.spec.style.FreeSpec
 import io.kotest.matchers.shouldBe
 
 class ConversionsTest : FreeSpec({
-    "convert to m" - {
-        "m to m" {
-            formatNumber(convertToM(1.58, true)) shouldBe "1.58"
-        }
-
-        "feet to m" {
-            formatNumber(convertToM(5.7, false)) shouldBe "1.74"
-        }
-    }
-
     //Convert weight function
     "convert weight value and unit to other unit" - {
         "kg to kg" {

@@ -3,6 +3,10 @@ package com.weighttracker.screen.weightGoal
 import com.weighttracker.base.SimpleFlowViewModel
 import com.weighttracker.domain.NormalWeightRange
 import com.weighttracker.domain.calculateNormalWeightRange
+import com.weighttracker.domain.data.Height
+import com.weighttracker.domain.data.HeightUnit
+import com.weighttracker.domain.data.Weight
+import com.weighttracker.domain.data.WeightUnit
 import com.weighttracker.persistence.datastore.height.HeightFlow
 import com.weighttracker.persistence.datastore.kgselected.KgSelectedFlow
 import com.weighttracker.persistence.datastore.mselected.MSelectedFlow
@@ -66,18 +70,20 @@ class WeightGoalViewModel @Inject constructor(
             currentWeight = currentWeight,
             goalWeight = goalWeight,
             weightToLoseOrGain = weightToLoseOrGain,
-            idealWeight = if (height != null) {
+            idealWeight = if (height != null && currentWeight != null) {
                 calculateIdealWeight(
-                    height = height,
-                    mSelected = mSelected,
-                    kgSelected = kgSelected
+                    height = Height(height, if (mSelected) HeightUnit.M else HeightUnit.Ft),
+                    weight = Weight(currentWeight, if (kgSelected) WeightUnit.Kg else WeightUnit.Lb)
                 )
             } else {
                 null
             },
             plan = weightLossPeriod(weightToLose = weightToLoseOrGain, kgSelected = kgSelected),
-            normalWeightRange = if (height != null) {
-                calculateNormalWeightRange(height, mSelected, kgSelected)
+            normalWeightRange = if (height != null && currentWeight != null) {
+                calculateNormalWeightRange(
+                    Height(height, if (mSelected) HeightUnit.M else HeightUnit.Ft),
+                    Weight(currentWeight, if (kgSelected) WeightUnit.Kg else WeightUnit.Lb)
+                )
             } else {
                 null
             }
@@ -85,11 +91,13 @@ class WeightGoalViewModel @Inject constructor(
     }
 
     private fun calculateIdealWeight(
-        height: Double,
-        mSelected: Boolean,
-        kgSelected: Boolean
+        height: Height,
+        weight: Weight
     ): Double {
-        val normalWeight = calculateNormalWeightRange(height, mSelected, kgSelected)
+        val normalWeight = calculateNormalWeightRange(
+            Height(height.value, height.unit),
+            Weight(weight.value, weight.unit)
+        )
 
         val minWeight = normalWeight.minWeight
         val maxWeight = normalWeight.maxWeight

@@ -5,6 +5,8 @@ import com.weighttracker.combine
 import com.weighttracker.domain.calculateBmi
 import com.weighttracker.domain.calculateNormalWeightRange
 import com.weighttracker.domain.convertWeight
+import com.weighttracker.domain.data.Height
+import com.weighttracker.domain.data.HeightUnit
 import com.weighttracker.domain.data.Weight
 import com.weighttracker.domain.data.WeightUnit
 import com.weighttracker.domain.glasses
@@ -81,8 +83,7 @@ class BmiViewModel @Inject constructor(
             bmi = if (weight != null && height != null && weight > 0 && height > 0) {
                 calculateBmi(
                     Weight(weight, if (kgSelected) WeightUnit.Kg else WeightUnit.Lb),
-                    height,
-                    mSelected
+                    Height(height, if (mSelected) HeightUnit.M else HeightUnit.Ft)
                 )
             } else null,
             kg = kgSelected,
@@ -90,8 +91,11 @@ class BmiViewModel @Inject constructor(
             quote = quote,
             activity = activity,
             water = water ?: 0.0,
-            normalWeightRange = if (height != null) {
-                calculateNormalWeightRange(height, mSelected, kgSelected)
+            normalWeightRange = if (height != null && weight != null) {
+                calculateNormalWeightRange(
+                    Height(height, if (mSelected) HeightUnit.M else HeightUnit.Ft),
+                    Weight(weight, if (kgSelected) WeightUnit.Kg else WeightUnit.Lb)
+                )
             } else {
                 null
             },

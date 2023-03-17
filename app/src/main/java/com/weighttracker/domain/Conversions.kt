@@ -30,12 +30,3 @@ fun convertHeight(height: Height, toUnit: HeightUnit): Height {
         else Height(height.value * 0.3048, HeightUnit.M)
     }
 }
-
-fun convertToM(height: Double, mSelected: Boolean): Double {
-    return if (mSelected) {
-        height
-    } else {
-        // foot selected
-        height * 0.3048
-    }
-}
