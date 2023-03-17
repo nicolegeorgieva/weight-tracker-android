@@ -1,9 +1,6 @@
 package com.weighttracker.domain
 
-import com.weighttracker.domain.data.Height
-import com.weighttracker.domain.data.HeightUnit
-import com.weighttracker.domain.data.Weight
-import com.weighttracker.domain.data.WeightUnit
+import com.weighttracker.domain.data.*
 
 /**
  * "50 kg", to unit "lb" : "110.23 lb"
@@ -28,5 +25,22 @@ fun convertHeight(height: Height, toUnit: HeightUnit): Height {
 
         HeightUnit.Ft -> if (toUnit == HeightUnit.Ft) height
         else Height(height.value * 0.3048, HeightUnit.M)
+    }
+}
+
+/**
+ * "1 l", to unit "gal" : "0.26 gal"
+ */
+fun convertWater(water: Water, toUnit: WaterUnit): Water {
+    return when (water.unit) {
+        // l to l
+        WaterUnit.L -> if (toUnit == WaterUnit.L) water
+        // l to gal
+        else Water(water.value * 0.264172, WaterUnit.Gal)
+
+        // gal to gal
+        WaterUnit.Gal -> if (toUnit == WaterUnit.Gal) water
+        // gal to l
+        else Water(water.value * 3.785411784, WaterUnit.L)
     }
 }

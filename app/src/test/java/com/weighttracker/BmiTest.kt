@@ -1,6 +1,8 @@
 package com.weighttracker
 
 import com.weighttracker.domain.calculateBmi
+import com.weighttracker.domain.data.Height
+import com.weighttracker.domain.data.HeightUnit
 import com.weighttracker.domain.data.Weight
 import com.weighttracker.domain.data.WeightUnit
 import com.weighttracker.domain.formatBmi
@@ -11,25 +13,25 @@ class BmiTest : FreeSpec({
     "bmi calculation with formatting" - {
         "bmi with kg and m" {
             formatBmi(
-                calculateBmi(Weight(57.4, WeightUnit.Kg), 1.58, mSelected = true)
+                calculateBmi(Weight(57.4, WeightUnit.Kg), Height(1.58, HeightUnit.M))
             ) shouldBe "23"
         }
 
         "bmi with kg and feet" {
             formatBmi(
-                calculateBmi(Weight(57.4, WeightUnit.Kg), 6.0, mSelected = false)
+                calculateBmi(Weight(57.4, WeightUnit.Kg), Height(6.0, HeightUnit.Ft))
             ) shouldBe "17.2"
         }
 
         "bmi with lb and m" {
             formatBmi(
-                calculateBmi(Weight(160.0, WeightUnit.Lb), 1.58, mSelected = true)
+                calculateBmi(Weight(160.0, WeightUnit.Lb), Height(1.58, HeightUnit.M))
             ) shouldBe "29.1"
         }
 
         "bmi with lb and feet" {
             formatBmi(
-                calculateBmi(Weight(160.0, WeightUnit.Lb), 5.0, mSelected = false)
+                calculateBmi(Weight(160.0, WeightUnit.Lb), Height(5.0, HeightUnit.Ft))
             ) shouldBe "31.2"
         }
     }
