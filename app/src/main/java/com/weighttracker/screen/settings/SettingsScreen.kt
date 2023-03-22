@@ -22,6 +22,7 @@ import com.weighttracker.Screens
 import com.weighttracker.component.CustomDivider
 import com.weighttracker.component.Header
 import com.weighttracker.component.SectionTitle
+import com.weighttracker.domain.data.WeightUnit
 import com.weighttracker.navigateTo
 
 @Composable
@@ -48,9 +49,9 @@ private fun UI(
         }
 
         unitsSection(
-            kgSelected = state.kg,
-            onKgSelect = { kgSelected ->
-                onEvent(SettingsEvent.KgSelect(kg = kgSelected))
+            weightUnit = state.weightUnit,
+            onWeightUnitSelect = { weightUnit ->
+                onEvent(SettingsEvent.ChangeWeightUnit(weightUnit = weightUnit))
             },
             mSelected = state.m,
             onMSelect = { mSelected ->
@@ -78,8 +79,8 @@ private fun UI(
 }
 
 fun LazyListScope.unitsSection(
-    kgSelected: Boolean,
-    onKgSelect: (Boolean) -> Unit,
+    weightUnit: WeightUnit,
+    onWeightUnitSelect: (WeightUnit) -> Unit,
     mSelected: Boolean,
     onMSelect: (Boolean) -> Unit,
     lSelected: Boolean,
@@ -96,9 +97,12 @@ fun LazyListScope.unitsSection(
             Text(modifier = Modifier.weight(2f), text = "Weight", fontSize = 16.sp)
 
             UnitButton(
-                selected = kgSelected,
+                selected = when (weightUnit) {
+                    WeightUnit.Kg -> true
+                    WeightUnit.Lb -> false
+                },
                 onClick = {
-                    onKgSelect(true)
+                    onWeightUnitSelect(WeightUnit.Kg)
                 },
                 text = "kg"
             )
@@ -106,9 +110,12 @@ fun LazyListScope.unitsSection(
             Spacer(modifier = Modifier.width(8.dp))
 
             UnitButton(
-                selected = !kgSelected,
+                selected = when (weightUnit) {
+                    WeightUnit.Kg -> false
+                    WeightUnit.Lb -> true
+                },
                 onClick = {
-                    onKgSelect(false)
+                    onWeightUnitSelect(WeightUnit.Lb)
                 },
                 text = "lb"
             )

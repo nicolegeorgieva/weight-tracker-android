@@ -3,12 +3,9 @@ package com.weighttracker.screen.settings
 import com.weighttracker.base.SimpleFlowViewModel
 import com.weighttracker.domain.convertHeight
 import com.weighttracker.domain.convertWater
-import com.weighttracker.domain.convertWeight
 import com.weighttracker.domain.data.*
 import com.weighttracker.persistence.datastore.height.HeightFlow
 import com.weighttracker.persistence.datastore.height.WriteHeightAct
-import com.weighttracker.persistence.datastore.kgselected.KgSelectedFlow
-import com.weighttracker.persistence.datastore.kgselected.WriteKgSelectedAct
 import com.weighttracker.persistence.datastore.lselected.LSelectedFlow
 import com.weighttracker.persistence.datastore.lselected.WriteLSelectedAct
 import com.weighttracker.persistence.datastore.mselected.MSelectedFlow
@@ -16,7 +13,9 @@ import com.weighttracker.persistence.datastore.mselected.WriteMSelectedAct
 import com.weighttracker.persistence.datastore.water.WaterFlow
 import com.weighttracker.persistence.datastore.water.WriteWaterAct
 import com.weighttracker.persistence.datastore.weight.WeightFlow
+import com.weighttracker.persistence.datastore.weight.WeightUnitFlow
 import com.weighttracker.persistence.datastore.weight.WriteWeightAct
+import com.weighttracker.persistence.datastore.weight.WriteWeightUnitAct
 import dagger.hilt.android.lifecycle.HiltViewModel
 import kotlinx.coroutines.flow.Flow
 import kotlinx.coroutines.flow.combine
@@ -25,8 +24,8 @@ import javax.inject.Inject
 
 @HiltViewModel
 class SettingsViewModel @Inject constructor(
-    private val kgSelectedFlow: KgSelectedFlow,
-    private val writeKgSelectedAct: WriteKgSelectedAct,
+    private val weightUnitFlow: WeightUnitFlow,
+    private val writeWeightUnitAct: WriteWeightUnitAct,
     private val mSelectedFlow: MSelectedFlow,
     private val writeMSelectedAct: WriteMSelectedAct,
     private val weightFlow: WeightFlow,
@@ -39,16 +38,16 @@ class SettingsViewModel @Inject constructor(
     private val writeWaterAct: WriteWaterAct
 ) : SimpleFlowViewModel<SettingsState, SettingsEvent>() {
     override val initialUi = SettingsState(
-        kg = true, m = true, l = true
+        weightUnit = WeightUnit.Kg, m = true, l = true
     )
 
     override val uiFlow: Flow<SettingsState> = combine(
-        kgSelectedFlow(Unit),
+        weightUnitFlow(Unit),
         mSelectedFlow(Unit),
         lSelectedFlow(Unit)
-    ) { kg, m, l ->
+    ) { weightUnit, m, l ->
         SettingsState(
-            kg = kg,
+            weightUnit = weightUnit,
             m = m,
             l = l
         )
@@ -56,26 +55,10 @@ class SettingsViewModel @Inject constructor(
 
     override suspend fun handleEvent(event: SettingsEvent) {
         when (event) {
-            is SettingsEvent.KgSelect -> {
-                val kgAlreadySelected = uiState.value.kg //if kgSelected is true
-                val currentWeight = weightFlow(Unit).first()
-
-                writeKgSelectedAct(event.kg) //it saves kg/lb on the phone
-
-                if (currentWeight != null) {
-                    val convertedWeight = if (kgAlreadySelected && !event.kg) {
-                        // kg to lbs
-                        convertWeight(currentWeight, WeightUnit.Lb)
-                    } else if (!kgAlreadySelected && event.kg) {
-                        // lb to kg
-                        convertWeight(currentWeight, WeightUnit.Kg)
-                    } else {
-                        currentWeight
-                    }
-
-                    writeWeightAct(convertedWeight)
-                }
+            is SettingsEvent.ChangeWeightUnit -> {
+                writeWeightUnitAct(event.weightUnit) //it saves kg/lb on the phone
             }
+
             is SettingsEvent.MSelect -> {
                 val mAlreadySelected = uiState.value.m
                 val currentHeight = heightFlow(Unit).first()

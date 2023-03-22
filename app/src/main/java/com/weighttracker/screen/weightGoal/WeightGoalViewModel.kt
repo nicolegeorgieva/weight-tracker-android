@@ -6,10 +6,11 @@ import com.weighttracker.domain.calculateNormalWeightRange
 import com.weighttracker.domain.data.Height
 import com.weighttracker.domain.data.HeightUnit
 import com.weighttracker.domain.data.Weight
+import com.weighttracker.domain.data.WeightUnit
 import com.weighttracker.persistence.datastore.height.HeightFlow
-import com.weighttracker.persistence.datastore.kgselected.KgSelectedFlow
 import com.weighttracker.persistence.datastore.mselected.MSelectedFlow
 import com.weighttracker.persistence.datastore.weight.WeightFlow
+import com.weighttracker.persistence.datastore.weight.WeightUnitFlow
 import com.weighttracker.persistence.datastore.weightGoal.WeightGoalFlow
 import com.weighttracker.persistence.datastore.weightGoal.WriteWeightGoalAct
 import dagger.hilt.android.lifecycle.HiltViewModel
@@ -19,8 +20,8 @@ import javax.inject.Inject
 
 @HiltViewModel
 class WeightGoalViewModel @Inject constructor(
-    private val kgSelectedFlow: KgSelectedFlow,
     private val weightFlow: WeightFlow,
+    private val weightUnitFlow: WeightUnitFlow,
     private val weightGoalFlow: WeightGoalFlow,
     private val writeWeightGoalAct: WriteWeightGoalAct,
     private val heightFlow: HeightFlow,
@@ -29,7 +30,7 @@ class WeightGoalViewModel @Inject constructor(
 
     override val initialUi = WeightGoalState(
         currentWeight = 0.0,
-        weightUnit = "",
+        weightUnit = "kg",
         goalWeight = 0.0,
         weightToLoseOrGain = 0.0,
         idealWeight = 0.0,
@@ -55,17 +56,20 @@ class WeightGoalViewModel @Inject constructor(
     )
 
     override val uiFlow: Flow<WeightGoalState> = combine(
-        kgSelectedFlow(Unit),
         weightFlow(Unit),
+        weightUnitFlow(Unit),
         weightGoalFlow(Unit),
         heightFlow(Unit),
         mSelectedFlow(Unit)
-    ) { kgSelected, currentWeight, goalWeight, height, mSelected ->
+    ) { currentWeight, weightUnit, goalWeight, height, mSelected ->
         val weightToLoseOrGain = if (currentWeight != null && goalWeight != null) {
             currentWeight.value - goalWeight
         } else 0.0
         WeightGoalState(
-            weightUnit = if (kgSelected) "kg" else "lb",
+            weightUnit = when (weightUnit) {
+                WeightUnit.Kg -> "kg"
+                WeightUnit.Lb -> "lb"
+            },
             currentWeight = currentWeight?.value,
             goalWeight = goalWeight,
             weightToLoseOrGain = weightToLoseOrGain,
@@ -77,7 +81,7 @@ class WeightGoalViewModel @Inject constructor(
             } else {
                 null
             },
-            plan = weightLossPeriod(weightToLose = weightToLoseOrGain, kgSelected = kgSelected),
+            plan = weightLossPeriod(weightToLose = weightToLoseOrGain, weightUnit = weightUnit),
             normalWeightRange = if (height != null && currentWeight != null) {
                 calculateNormalWeightRange(
                     Height(height, if (mSelected) HeightUnit.M else HeightUnit.Ft),
@@ -104,20 +108,20 @@ class WeightGoalViewModel @Inject constructor(
         return (maxWeight + minWeight) / 2
     }
 
-    private fun weightLossPeriod(weightToLose: Double, kgSelected: Boolean): WeightLossPlan {
-        val optimistic = if (kgSelected) {
+    private fun weightLossPeriod(weightToLose: Double, weightUnit: WeightUnit): WeightLossPlan {
+        val optimistic = if (weightUnit == WeightUnit.Kg) {
             weightToLose / 4 //4 per month
         } else {
             weightToLose / 8.81849049
         }
 
-        val realistic = if (kgSelected) {
+        val realistic = if (weightUnit == WeightUnit.Kg) {
             weightToLose / 2
         } else {
             weightToLose / 4.40924524
         }
 
-        val pessimistic = if (kgSelected) {
+        val pessimistic = if (weightUnit == WeightUnit.Kg) {
             weightToLose / 1
         } else {
             weightToLose / 2.20462262
@@ -126,7 +130,7 @@ class WeightGoalViewModel @Inject constructor(
         return WeightLossPlan(
             optimistic = WeightLossInfo(
                 totalMonths = optimistic,
-                lossPerMonth = if (kgSelected) {
+                lossPerMonth = if (weightUnit == WeightUnit.Kg) {
                     4.0
                 } else {
                     8.8
@@ -134,7 +138,7 @@ class WeightGoalViewModel @Inject constructor(
             ),
             realistic = WeightLossInfo(
                 totalMonths = realistic,
-                lossPerMonth = if (kgSelected) {
+                lossPerMonth = if (weightUnit == WeightUnit.Kg) {
                     2.0
                 } else {
                     4.4
@@ -142,7 +146,7 @@ class WeightGoalViewModel @Inject constructor(
             ),
             pessimistic = WeightLossInfo(
                 totalMonths = pessimistic,
-                lossPerMonth = if (kgSelected) {
+                lossPerMonth = if (weightUnit == WeightUnit.Kg) {
                     1.0
                 } else {
                     2.2

@@ -12,8 +12,8 @@ import com.weighttracker.persistence.database.weightrecords.WeightRecordEntity
 import com.weighttracker.persistence.database.weightrecords.WeightRecordsFlow
 import com.weighttracker.persistence.database.weightrecords.WriteWeightRecordAct
 import com.weighttracker.persistence.datastore.height.HeightFlow
-import com.weighttracker.persistence.datastore.kgselected.KgSelectedFlow
 import com.weighttracker.persistence.datastore.mselected.MSelectedFlow
+import com.weighttracker.persistence.datastore.weight.WeightUnitFlow
 import dagger.hilt.android.lifecycle.HiltViewModel
 import kotlinx.coroutines.flow.Flow
 import kotlinx.coroutines.flow.combine
@@ -22,9 +22,9 @@ import javax.inject.Inject
 @HiltViewModel
 class WeightRecordsViewModel @Inject constructor(
     private val weightRecordsFlow: WeightRecordsFlow,
+    private val weightUnitFlow: WeightUnitFlow,
     private val writeWeightRecordAct: WriteWeightRecordAct,
     private val deleteWeightRecordAct: DeleteWeightRecordAct,
-    private val kgSelectedFlow: KgSelectedFlow,
     private val heightFlow: HeightFlow,
     private val mSelectedFlow: MSelectedFlow,
 
@@ -42,10 +42,10 @@ class WeightRecordsViewModel @Inject constructor(
 
     override val uiFlow: Flow<WeightRecordsState> = combine(
         weightRecordsFlow(Unit),
-        kgSelectedFlow(Unit),
+        weightUnitFlow(Unit),
         heightFlow(Unit),
         mSelectedFlow(Unit)
-    ) { weightRecords, kgSelected, height, mSelected ->
+    ) { weightRecords, weightUnit, height, mSelected ->
         val weightRecordsWithBmi = weightRecords
             .sortedByDescending { it.dateTime }
             .map { record ->
@@ -54,7 +54,7 @@ class WeightRecordsViewModel @Inject constructor(
                     date = record.dateTime,
                     weight = convertWeight(
                         Weight(record.weightInKg, WeightUnit.Kg),
-                        if (kgSelected) WeightUnit.Kg else WeightUnit.Lb
+                        weightUnit
                     ),
                     bmi = if (height != null) {
                         calculateBmi(
@@ -69,7 +69,7 @@ class WeightRecordsViewModel @Inject constructor(
             ?.let {
                 convertWeight(
                     Weight(it, WeightUnit.Kg),
-                    if (kgSelected) WeightUnit.Kg else WeightUnit.Lb
+                    weightUnit
                 )
             }
 
@@ -77,7 +77,7 @@ class WeightRecordsViewModel @Inject constructor(
             ?.let {
                 convertWeight(
                     Weight(it, WeightUnit.Kg),
-                    if (kgSelected) WeightUnit.Kg else WeightUnit.Lb
+                    weightUnit
                 )
             }
 
@@ -87,7 +87,10 @@ class WeightRecordsViewModel @Inject constructor(
 
         WeightRecordsState(
             weightRecords = weightRecordsWithBmi,
-            weightUnit = if (kgSelected) "kg" else "lb",
+            weightUnit = when (weightUnit) {
+                WeightUnit.Kg -> "kg"
+                WeightUnit.Lb -> "lb"
+            },
             latestWeight = latestWeight?.value,
             startWeight = startWeight?.value,
             difference = if (startWeight != null && latestWeight != null)
