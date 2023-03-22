@@ -6,7 +6,6 @@ import com.weighttracker.domain.calculateNormalWeightRange
 import com.weighttracker.domain.data.Height
 import com.weighttracker.domain.data.HeightUnit
 import com.weighttracker.domain.data.Weight
-import com.weighttracker.domain.data.WeightUnit
 import com.weighttracker.persistence.datastore.height.HeightFlow
 import com.weighttracker.persistence.datastore.kgselected.KgSelectedFlow
 import com.weighttracker.persistence.datastore.mselected.MSelectedFlow
@@ -63,17 +62,17 @@ class WeightGoalViewModel @Inject constructor(
         mSelectedFlow(Unit)
     ) { kgSelected, currentWeight, goalWeight, height, mSelected ->
         val weightToLoseOrGain = if (currentWeight != null && goalWeight != null) {
-            currentWeight - goalWeight
+            currentWeight.value - goalWeight
         } else 0.0
         WeightGoalState(
             weightUnit = if (kgSelected) "kg" else "lb",
-            currentWeight = currentWeight,
+            currentWeight = currentWeight?.value,
             goalWeight = goalWeight,
             weightToLoseOrGain = weightToLoseOrGain,
             idealWeight = if (height != null && currentWeight != null) {
                 calculateIdealWeight(
                     height = Height(height, if (mSelected) HeightUnit.M else HeightUnit.Ft),
-                    weight = Weight(currentWeight, if (kgSelected) WeightUnit.Kg else WeightUnit.Lb)
+                    weight = currentWeight
                 )
             } else {
                 null
@@ -82,7 +81,7 @@ class WeightGoalViewModel @Inject constructor(
             normalWeightRange = if (height != null && currentWeight != null) {
                 calculateNormalWeightRange(
                     Height(height, if (mSelected) HeightUnit.M else HeightUnit.Ft),
-                    Weight(currentWeight, if (kgSelected) WeightUnit.Kg else WeightUnit.Lb)
+                    currentWeight
                 )
             } else {
                 null

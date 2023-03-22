@@ -5,6 +5,7 @@ import com.weighttracker.base.persistence.AppDataStore
 import com.weighttracker.persistence.datastore.DataStoreKeys
 import javax.inject.Inject
 
+@Deprecated("old")
 class WriteKgSelectedAct @Inject constructor(
     private val appDataStore: AppDataStore,
     private val dataStoreKeys: DataStoreKeys,

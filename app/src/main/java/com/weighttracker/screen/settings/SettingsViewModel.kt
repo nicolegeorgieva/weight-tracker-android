@@ -65,10 +65,10 @@ class SettingsViewModel @Inject constructor(
                 if (currentWeight != null) {
                     val convertedWeight = if (kgAlreadySelected && !event.kg) {
                         // kg to lbs
-                        convertWeight(Weight(currentWeight, WeightUnit.Kg), WeightUnit.Lb).value
+                        convertWeight(currentWeight, WeightUnit.Lb)
                     } else if (!kgAlreadySelected && event.kg) {
                         // lb to kg
-                        convertWeight(Weight(currentWeight, WeightUnit.Lb), WeightUnit.Kg).value
+                        convertWeight(currentWeight, WeightUnit.Kg)
                     } else {
                         currentWeight
                     }

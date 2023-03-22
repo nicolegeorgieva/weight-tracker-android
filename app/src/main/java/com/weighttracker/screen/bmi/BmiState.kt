@@ -1,12 +1,13 @@
 package com.weighttracker.screen.bmi
 
 import com.weighttracker.domain.NormalWeightRange
+import com.weighttracker.domain.data.WeightUnit
 
 data class BmiState(
-    val weight: Double?,
+    val weightValue: Double?,
+    val weightUnit: WeightUnit,
     val height: Double?,
     val bmi: Double?,
-    val kg: Boolean,
     val m: Boolean,
     val quote: String?,
     val normalWeightRange: NormalWeightRange?,

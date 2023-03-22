@@ -14,13 +14,13 @@ import com.weighttracker.persistence.datastore.activity.ActivityFlow
 import com.weighttracker.persistence.datastore.activity.WriteActivityAct
 import com.weighttracker.persistence.datastore.height.HeightFlow
 import com.weighttracker.persistence.datastore.height.WriteHeightAct
-import com.weighttracker.persistence.datastore.kgselected.KgSelectedFlow
 import com.weighttracker.persistence.datastore.lselected.LSelectedFlow
 import com.weighttracker.persistence.datastore.mselected.MSelectedFlow
 import com.weighttracker.persistence.datastore.quote.QuoteFlow
 import com.weighttracker.persistence.datastore.water.WaterFlow
 import com.weighttracker.persistence.datastore.water.WriteWaterAct
 import com.weighttracker.persistence.datastore.weight.WeightFlow
+import com.weighttracker.persistence.datastore.weight.WeightUnitFlow
 import com.weighttracker.persistence.datastore.weight.WriteWeightAct
 import com.weighttracker.toUtc
 import dagger.hilt.android.lifecycle.HiltViewModel
@@ -32,10 +32,10 @@ import javax.inject.Inject
 @HiltViewModel
 class BmiViewModel @Inject constructor(
     private val weightFlow: WeightFlow,
+    private val weightUnitFlow: WeightUnitFlow,
     private val writeWeightAct: WriteWeightAct,
     private val heightFlow: HeightFlow,
     private val writeHeightAct: WriteHeightAct,
-    private val kgSelectedFlow: KgSelectedFlow,
     private val mSelectedFlow: MSelectedFlow,
     private val quoteFlow: QuoteFlow,
     private val writeWeightRecordAct: WriteWeightRecordAct,
@@ -48,10 +48,10 @@ class BmiViewModel @Inject constructor(
     private val lSelectedFlow: LSelectedFlow
 ) : SimpleFlowViewModel<BmiState, BmiEvent>() {
     override val initialUi = BmiState(
-        weight = 0.0,
+        weightValue = null,
+        weightUnit = WeightUnit.Kg,
         height = 0.0,
         bmi = 0.0,
-        kg = true,
         m = true,
         quote = "",
         normalWeightRange = null,
@@ -63,24 +63,24 @@ class BmiViewModel @Inject constructor(
 
     override val uiFlow: Flow<BmiState> = combine(
         weightFlow(Unit),
+        weightUnitFlow(Unit),
         heightFlow(Unit),
-        kgSelectedFlow(Unit),
         mSelectedFlow(Unit),
         quoteFlow(Unit),
         activityFlow(Unit),
         waterFlow(Unit),
         lSelectedFlow(Unit)
-    ) { weight, height, kgSelected, mSelected, quote, activity, water, lSelected ->
+    ) { weight, weightUnit, height, mSelected, quote, activity, water, lSelected ->
         BmiState(
-            weight = weight,
+            weightValue = weight?.value,
+            weightUnit = weightUnit,
             height = height,
-            bmi = if (weight != null && height != null && weight > 0 && height > 0) {
+            bmi = if (weight != null && height != null && weight.value > 0 && height > 0) {
                 calculateBmi(
-                    Weight(weight, if (kgSelected) WeightUnit.Kg else WeightUnit.Lb),
+                    weight,
                     Height(height, if (mSelected) HeightUnit.M else HeightUnit.Ft)
                 )
             } else null,
-            kg = kgSelected,
             m = mSelected,
             quote = quote,
             activity = activity,
@@ -88,7 +88,7 @@ class BmiViewModel @Inject constructor(
             normalWeightRange = if (height != null && weight != null) {
                 calculateNormalWeightRange(
                     Height(height, if (mSelected) HeightUnit.M else HeightUnit.Ft),
-                    Weight(weight, if (kgSelected) WeightUnit.Kg else WeightUnit.Lb)
+                    weight
                 )
             } else {
                 null
@@ -109,17 +109,14 @@ class BmiViewModel @Inject constructor(
             }
 
             BmiEvent.SaveWeightRecord -> {
-                val weight = uiState.value.weight
-                if (weight != null) {
+                val weightValue = uiState.value.weightValue
+                if (weightValue != null) {
                     writeWeightRecordAct(
                         WeightRecordEntity(
                             id = UUID.randomUUID(),
                             dateTime = LocalDateTime.now().toUtc(),
                             weightInKg = convertWeight(
-                                weight = Weight(
-                                    weight,
-                                    if (uiState.value.kg) WeightUnit.Kg else WeightUnit.Lb
-                                ),
+                                weight = Weight(weightValue, uiState.value.weightUnit),
                                 toUnit = WeightUnit.Kg
                             ).value,
                         )

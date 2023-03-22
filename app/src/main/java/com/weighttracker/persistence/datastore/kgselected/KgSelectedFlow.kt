@@ -7,6 +7,7 @@ import kotlinx.coroutines.flow.Flow
 import kotlinx.coroutines.flow.map
 import javax.inject.Inject
 
+@Deprecated("old")
 class KgSelectedFlow @Inject constructor(
     private val appDataStore: AppDataStore,
     private val dataStoreKeys: DataStoreKeys,

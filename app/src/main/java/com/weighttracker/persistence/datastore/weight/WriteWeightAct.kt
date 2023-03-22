@@ -2,6 +2,7 @@ package com.weighttracker.persistence.datastore.weight
 
 import com.weighttracker.base.Action
 import com.weighttracker.base.persistence.AppDataStore
+import com.weighttracker.domain.data.Weight
 import com.weighttracker.persistence.datastore.DataStoreKeys
 import javax.inject.Inject
 
@@ -9,8 +10,10 @@ import javax.inject.Inject
 class WriteWeightAct @Inject constructor(
     private val appDataStore: AppDataStore,
     private val dataStoreKeys: DataStoreKeys,
-) : Action<Double, Unit>() {
-    override suspend fun action(input: Double) {
-        appDataStore.put(dataStoreKeys.weight, input)
+    private val writeWeightUnitAct: WriteWeightUnitAct
+) : Action<Weight, Unit>() {
+    override suspend fun action(input: Weight) {
+        appDataStore.put(dataStoreKeys.weight, input.value)
+        writeWeightUnitAct(input.unit)
     }
 }

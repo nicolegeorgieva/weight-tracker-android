@@ -24,6 +24,8 @@ import com.weighttracker.Screens
 import com.weighttracker.browser
 import com.weighttracker.component.*
 import com.weighttracker.domain.NormalWeightRange
+import com.weighttracker.domain.data.Weight
+import com.weighttracker.domain.data.WeightUnit
 import com.weighttracker.domain.formatBmi
 import com.weighttracker.navigateTo
 import kotlinx.coroutines.CoroutineScope
@@ -64,10 +66,19 @@ private fun UI(
         item(key = "weight input and save") {
             Row(verticalAlignment = Alignment.CenterVertically) {
                 WeightInput(
-                    weight = state.weight,
-                    kgSelected = state.kg,
+                    weightValue = state.weightValue,
+                    weightUnit = state.weightUnit,
                     onWeightChange = {
-                        onEvent(BmiEvent.WeightChange(newWeightRec = it))
+                        if (state.weightValue != null) {
+                            onEvent(
+                                BmiEvent.WeightChange(
+                                    newWeightRec = Weight(
+                                        it,
+                                        state.weightUnit
+                                    )
+                                )
+                            )
+                        }
                     }
                 )
 
@@ -185,7 +196,7 @@ private fun UI(
             if (state.normalWeightRange != null) {
                 NormalWeightRangeMessage(
                     normalWeightRange = state.normalWeightRange,
-                    kgSelected = state.kg
+                    weightUnit = state.weightUnit
                 )
 
                 Spacer(modifier = Modifier.height(24.dp))
@@ -261,7 +272,7 @@ fun BmiStatusAndMessage(
 @Composable
 fun NormalWeightRangeMessage(
     normalWeightRange: NormalWeightRange,
-    kgSelected: Boolean
+    weightUnit: WeightUnit
 ) {
     if (normalWeightRange.minWeight > 0 && normalWeightRange.maxWeight > 0
     ) {
@@ -269,7 +280,7 @@ fun NormalWeightRangeMessage(
             .format(normalWeightRange.minWeight)
         val maxWeightFormatted = DecimalFormat("###,###.#")
             .format(normalWeightRange.maxWeight)
-        val weightUnit = if (kgSelected) "kg" else "lb"
+        val weightUnit = if (weightUnit == WeightUnit.Kg) "kg" else "lb"
 
         Text(
             text = "Your normal weight should be in the range $minWeightFormatted - " +
@@ -376,13 +387,13 @@ fun SaveButton(onSave: () -> Unit, color: ButtonColors, screen: Screens) {
 
 @Composable
 fun WeightInput(
-    weight: Double?,
-    kgSelected: Boolean,
+    weightValue: Double?,
+    weightUnit: WeightUnit,
     onWeightChange: (Double) -> Unit
 ) {
     NumberInputField(
         modifier = Modifier.width(90.dp),
-        number = weight,
+        number = weightValue,
         placeholder = "Weight",
         onValueChange = {
             onWeightChange(it)
@@ -396,7 +407,7 @@ fun WeightInput(
             navigateTo(Screens.Settings)
         },
         fontWeight = FontWeight.Bold,
-        text = if (kgSelected) "kg" else "lb"
+        text = if (weightUnit == WeightUnit.Kg) "kg" else "lb"
     )
 }
 
@@ -556,10 +567,10 @@ private fun Preview() {
     AppTheme {
         UI(
             state = BmiState(
-                weight = 0.0,
+                weightValue = 0.0,
+                weightUnit = WeightUnit.Kg,
                 height = 0.0,
                 bmi = 0.0,
-                kg = true,
                 m = true,
                 quote = "",
                 normalWeightRange = null,
