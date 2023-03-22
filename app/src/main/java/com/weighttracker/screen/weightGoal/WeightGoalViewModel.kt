@@ -4,11 +4,10 @@ import com.weighttracker.base.SimpleFlowViewModel
 import com.weighttracker.domain.NormalWeightRange
 import com.weighttracker.domain.calculateNormalWeightRange
 import com.weighttracker.domain.data.Height
-import com.weighttracker.domain.data.HeightUnit
 import com.weighttracker.domain.data.Weight
 import com.weighttracker.domain.data.WeightUnit
 import com.weighttracker.persistence.datastore.height.HeightFlow
-import com.weighttracker.persistence.datastore.mselected.MSelectedFlow
+import com.weighttracker.persistence.datastore.height.HeightUnitFlow
 import com.weighttracker.persistence.datastore.weight.WeightFlow
 import com.weighttracker.persistence.datastore.weight.WeightUnitFlow
 import com.weighttracker.persistence.datastore.weightGoal.WeightGoalFlow
@@ -25,7 +24,7 @@ class WeightGoalViewModel @Inject constructor(
     private val weightGoalFlow: WeightGoalFlow,
     private val writeWeightGoalAct: WriteWeightGoalAct,
     private val heightFlow: HeightFlow,
-    private val mSelectedFlow: MSelectedFlow
+    private val heightUnitFlow: HeightUnitFlow
 ) : SimpleFlowViewModel<WeightGoalState, WeightGoalEvent>() {
 
     override val initialUi = WeightGoalState(
@@ -60,8 +59,8 @@ class WeightGoalViewModel @Inject constructor(
         weightUnitFlow(Unit),
         weightGoalFlow(Unit),
         heightFlow(Unit),
-        mSelectedFlow(Unit)
-    ) { currentWeight, weightUnit, goalWeight, height, mSelected ->
+        heightUnitFlow(Unit)
+    ) { currentWeight, weightUnit, goalWeight, height, heightUnit ->
         val weightToLoseOrGain = if (currentWeight != null && goalWeight != null) {
             currentWeight.value - goalWeight
         } else 0.0
@@ -75,7 +74,7 @@ class WeightGoalViewModel @Inject constructor(
             weightToLoseOrGain = weightToLoseOrGain,
             idealWeight = if (height != null && currentWeight != null) {
                 calculateIdealWeight(
-                    height = Height(height, if (mSelected) HeightUnit.M else HeightUnit.Ft),
+                    height = Height(height.value, heightUnit),
                     weight = currentWeight
                 )
             } else {
@@ -84,7 +83,7 @@ class WeightGoalViewModel @Inject constructor(
             plan = weightLossPeriod(weightToLose = weightToLoseOrGain, weightUnit = weightUnit),
             normalWeightRange = if (height != null && currentWeight != null) {
                 calculateNormalWeightRange(
-                    Height(height, if (mSelected) HeightUnit.M else HeightUnit.Ft),
+                    Height(height.value, heightUnit),
                     currentWeight
                 )
             } else {

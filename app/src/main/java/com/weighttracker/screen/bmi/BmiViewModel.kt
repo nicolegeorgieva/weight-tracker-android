@@ -13,9 +13,9 @@ import com.weighttracker.persistence.database.weightrecords.WriteWeightRecordAct
 import com.weighttracker.persistence.datastore.activity.ActivityFlow
 import com.weighttracker.persistence.datastore.activity.WriteActivityAct
 import com.weighttracker.persistence.datastore.height.HeightFlow
+import com.weighttracker.persistence.datastore.height.HeightUnitFlow
 import com.weighttracker.persistence.datastore.height.WriteHeightAct
 import com.weighttracker.persistence.datastore.lselected.LSelectedFlow
-import com.weighttracker.persistence.datastore.mselected.MSelectedFlow
 import com.weighttracker.persistence.datastore.quote.QuoteFlow
 import com.weighttracker.persistence.datastore.water.WaterFlow
 import com.weighttracker.persistence.datastore.water.WriteWaterAct
@@ -36,7 +36,7 @@ class BmiViewModel @Inject constructor(
     private val writeWeightAct: WriteWeightAct,
     private val heightFlow: HeightFlow,
     private val writeHeightAct: WriteHeightAct,
-    private val mSelectedFlow: MSelectedFlow,
+    private val heightUnitFlow: HeightUnitFlow,
     private val quoteFlow: QuoteFlow,
     private val writeWeightRecordAct: WriteWeightRecordAct,
     private val activityFlow: ActivityFlow,
@@ -50,9 +50,9 @@ class BmiViewModel @Inject constructor(
     override val initialUi = BmiState(
         weightValue = null,
         weightUnit = WeightUnit.Kg,
-        height = 0.0,
+        heightValue = 0.0,
+        heightUnit = HeightUnit.M,
         bmi = 0.0,
-        m = true,
         quote = "",
         normalWeightRange = null,
         activity = "",
@@ -65,29 +65,29 @@ class BmiViewModel @Inject constructor(
         weightFlow(Unit),
         weightUnitFlow(Unit),
         heightFlow(Unit),
-        mSelectedFlow(Unit),
+        heightUnitFlow(Unit),
         quoteFlow(Unit),
         activityFlow(Unit),
         waterFlow(Unit),
         lSelectedFlow(Unit)
-    ) { weight, weightUnit, height, mSelected, quote, activity, water, lSelected ->
+    ) { weight, weightUnit, height, heightUnit, quote, activity, water, lSelected ->
         BmiState(
             weightValue = weight?.value,
             weightUnit = weightUnit,
-            height = height,
-            bmi = if (weight != null && height != null && weight.value > 0 && height > 0) {
+            heightValue = height?.value,
+            bmi = if (weight != null && height != null && weight.value > 0 && height.value > 0) {
                 calculateBmi(
                     weight,
-                    Height(height, if (mSelected) HeightUnit.M else HeightUnit.Ft)
+                    height
                 )
             } else null,
-            m = mSelected,
+            heightUnit = heightUnit,
             quote = quote,
             activity = activity,
             water = water ?: 0.0,
             normalWeightRange = if (height != null && weight != null) {
                 calculateNormalWeightRange(
-                    Height(height, if (mSelected) HeightUnit.M else HeightUnit.Ft),
+                    height,
                     weight
                 )
             } else {

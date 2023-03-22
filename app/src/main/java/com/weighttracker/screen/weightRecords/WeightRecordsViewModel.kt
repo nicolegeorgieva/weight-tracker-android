@@ -4,7 +4,6 @@ import com.weighttracker.base.SimpleFlowViewModel
 import com.weighttracker.domain.calculateBmi
 import com.weighttracker.domain.convertWeight
 import com.weighttracker.domain.data.Height
-import com.weighttracker.domain.data.HeightUnit
 import com.weighttracker.domain.data.Weight
 import com.weighttracker.domain.data.WeightUnit
 import com.weighttracker.persistence.database.weightrecords.DeleteWeightRecordAct
@@ -12,7 +11,7 @@ import com.weighttracker.persistence.database.weightrecords.WeightRecordEntity
 import com.weighttracker.persistence.database.weightrecords.WeightRecordsFlow
 import com.weighttracker.persistence.database.weightrecords.WriteWeightRecordAct
 import com.weighttracker.persistence.datastore.height.HeightFlow
-import com.weighttracker.persistence.datastore.mselected.MSelectedFlow
+import com.weighttracker.persistence.datastore.height.HeightUnitFlow
 import com.weighttracker.persistence.datastore.weight.WeightUnitFlow
 import dagger.hilt.android.lifecycle.HiltViewModel
 import kotlinx.coroutines.flow.Flow
@@ -26,7 +25,7 @@ class WeightRecordsViewModel @Inject constructor(
     private val writeWeightRecordAct: WriteWeightRecordAct,
     private val deleteWeightRecordAct: DeleteWeightRecordAct,
     private val heightFlow: HeightFlow,
-    private val mSelectedFlow: MSelectedFlow,
+    private val heightUnitFlow: HeightUnitFlow
 
     ) : SimpleFlowViewModel<WeightRecordsState, WeightRecordsEvent>() {
     override val initialUi = WeightRecordsState(
@@ -44,8 +43,8 @@ class WeightRecordsViewModel @Inject constructor(
         weightRecordsFlow(Unit),
         weightUnitFlow(Unit),
         heightFlow(Unit),
-        mSelectedFlow(Unit)
-    ) { weightRecords, weightUnit, height, mSelected ->
+        heightUnitFlow(Unit)
+    ) { weightRecords, weightUnit, height, heightUnit ->
         val weightRecordsWithBmi = weightRecords
             .sortedByDescending { it.dateTime }
             .map { record ->
@@ -59,7 +58,7 @@ class WeightRecordsViewModel @Inject constructor(
                     bmi = if (height != null) {
                         calculateBmi(
                             weight = Weight(record.weightInKg, WeightUnit.Kg),
-                            height = Height(height, if (mSelected) HeightUnit.M else HeightUnit.Ft)
+                            height = Height(height.value, heightUnit)
                         )
                     } else null
                 )

@@ -24,6 +24,7 @@ import com.weighttracker.Screens
 import com.weighttracker.browser
 import com.weighttracker.component.*
 import com.weighttracker.domain.NormalWeightRange
+import com.weighttracker.domain.data.HeightUnit
 import com.weighttracker.domain.data.Weight
 import com.weighttracker.domain.data.WeightUnit
 import com.weighttracker.domain.formatBmi
@@ -101,8 +102,8 @@ private fun UI(
 
         item(key = "height input") {
             HeightInputAndSave(
-                height = state.height,
-                mSelected = state.m,
+                height = state.heightValue,
+                mSelected = state.heightUnit == HeightUnit.M,
                 onHeightChange = {
                     onEvent(BmiEvent.HeightChange(newHeightRec = it))
                 }
@@ -569,9 +570,9 @@ private fun Preview() {
             state = BmiState(
                 weightValue = 0.0,
                 weightUnit = WeightUnit.Kg,
-                height = 0.0,
+                heightValue = 0.0,
                 bmi = 0.0,
-                m = true,
+                heightUnit = HeightUnit.M,
                 quote = "",
                 normalWeightRange = null,
                 activity = "",

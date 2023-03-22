@@ -22,6 +22,7 @@ import com.weighttracker.Screens
 import com.weighttracker.component.CustomDivider
 import com.weighttracker.component.Header
 import com.weighttracker.component.SectionTitle
+import com.weighttracker.domain.data.HeightUnit
 import com.weighttracker.domain.data.WeightUnit
 import com.weighttracker.navigateTo
 
@@ -53,9 +54,9 @@ private fun UI(
             onWeightUnitSelect = { weightUnit ->
                 onEvent(SettingsEvent.ChangeWeightUnit(weightUnit = weightUnit))
             },
-            mSelected = state.m,
-            onMSelect = { mSelected ->
-                onEvent(SettingsEvent.MSelect(m = mSelected))
+            heightUnit = state.heightUnit,
+            onHeightUnitSelect = { heightUnit ->
+                onEvent(SettingsEvent.ChangeHeightUnit(heightUnit = heightUnit))
             },
             lSelected = state.l,
             onLSelect = { lSelected ->
@@ -81,8 +82,8 @@ private fun UI(
 fun LazyListScope.unitsSection(
     weightUnit: WeightUnit,
     onWeightUnitSelect: (WeightUnit) -> Unit,
-    mSelected: Boolean,
-    onMSelect: (Boolean) -> Unit,
+    heightUnit: HeightUnit,
+    onHeightUnitSelect: (HeightUnit) -> Unit,
     lSelected: Boolean,
     onLSelect: (Boolean) -> Unit
 ) {
@@ -131,9 +132,12 @@ fun LazyListScope.unitsSection(
             Text(modifier = Modifier.weight(2f), text = "Height", fontSize = 16.sp)
 
             UnitButton(
-                selected = mSelected,
+                selected = when (heightUnit) {
+                    HeightUnit.M -> true
+                    HeightUnit.Ft -> false
+                },
                 onClick = {
-                    onMSelect(true)
+                    onHeightUnitSelect(HeightUnit.M)
                 },
                 text = "m"
             )
@@ -141,9 +145,12 @@ fun LazyListScope.unitsSection(
             Spacer(modifier = Modifier.width(8.dp))
 
             UnitButton(
-                selected = !mSelected,
+                selected = when (heightUnit) {
+                    HeightUnit.M -> false
+                    HeightUnit.Ft -> true
+                },
                 onClick = {
-                    onMSelect(false)
+                    onHeightUnitSelect(HeightUnit.Ft)
                 },
                 text = "ft"
             )
