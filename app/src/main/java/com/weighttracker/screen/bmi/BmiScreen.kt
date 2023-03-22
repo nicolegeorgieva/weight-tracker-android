@@ -24,6 +24,7 @@ import com.weighttracker.Screens
 import com.weighttracker.browser
 import com.weighttracker.component.*
 import com.weighttracker.domain.NormalWeightRange
+import com.weighttracker.domain.data.Height
 import com.weighttracker.domain.data.HeightUnit
 import com.weighttracker.domain.data.Weight
 import com.weighttracker.domain.data.WeightUnit
@@ -103,9 +104,9 @@ private fun UI(
         item(key = "height input") {
             HeightInputAndSave(
                 height = state.heightValue,
-                mSelected = state.heightUnit == HeightUnit.M,
+                heightUnit = state.heightUnit,
                 onHeightChange = {
-                    onEvent(BmiEvent.HeightChange(newHeightRec = it))
+                    onEvent(BmiEvent.HeightChange(newHeightRec = Height(it, state.heightUnit)))
                 }
             )
 
@@ -348,7 +349,7 @@ fun RowScope.ActivityInput(
 @Composable
 fun HeightInputAndSave(
     height: Double?,
-    mSelected: Boolean,
+    heightUnit: HeightUnit,
     onHeightChange: (Double) -> Unit
 ) {
     Row(verticalAlignment = Alignment.CenterVertically) {
@@ -368,7 +369,7 @@ fun HeightInputAndSave(
                 navigateTo(Screens.Settings)
             },
             fontWeight = FontWeight.Bold,
-            text = if (mSelected) "m" else "ft"
+            text = if (heightUnit == HeightUnit.M) "m" else "ft"
         )
     }
 }

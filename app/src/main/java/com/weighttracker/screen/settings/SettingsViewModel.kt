@@ -1,7 +1,9 @@
 package com.weighttracker.screen.settings
 
 import com.weighttracker.base.SimpleFlowViewModel
+import com.weighttracker.domain.convertHeight
 import com.weighttracker.domain.convertWater
+import com.weighttracker.domain.convertWeight
 import com.weighttracker.domain.data.HeightUnit
 import com.weighttracker.domain.data.Water
 import com.weighttracker.domain.data.WaterUnit
@@ -58,10 +60,20 @@ class SettingsViewModel @Inject constructor(
     override suspend fun handleEvent(event: SettingsEvent) {
         when (event) {
             is SettingsEvent.ChangeWeightUnit -> {
+                val currentWeight = weightFlow(Unit).first()
+                if (currentWeight != null) {
+                    writeWeightAct(convertWeight(currentWeight, event.weightUnit))
+                }
+
                 writeWeightUnitAct(event.weightUnit) //it saves kg/lb on the phone
             }
 
             is SettingsEvent.ChangeHeightUnit -> {
+                val currentHeight = heightFlow(Unit).first()
+                if (currentHeight != null) {
+                    writeHeightAct(convertHeight(currentHeight, event.heightUnit))
+                }
+
                 writeHeightUnitAct(event.heightUnit)
             }
 
