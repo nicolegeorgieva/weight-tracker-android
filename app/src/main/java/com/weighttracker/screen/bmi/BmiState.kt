@@ -2,6 +2,7 @@ package com.weighttracker.screen.bmi
 
 import com.weighttracker.domain.NormalWeightRange
 import com.weighttracker.domain.data.HeightUnit
+import com.weighttracker.domain.data.WaterUnit
 import com.weighttracker.domain.data.WeightUnit
 
 data class BmiState(
@@ -13,7 +14,7 @@ data class BmiState(
     val quote: String?,
     val normalWeightRange: NormalWeightRange?,
     val activity: String?,
-    val water: Double,
-    val l: Boolean,
+    val waterValue: Double?,
+    val waterUnit: WaterUnit,
     val glasses: List<Boolean>
 )

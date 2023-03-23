@@ -5,17 +5,16 @@ import com.weighttracker.domain.convertHeight
 import com.weighttracker.domain.convertWater
 import com.weighttracker.domain.convertWeight
 import com.weighttracker.domain.data.HeightUnit
-import com.weighttracker.domain.data.Water
 import com.weighttracker.domain.data.WaterUnit
 import com.weighttracker.domain.data.WeightUnit
 import com.weighttracker.persistence.datastore.height.HeightFlow
 import com.weighttracker.persistence.datastore.height.HeightUnitFlow
 import com.weighttracker.persistence.datastore.height.WriteHeightAct
 import com.weighttracker.persistence.datastore.height.WriteHeightUnitAct
-import com.weighttracker.persistence.datastore.lselected.LSelectedFlow
-import com.weighttracker.persistence.datastore.lselected.WriteLSelectedAct
 import com.weighttracker.persistence.datastore.water.WaterFlow
+import com.weighttracker.persistence.datastore.water.WaterUnitFlow
 import com.weighttracker.persistence.datastore.water.WriteWaterAct
+import com.weighttracker.persistence.datastore.water.WriteWaterUnitAct
 import com.weighttracker.persistence.datastore.weight.WeightFlow
 import com.weighttracker.persistence.datastore.weight.WeightUnitFlow
 import com.weighttracker.persistence.datastore.weight.WriteWeightAct
@@ -28,32 +27,33 @@ import javax.inject.Inject
 
 @HiltViewModel
 class SettingsViewModel @Inject constructor(
-    private val weightUnitFlow: WeightUnitFlow,
-    private val writeWeightUnitAct: WriteWeightUnitAct,
-    private val heightUnitFlow: HeightUnitFlow,
-    private val writeHeightUnitAct: WriteHeightUnitAct,
     private val weightFlow: WeightFlow,
     private val writeWeightAct: WriteWeightAct,
+    private val weightUnitFlow: WeightUnitFlow,
+    private val writeWeightUnitAct: WriteWeightUnitAct,
     private val heightFlow: HeightFlow,
     private val writeHeightAct: WriteHeightAct,
-    private val lSelectedFlow: LSelectedFlow,
-    private val writeLSelectedAct: WriteLSelectedAct,
+    private val heightUnitFlow: HeightUnitFlow,
+    private val writeHeightUnitAct: WriteHeightUnitAct,
     private val waterFlow: WaterFlow,
-    private val writeWaterAct: WriteWaterAct
+    private val writeWaterAct: WriteWaterAct,
+    private val waterUnitFlow: WaterUnitFlow,
+    private val writeWaterUnitAct: WriteWaterUnitAct
+
 ) : SimpleFlowViewModel<SettingsState, SettingsEvent>() {
     override val initialUi = SettingsState(
-        weightUnit = WeightUnit.Kg, heightUnit = HeightUnit.M, l = true
+        weightUnit = WeightUnit.Kg, heightUnit = HeightUnit.M, waterUnit = WaterUnit.L
     )
 
     override val uiFlow: Flow<SettingsState> = combine(
         weightUnitFlow(Unit),
         heightUnitFlow(Unit),
-        lSelectedFlow(Unit)
-    ) { weightUnit, heightUnit, l ->
+        waterUnitFlow(Unit)
+    ) { weightUnit, heightUnit, waterUnit ->
         SettingsState(
             weightUnit = weightUnit,
             heightUnit = heightUnit,
-            l = l
+            waterUnit = waterUnit
         )
     }
 
@@ -77,25 +77,14 @@ class SettingsViewModel @Inject constructor(
                 writeHeightUnitAct(event.heightUnit)
             }
 
-            is SettingsEvent.LSelect -> {
-                val lAlreadySelected = uiState.value.l
-                val currentWaterValue = waterFlow(Unit).first()
+            is SettingsEvent.ChangeWaterUnit -> {
+                val currentWater = waterFlow(Unit).first()
 
-                writeLSelectedAct(event.l)
-
-                if (currentWaterValue != null) {
-                    val convertedWaterUnit = if (lAlreadySelected && !event.l) {
-                        // l to gal
-                        convertWater(Water(currentWaterValue, WaterUnit.L), WaterUnit.Gal).value
-                    } else if (!lAlreadySelected && event.l) {
-                        // gal to l
-                        convertWater(Water(currentWaterValue, WaterUnit.Gal), WaterUnit.L).value
-                    } else {
-                        currentWaterValue
-                    }
-
-                    writeWaterAct(convertedWaterUnit)
+                if (currentWater != null) {
+                    writeWaterAct(convertWater(currentWater, event.waterUnit))
                 }
+
+                writeWaterUnitAct(event.waterUnit)
             }
         }
     }

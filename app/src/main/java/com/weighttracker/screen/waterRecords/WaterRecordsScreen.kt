@@ -24,6 +24,7 @@ import com.weighttracker.*
 import com.weighttracker.R
 import com.weighttracker.component.Header
 import com.weighttracker.component.NumberInputField
+import com.weighttracker.domain.data.WaterUnit
 import com.weighttracker.persistence.database.waterrecords.WaterRecordEntity
 
 @Composable
@@ -50,8 +51,9 @@ private fun UI(
                 WaterRecordCard(
                     waterRecord = waterRecordItem,
                     onEvent = onEvent,
-                    waterUnit = state.waterUnit
+                    waterUnit = if (state.waterUnit == WaterUnit.L) "l" else "gal"
                 )
+
                 Spacer(modifier = Modifier.height(16.dp))
             }
         }

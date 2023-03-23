@@ -23,6 +23,7 @@ import com.weighttracker.component.CustomDivider
 import com.weighttracker.component.Header
 import com.weighttracker.component.SectionTitle
 import com.weighttracker.domain.data.HeightUnit
+import com.weighttracker.domain.data.WaterUnit
 import com.weighttracker.domain.data.WeightUnit
 import com.weighttracker.navigateTo
 
@@ -58,9 +59,9 @@ private fun UI(
             onHeightUnitSelect = { heightUnit ->
                 onEvent(SettingsEvent.ChangeHeightUnit(heightUnit = heightUnit))
             },
-            lSelected = state.l,
-            onLSelect = { lSelected ->
-                onEvent(SettingsEvent.LSelect(l = lSelected))
+            waterUnit = state.waterUnit,
+            onWaterUnitSelect = { waterUnit ->
+                onEvent(SettingsEvent.ChangeWaterUnit(waterUnit = waterUnit))
 
             }
         )
@@ -84,8 +85,8 @@ fun LazyListScope.unitsSection(
     onWeightUnitSelect: (WeightUnit) -> Unit,
     heightUnit: HeightUnit,
     onHeightUnitSelect: (HeightUnit) -> Unit,
-    lSelected: Boolean,
-    onLSelect: (Boolean) -> Unit
+    waterUnit: WaterUnit,
+    onWaterUnitSelect: (WaterUnit) -> Unit
 ) {
     item(key = "units section title") {
         SectionTitle(text = "Units", color = Color.Gray)
@@ -166,9 +167,12 @@ fun LazyListScope.unitsSection(
             Text(modifier = Modifier.weight(2f), text = "Water", fontSize = 16.sp)
 
             UnitButton(
-                selected = lSelected,
+                selected = when (waterUnit) {
+                    WaterUnit.L -> true
+                    WaterUnit.Gal -> false
+                },
                 onClick = {
-                    onLSelect(true)
+                    onWaterUnitSelect(WaterUnit.L)
                 },
                 text = "l"
             )
@@ -176,9 +180,12 @@ fun LazyListScope.unitsSection(
             Spacer(modifier = Modifier.width(8.dp))
 
             UnitButton(
-                selected = !lSelected,
+                selected = when (waterUnit) {
+                    WaterUnit.L -> false
+                    WaterUnit.Gal -> true
+                },
                 onClick = {
-                    onLSelect(false)
+                    onWaterUnitSelect(WaterUnit.Gal)
                 },
                 text = "gal"
             )

@@ -24,10 +24,7 @@ import com.weighttracker.Screens
 import com.weighttracker.browser
 import com.weighttracker.component.*
 import com.weighttracker.domain.NormalWeightRange
-import com.weighttracker.domain.data.Height
-import com.weighttracker.domain.data.HeightUnit
-import com.weighttracker.domain.data.Weight
-import com.weighttracker.domain.data.WeightUnit
+import com.weighttracker.domain.data.*
 import com.weighttracker.domain.formatBmi
 import com.weighttracker.navigateTo
 import kotlinx.coroutines.CoroutineScope
@@ -160,11 +157,11 @@ private fun UI(
         item(key = "water input and save") {
             Row() {
                 WaterInput(
-                    water = state.water,
+                    water = state.waterValue,
                     onWaterChange = {
-                        onEvent(BmiEvent.WaterChange(newWaterRec = it))
+                        onEvent(BmiEvent.WaterChange(newWaterRec = Water(it, state.waterUnit)))
                     },
-                    lSelected = state.l
+                    lSelected = state.waterUnit == WaterUnit.L
                 )
 
                 Spacer(modifier = Modifier.width(16.dp))
@@ -577,8 +574,8 @@ private fun Preview() {
                 quote = "",
                 normalWeightRange = null,
                 activity = "",
-                water = 0.0,
-                l = true,
+                waterValue = 0.0,
+                waterUnit = WaterUnit.L,
                 glasses = emptyList()
             ),
             onEvent = {}

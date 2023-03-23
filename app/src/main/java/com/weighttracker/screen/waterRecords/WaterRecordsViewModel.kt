@@ -7,7 +7,7 @@ import com.weighttracker.domain.data.WaterUnit
 import com.weighttracker.persistence.database.waterrecords.DeleteWaterRecordAct
 import com.weighttracker.persistence.database.waterrecords.WaterRecordsFlow
 import com.weighttracker.persistence.database.waterrecords.WriteWaterRecordAct
-import com.weighttracker.persistence.datastore.lselected.LSelectedFlow
+import com.weighttracker.persistence.datastore.water.WaterUnitFlow
 import dagger.hilt.android.lifecycle.HiltViewModel
 import kotlinx.coroutines.flow.Flow
 import kotlinx.coroutines.flow.combine
@@ -18,18 +18,18 @@ class WaterRecordsViewModel @Inject constructor(
     private val waterRecordsFlow: WaterRecordsFlow,
     private val writeWaterRecordAct: WriteWaterRecordAct,
     private val deleteWaterRecordAct: DeleteWaterRecordAct,
-    private val lSelectedFlow: LSelectedFlow
+    private val waterUnitFlow: WaterUnitFlow
 ) : SimpleFlowViewModel<WaterRecordsState, WaterRecordsEvent>() {
     override val initialUi = WaterRecordsState(
         //while loading
         waterRecords = emptyList(),
-        waterUnit = "l"
+        waterUnit = WaterUnit.L
     )
 
     override val uiFlow: Flow<WaterRecordsState> = combine(
         waterRecordsFlow(Unit),
-        lSelectedFlow(Unit)
-    ) { waterRecords, lSelected ->
+        waterUnitFlow(Unit)
+    ) { waterRecords, waterUnit ->
         WaterRecordsState(
             waterRecords = waterRecords.sortedByDescending {
                 it.dateTime
@@ -39,11 +39,11 @@ class WaterRecordsViewModel @Inject constructor(
                         Water(
                             it.water, WaterUnit.L
                         ),
-                        toUnit = if (lSelected) WaterUnit.L else WaterUnit.Gal
+                        toUnit = waterUnit
                     ).value
                 )
             },
-            waterUnit = if (lSelected) "l" else "gal"
+            waterUnit = waterUnit
         )
     }
 

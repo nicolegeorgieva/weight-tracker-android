@@ -15,9 +15,9 @@ import com.weighttracker.persistence.datastore.activity.WriteActivityAct
 import com.weighttracker.persistence.datastore.height.HeightFlow
 import com.weighttracker.persistence.datastore.height.HeightUnitFlow
 import com.weighttracker.persistence.datastore.height.WriteHeightAct
-import com.weighttracker.persistence.datastore.lselected.LSelectedFlow
 import com.weighttracker.persistence.datastore.quote.QuoteFlow
 import com.weighttracker.persistence.datastore.water.WaterFlow
+import com.weighttracker.persistence.datastore.water.WaterUnitFlow
 import com.weighttracker.persistence.datastore.water.WriteWaterAct
 import com.weighttracker.persistence.datastore.weight.WeightFlow
 import com.weighttracker.persistence.datastore.weight.WeightUnitFlow
@@ -45,7 +45,7 @@ class BmiViewModel @Inject constructor(
     private val waterFlow: WaterFlow,
     private val writeWaterAct: WriteWaterAct,
     private val writeWaterRecordAct: WriteWaterRecordAct,
-    private val lSelectedFlow: LSelectedFlow
+    private val waterUnitFlow: WaterUnitFlow
 ) : SimpleFlowViewModel<BmiState, BmiEvent>() {
     override val initialUi = BmiState(
         weightValue = null,
@@ -56,8 +56,8 @@ class BmiViewModel @Inject constructor(
         quote = "",
         normalWeightRange = null,
         activity = "",
-        water = 0.0,
-        l = true,
+        waterValue = 0.0,
+        waterUnit = WaterUnit.L,
         glasses = emptyList()
     )
 
@@ -69,8 +69,8 @@ class BmiViewModel @Inject constructor(
         quoteFlow(Unit),
         activityFlow(Unit),
         waterFlow(Unit),
-        lSelectedFlow(Unit)
-    ) { weight, weightUnit, height, heightUnit, quote, activity, water, lSelected ->
+        waterUnitFlow(Unit)
+    ) { weight, weightUnit, height, heightUnit, quote, activity, water, waterUnit ->
         BmiState(
             weightValue = weight?.value,
             weightUnit = weightUnit,
@@ -84,7 +84,7 @@ class BmiViewModel @Inject constructor(
             heightUnit = heightUnit,
             quote = quote,
             activity = activity,
-            water = water ?: 0.0,
+            waterValue = water?.value,
             normalWeightRange = if (height != null && weight != null) {
                 calculateNormalWeightRange(
                     height,
@@ -93,8 +93,8 @@ class BmiViewModel @Inject constructor(
             } else {
                 null
             },
-            l = lSelected,
-            glasses = glasses(water ?: 0.0)
+            waterUnit = waterUnit,
+            glasses = glasses(water?.value ?: 0.0)
         )
     }
 
@@ -142,21 +142,23 @@ class BmiViewModel @Inject constructor(
             }
 
             BmiEvent.SaveWaterRecord -> {
-                val water = uiState.value.water
+                val waterValue = uiState.value.waterValue
 
-                writeWaterRecordAct(
-                    WaterRecordEntity(
-                        id = UUID.randomUUID(),
-                        dateTime = LocalDateTime.now().toUtc(),
-                        water = convertWater(
-                            Water(
-                                water,
-                                if (uiState.value.l) WaterUnit.L else WaterUnit.Gal
-                            ),
-                            toUnit = WaterUnit.L
-                        ).value
+                if (waterValue != null) {
+                    writeWaterRecordAct(
+                        WaterRecordEntity(
+                            id = UUID.randomUUID(),
+                            dateTime = LocalDateTime.now().toUtc(),
+                            water = convertWater(
+                                Water(
+                                    waterValue,
+                                    uiState.value.waterUnit
+                                ),
+                                toUnit = WaterUnit.L
+                            ).value
+                        )
                     )
-                )
+                }
             }
 
             is BmiEvent.WaterChange -> {
@@ -164,12 +166,15 @@ class BmiViewModel @Inject constructor(
             }
 
             is BmiEvent.GlassClick -> {
-                val water = uiState.value.water
-                if (event.filled) {
-                    // a full glass is clicked so it becomes empty
-                    writeWaterAct(water - 0.25)
-                } else {
-                    writeWaterAct(water + 0.25)
+                val water = uiState.value.waterValue
+
+                if (water != null) {
+                    if (event.filled) {
+                        // a full glass is clicked so it becomes empty
+                        writeWaterAct(Water(water - 0.25, uiState.value.waterUnit))
+                    } else {
+                        writeWaterAct(Water(water + 0.25, uiState.value.waterUnit))
+                    }
                 }
             }
         }
