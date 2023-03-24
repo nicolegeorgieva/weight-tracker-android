@@ -3,7 +3,7 @@ name: Build
 on: [ push, pull_request, workflow_dispatch ]
 
 jobs:
-  build:
+  unit_test:
     runs-on: ubuntu-latest
 
     # Fix GitHub Actions crashing with:
