@@ -94,7 +94,7 @@ class BmiViewModel @Inject constructor(
                 null
             },
             waterUnit = waterUnit,
-            glasses = glasses(water?.value ?: 0.0)
+            glasses = glasses(Water(water?.value ?: 0.0, waterUnit))
         )
     }
 
