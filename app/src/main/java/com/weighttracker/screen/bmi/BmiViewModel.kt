@@ -169,11 +169,16 @@ class BmiViewModel @Inject constructor(
                 val water = uiState.value.waterValue
 
                 if (water != null) {
+                    val waterInAGlass = when (uiState.value.waterUnit) {
+                        WaterUnit.L -> 0.25
+                        WaterUnit.Gal -> 0.0660430131
+                    }
+
                     if (event.filled) {
                         // a full glass is clicked so it becomes empty
-                        writeWaterAct(Water(water - 0.25, uiState.value.waterUnit))
+                        writeWaterAct(Water(water - waterInAGlass, uiState.value.waterUnit))
                     } else {
-                        writeWaterAct(Water(water + 0.25, uiState.value.waterUnit))
+                        writeWaterAct(Water(water + waterInAGlass, uiState.value.waterUnit))
                     }
                 }
             }
