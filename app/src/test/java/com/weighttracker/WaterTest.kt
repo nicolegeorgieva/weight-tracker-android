@@ -1,5 +1,7 @@
 package com.weighttracker
 
+import com.weighttracker.domain.GLASS_IN_GAL
+import com.weighttracker.domain.GLASS_IN_L
 import com.weighttracker.domain.data.Water
 import com.weighttracker.domain.data.WaterUnit
 import com.weighttracker.domain.glasses
@@ -13,15 +15,18 @@ class WaterTest : FreeSpec({
         }
 
         "0.25 liters" {
-            glasses(Water(0.25, WaterUnit.L)) shouldBe listOf(true, false, false, false)
+            GLASS_IN_L shouldBe 0.25
+            glasses(Water(GLASS_IN_L, WaterUnit.L)) shouldBe listOf(true, false, false, false)
         }
 
         "0.75 liters" {
-            glasses(Water(0.75, WaterUnit.L)) shouldBe listOf(true, true, true, false)
+            3 * GLASS_IN_L shouldBe 0.75
+            glasses(Water(3 * GLASS_IN_L, WaterUnit.L)) shouldBe listOf(true, true, true, false)
         }
 
         "1 liters" {
-            glasses(Water(1.0, WaterUnit.L)) shouldBe listOf(
+            4 * GLASS_IN_L shouldBe 1.0
+            glasses(Water(4 * GLASS_IN_L, WaterUnit.L)) shouldBe listOf(
                 true,
                 true,
                 true,
@@ -34,7 +39,8 @@ class WaterTest : FreeSpec({
         }
 
         "2 liters" {
-            glasses(Water(2.0, WaterUnit.L)) shouldBe listOf(
+            8 * GLASS_IN_L shouldBe 2.0
+            glasses(Water(8 * GLASS_IN_L, WaterUnit.L)) shouldBe listOf(
                 true, true, true, true,
                 true, true, true, true,
                 false, false, false, false
@@ -42,7 +48,8 @@ class WaterTest : FreeSpec({
         }
 
         "2.5 liters" {
-            glasses(Water(2.5, WaterUnit.L)) shouldBe listOf(
+            10 * GLASS_IN_L shouldBe 2.5
+            glasses(Water(10 * GLASS_IN_L, WaterUnit.L)) shouldBe listOf(
                 true, true, true, true,
                 true, true, true, true,
                 true, true, false, false
@@ -50,7 +57,8 @@ class WaterTest : FreeSpec({
         }
 
         "3 liters" {
-            glasses(Water(3.0, WaterUnit.L)) shouldBe listOf(
+            12 * GLASS_IN_L shouldBe 3.0
+            glasses(Water(12 * GLASS_IN_L, WaterUnit.L)) shouldBe listOf(
                 true, true, true, true,
                 true, true, true, true,
                 true, true, true, true
@@ -63,16 +71,24 @@ class WaterTest : FreeSpec({
             glasses(Water(0.0, WaterUnit.Gal)) shouldBe listOf(false, false, false, false)
         }
 
-        "0.07 gal" {
-            glasses(Water(0.07, WaterUnit.Gal)) shouldBe listOf(true, false, false, false)
+        "0.0660430131 gal" {
+            GLASS_IN_GAL shouldBe 0.0660430131
+            glasses(Water(GLASS_IN_GAL, WaterUnit.Gal)) shouldBe listOf(
+                true,
+                false,
+                false,
+                false
+            )
         }
 
-        "0.2 gal" {
-            glasses(Water(0.2, WaterUnit.Gal)) shouldBe listOf(true, true, true, false)
+        "0.19812903930000003 gal" {
+            3 * GLASS_IN_GAL shouldBe 0.19812903930000003
+            glasses(Water(3 * GLASS_IN_GAL, WaterUnit.Gal)) shouldBe listOf(true, true, true, false)
         }
 
-        "0.27 gal" {
-            glasses(Water(0.27, WaterUnit.Gal)) shouldBe listOf(
+        "0.2641720524 gal" {
+            4 * GLASS_IN_GAL shouldBe 0.2641720524
+            glasses(Water(4 * GLASS_IN_GAL, WaterUnit.Gal)) shouldBe listOf(
                 true,
                 true,
                 true,
@@ -84,24 +100,27 @@ class WaterTest : FreeSpec({
             )
         }
 
-        "0.53 gal" {
-            glasses(Water(0.53, WaterUnit.Gal)) shouldBe listOf(
+        "0.5283441048 gal" {
+            8 * GLASS_IN_GAL shouldBe 0.5283441048
+            glasses(Water(8 * GLASS_IN_GAL, WaterUnit.Gal)) shouldBe listOf(
                 true, true, true, true,
                 true, true, true, true,
                 false, false, false, false
             )
         }
 
-        "0.661 gal" {
-            glasses(Water(0.661, WaterUnit.Gal)) shouldBe listOf(
+        "0.660430131 gal" {
+            10 * GLASS_IN_GAL shouldBe 0.660430131
+            glasses(Water(10 * GLASS_IN_GAL, WaterUnit.Gal)) shouldBe listOf(
                 true, true, true, true,
                 true, true, true, true,
                 true, true, false, false
             )
         }
 
-        "0.793 gal" {
-            glasses(Water(0.793, WaterUnit.Gal)) shouldBe listOf(
+        "0.7925161572000001 gal" {
+            12 * GLASS_IN_GAL shouldBe 0.7925161572000001
+            glasses(Water(12 * GLASS_IN_GAL, WaterUnit.Gal)) shouldBe listOf(
                 true, true, true, true,
                 true, true, true, true,
                 true, true, true, true
