@@ -3,12 +3,14 @@ package com.weighttracker.screen.converter
 import androidx.compose.foundation.layout.*
 import androidx.compose.foundation.shape.RoundedCornerShape
 import androidx.compose.material3.Button
+import androidx.compose.material3.ButtonDefaults
 import androidx.compose.material3.Text
 import androidx.compose.runtime.Composable
 import androidx.compose.runtime.collectAsState
 import androidx.compose.runtime.getValue
 import androidx.compose.ui.Alignment
 import androidx.compose.ui.Modifier
+import androidx.compose.ui.graphics.Color
 import androidx.compose.ui.text.font.FontWeight
 import androidx.compose.ui.unit.dp
 import androidx.lifecycle.viewmodel.compose.viewModel
@@ -90,10 +92,21 @@ private fun UI(
 
         Spacer(modifier = Modifier.height(64.dp))
 
-        Button(shape = RoundedCornerShape(12.dp), onClick = {
-            onEvent(ConverterEvent.Reset)
-        }) {
-            Text(text = "Reset")
+        Row(
+            modifier = Modifier.fillMaxWidth(),
+            horizontalArrangement = Arrangement.End
+        ) {
+            Button(
+                shape = RoundedCornerShape(12.dp),
+                colors = ButtonDefaults.buttonColors(
+                    contentColor = Color.White,
+                    containerColor = Color.DarkGray
+                ),
+                onClick = {
+                    onEvent(ConverterEvent.Reset)
+                }) {
+                Text(text = "Reset")
+            }
         }
     }
 }

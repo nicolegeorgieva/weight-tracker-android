@@ -232,7 +232,7 @@ fun LazyListScope.recordsSection() {
                 modifier = Modifier.weight(1f),
                 color = ButtonDefaults.buttonColors(
                     contentColor = Color.White,
-                    containerColor = Color(0xFF2A337A)
+                    containerColor = Color(0xFF0E3C5F)
                 ),
                 screen = Screens.WaterRecords(backTo = Screens.Settings),
                 text = "Water"
