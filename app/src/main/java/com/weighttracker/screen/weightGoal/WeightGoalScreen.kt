@@ -53,8 +53,13 @@ private fun UI(
 
         item(key = "current weight title and value") {
             Row(verticalAlignment = Alignment.CenterVertically) {
-                CurrentWeightTitleAndValue(
-                    currentWeight = state.currentWeight,
+                if (state.currentWeight != null) {
+                    CurrentWeightTitleAndValue(
+                        currentWeight = state.currentWeight,
+                        weightUnit = state.weightUnit
+                    )
+                } else CurrentWeightTitleAndValue(
+                    currentWeight = 0.0,
                     weightUnit = state.weightUnit
                 )
             }
