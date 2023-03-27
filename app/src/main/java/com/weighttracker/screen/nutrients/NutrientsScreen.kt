@@ -311,7 +311,7 @@ private fun Preview() {
         UI(state = NutrientsState(
             quantity = 1,
             foods = listOf(
-                "rice", "bread", "chicken", "pizza", "apple", "milk", "biscuit",
+                "rice", "pasta", "chicken", "pizza", "apple", "milk", "biscuit",
                 "egg", "banana", "joghurt", "potato", "pork", "turkey", "beef"
             ),
             selectedFood = "rice",
