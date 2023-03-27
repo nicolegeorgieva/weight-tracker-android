@@ -30,9 +30,8 @@ class NutrientsViewModel @Inject constructor(
 
     private val foodsFlow = flowOf(
         listOf(
-            "rice",
-            "bread",
-            "chicken"
+            "rice", "pasta", "chicken", "pizza", "apple", "milk", "biscuit",
+            "egg", "banana", "joghurt", "potato", "pork", "turkey", "beef"
         )
     )
 
