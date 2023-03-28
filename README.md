@@ -12,4 +12,28 @@ Weight tracker is an app primarily for BMI calculation (supporting different uni
 
 **Weight Tracker** is a free health & fitness android app written using **100% Jetpack Compose** and **Kotlin**. It's designed to help you track your weight with ease, supporting you trough your weight loss or weight gain journey in a stress-free way while providing the most valuable tools for it.
 
+## Tech Stack
 
+### Architecture
+- [MVVM (Model-View-ViewModel)](https://www.techtarget.com/whatis/definition/Model-View-ViewModel#:~:text=Model%2DView%2DViewModel%20(MVVM)%20is%20a%20software%20design,Ken%20Cooper%20and%20John%20Gossman.)
+- [Clean Architecture](https://developer.android.com/topic/architecture)
+
+### Core
+- 100% [Kotlin](https://kotlinlang.org/)
+- 100% [Jetpack Compose](https://developer.android.com/jetpack/compose)
+- [Kotlin Coroutines](https://kotlinlang.org/docs/coroutines-overview.html)
+- [Kotlin Flow](https://kotlinlang.org/docs/flow.html)
+- [Hilt](https://dagger.dev/hilt/) (DI)
+- [ArrowKt](https://arrow-kt.io/) (Functional Programming)
+
+### Local Persistence
+- [DataStore](https://developer.android.com/topic/libraries/architecture/datastore) (key-value storage, Shared Preferences replacement)
+- [Room DB](https://developer.android.com/training/data-storage/room) (SQLite ORM)
+
+### Networking
+- [Ktor Client](https://ktor.io/docs/getting-started-ktor-client.html) (REST client)
+- [Gson](https://github.com/google/gson) (JSON serialization)
+
+### CI/CD
+- [Gradle Groovy DSL](https://gradle.org/)
+- [Github Actions](https://github.com/Ivy-Apps/ivy-wallet/actions) (CI/CD)
