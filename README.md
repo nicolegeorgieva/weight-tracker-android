@@ -10,3 +10,6 @@ Weight tracker is an app primarily for BMI calculation (supporting different uni
 ![9](https://user-images.githubusercontent.com/93789076/228212879-2e6d7831-0a15-4cf2-89a1-fc0b5f05901e.jpg) | ![10](https://user-images.githubusercontent.com/93789076/228213030-7c93eb0d-ffce-4836-a8dd-2c7bbb330dd8.jpg) | ![11](https://user-images.githubusercontent.com/93789076/228213295-d27223f2-a86b-4d08-a194-3478328cce97.jpg) | ![12](https://user-images.githubusercontent.com/93789076/228213370-3c720aab-5866-4ad2-83eb-ec7179ef22a7.jpg) | 
 ![13](https://user-images.githubusercontent.com/93789076/228213509-b541aa98-0ca0-4957-b058-920a4b45345f.jpg) | ![14](https://user-images.githubusercontent.com/93789076/228213645-4248b2cf-31fb-4c25-9cbc-e0690ce0dfe8.jpg) | ![15](https://user-images.githubusercontent.com/93789076/228213748-44f20e6a-3b4f-4589-812c-8496cf9c2350.jpg) | ![16](https://user-images.githubusercontent.com/93789076/228213863-43849794-7309-4807-9bbb-4b96bb834293.jpg)
 
+**Weight Tracker** is a free health & fitness android app written using **100% Jetpack Compose** and **Kotlin**. It's designed to help you track your weight with ease, supporting you trough your weight loss or weight gain journey in a stress-free way while providing the most valuable tools for it.
+
+
