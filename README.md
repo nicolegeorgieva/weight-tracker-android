@@ -36,4 +36,4 @@ Weight tracker is an app primarily for BMI calculation (supporting different uni
 
 ### CI/CD
 - [Gradle Groovy DSL](https://gradle.org/)
-- [Github Actions](https://github.com/Ivy-Apps/ivy-wallet/actions) (CI/CD)
+- [Github Actions](https://github.com/nicolegeorgieva/weight-tracker-android/actions) (CI/CD)
