@@ -38,7 +38,7 @@ Weight tracker is an app primarily for BMI calculation (supporting different uni
 - [Gradle Groovy DSL](https://gradle.org/)
 - [Github Actions](https://github.com/nicolegeorgieva/weight-tracker-android/actions) (CI/CD)
 
-# Download an APK and have a look at the app following the steps:
+## Download an APK and have a look at the app following the steps:
 _**Note:** You must be logged in GitHub._
 - Go to [**Actions**](https://github.com/nicolegeorgieva/weight-tracker-android/actions) in the app repository.
 - Select [**Build APK**](https://github.com/nicolegeorgieva/weight-tracker-android/actions/workflows/build.yml).
